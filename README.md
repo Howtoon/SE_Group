@@ -1,2 +1,0 @@
-# SE_Group
-GIT HUB IS CONFUSING
