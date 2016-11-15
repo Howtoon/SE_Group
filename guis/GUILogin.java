@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import application.*;
 
-public class GUIWelcome{
-   public GUIWelcome(JFrame frame, Controller controller){
+public class GUILogin{
+   public GUILogin(JFrame frame, Controller controller){
       JPanel panelInput1 = new JPanel();
       panelInput1.setBackground(Color.CYAN);
       JLabel Comm = new JLabel("Commuter");
@@ -81,10 +81,9 @@ public class GUIWelcome{
                btnCalc.setEnabled(true);
             }
             
-            else if (e.getActionCommand().equals("cmdCalc"))
-            {
-               controller.displayGUILogin();
+            else if (e.getActionCommand().equals("cmdCalc")){
                
+               controller.displayGUILogin();
             }
          }
       }
