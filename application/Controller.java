@@ -15,7 +15,7 @@ public class Controller
       frame = new JFrame("");
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setBackground(Color.WHITE);
-      frame.setSize(250,250);
+      frame.setSize(500,500);
       frame.setLayout(new GridLayout(0, 1));
       frame.setVisible(true);
       GUIWelcome welcome = new GUIWelcome(frame, this);
@@ -28,11 +28,12 @@ public class Controller
    
    public boolean verifyLogin(String userName, String password)
    {
+      user = new User();         //Placeholder for user object returned by DBMgr()
       return true;//returns true/false based on valid username and password combo
    }
    
    public void displayGUIMainMenu()//Called from GUILogin first, other GUIs can come back to the MainMenu
    {
-      //GUIMainMenu mainMenu = new GUIMainMenu(frame, user);
+      GUIMainMenu mainMenu = new GUIMainMenu(frame, this, user);
    }
 }
