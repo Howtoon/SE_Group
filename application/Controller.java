@@ -32,6 +32,17 @@ public class Controller
       return true;//returns true/false based on valid username and password combo
    }
    
+   public void displayGUICreateUser()
+   {
+      GUICreateUser createUser = new GUICreateUser(frame, this);
+   }
+   
+   public void createNewUser(User newUser)
+   {
+      user = newUser;
+      displayGUIMainMenu();
+   }
+   
    public void displayGUIMainMenu()//Called from GUILogin first, other GUIs can come back to the MainMenu
    {
       GUIMainMenu mainMenu = new GUIMainMenu(frame, this, user);
