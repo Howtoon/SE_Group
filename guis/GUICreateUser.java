@@ -13,7 +13,7 @@ import application.*;
 
 public class GUICreateUser
 {
-   public GUICreateUser(JFrame frame, Controller controller, User user)
+   public GUICreateUser(JFrame frame, Controller controller)
    {   
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setBackground(Color.WHITE);

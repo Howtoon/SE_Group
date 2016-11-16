@@ -51,8 +51,10 @@ public class GUILogin
          {
             if(e.getActionCommand().equals("cmdCreate"))
             {
-               btnCreate.setEnabled(false);
-               btnLogin.setEnabled(true);
+               frame.remove(panelUserName);
+               frame.remove(panelPassword);
+               frame.remove(panelSelect);
+               controller.displayGUICreateUser();
             }
             else if(e.getActionCommand().equals("cmdLogin"))
             {

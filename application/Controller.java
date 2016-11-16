@@ -23,28 +23,28 @@ public class Controller
    
    public void displayGUILogin()//Called from GUIWelcome()
    {
-      GUILogin login = new GUILogin(frame, this); 
+      GUILogin login = new GUILogin(frame, this); //passes frame and controller to the login GUI
    }
    
-   public boolean verifyLogin(String userName, String password)
+   public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password
    {
       user = new User();         //Placeholder for user object returned by DBMgr()
       return true;//returns true/false based on valid username and password combo
    }
    
-   public void displayGUICreateUser()
+   public void displayGUICreateUser()  //called from GUILogin
    {
-      GUICreateUser createUser = new GUICreateUser(frame, this);
+      GUICreateUser createUser = new GUICreateUser(frame, this);  //calls GUICreateUser() to get details of new user
    }
    
-   public void createNewUser(User newUser)
+   public void createUser(User newUser)  //Calls DBMgr() to create a new user in the database
    {
-      user = newUser;
-      displayGUIMainMenu();
+      user = newUser;         //assigns instance variable to public variable for referencing
+      displayGUIMainMenu();   //calls GUIMainMenu()
    }
    
    public void displayGUIMainMenu()//Called from GUILogin first, other GUIs can come back to the MainMenu
    {
-      GUIMainMenu mainMenu = new GUIMainMenu(frame, this, user);
+      GUIMainMenu mainMenu = new GUIMainMenu(frame, this, user);  //passes the frame, controller, and user object to the menu
    }
 }
