@@ -81,8 +81,12 @@ public class GUILogin{
                btnCalc.setEnabled(true);
             }
             
-            else if (e.getActionCommand().equals("cmdCalc")){
-               
+            else if (e.getActionCommand().equals("cmdCalc"))
+            {
+               frame.remove(panelSelect);
+               frame.remove(panelCalc);
+               frame.remove(panelResult);
+               frame.remove(panelName);
                controller.displayGUILogin();
             }
          }
