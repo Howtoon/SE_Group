@@ -15,7 +15,7 @@ public class Controller
       frame = new JFrame("");
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setBackground(Color.WHITE);
-      frame.setSize(500,500);
+      frame.setSize(512,512);
       frame.setLayout(new GridLayout(0, 1));
       frame.setVisible(true);
       GUIWelcome welcome = new GUIWelcome(frame, this);
