@@ -48,7 +48,7 @@ public class GUIMainMenu
       JPanel panelRestric = new JPanel();
       panelRestric.setBackground(Color.WHITE);             
       JButton btnRestric = new JButton("View Parking Lot Restrictions");
-      btnRestic.setActionCommand("cmdRestric");
+      btnRestric.setActionCommand("cmdRestric");
       panelRestric.add(btnRestric);
       
       JPanel panelReport = new JPanel();
