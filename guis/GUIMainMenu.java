@@ -75,7 +75,7 @@ public class GUIMainMenu extends JPanel
       });
       this.add(btnRestric);
       
-      if (user.getPermissions()=="SUPERVISOR" || getPermissions()==ADMIN)
+      if (user.getPermissions().equals("SUPERVISOR") || user.getPermissions().equals("ADMIN"))
       {
          JButton btnReport = new JButton("Create Parking Lot Report");
          btnReport.setAlignmentX(this.CENTER_ALIGNMENT);
@@ -95,7 +95,7 @@ public class GUIMainMenu extends JPanel
          });
          this.add(btnViolate);
       }
-      if (getPermissions()==ADMIN)
+      if (user.getPermissions().equals("ADMIN"))
       {
 
          JButton btnManage = new JButton("Manage Administrators");
