@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,33 +16,25 @@ public class GUILogin extends JPanel
 {
    public GUILogin(Controller controller)
    {
-      JPanel panelUserName = new JPanel();
-      panelUserName.setBackground(Color.CYAN);
       JLabel userName = new JLabel("User Name: ");
       final JTextField tfUserName = new JTextField(20);
-      panelUserName.add(userName);
-      panelUserName.add(tfUserName);
+      this.add(userName);
+      this.add(tfUserName);
       
-      JPanel panelPassword = new JPanel();
-      panelPassword.setBackground(Color.CYAN);
       JLabel password = new JLabel("Password: ");
-      final JTextField tfPassword = new JTextField(20);
-      panelPassword.add(password);
-      panelPassword.add(tfPassword);
+      final JPasswordField tfPassword = new JPasswordField(20);
+      tfPassword.setEchoChar('#');
+      this.add(password);
+      this.add(tfPassword);
       
-      JPanel panelSelect = new JPanel();
-      panelSelect.setBackground(Color.ORANGE);
       JButton btnCreate = new JButton("Create a New Account");
       btnCreate.setActionCommand("cmdCreate");
-      panelSelect.add(btnCreate);
+      this.add(btnCreate);
       
       JButton btnLogin = new JButton("Submit for Login");
       btnLogin.setActionCommand("cmdLogin");
-      panelSelect.add(btnLogin);
-      
-      this.add(panelUserName);
-      this.add(panelPassword);
-      this.add(panelSelect);
+      this.add(btnLogin);
+
 
      // frame.setVisible(true);
    
@@ -59,7 +52,7 @@ public class GUILogin extends JPanel
             }
             else if(e.getActionCommand().equals("cmdLogin"))
             {
-               boolean verify = controller.verifyLogin(tfUserName.getText(), tfPassword.getText());
+               boolean verify = controller.verifyLogin(tfUserName.getText(), new String(tfPassword.getPassword()));
                if (verify)
                {
             	   /*

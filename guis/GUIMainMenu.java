@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +18,7 @@ public class GUIMainMenu extends JPanel
    {  
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));         
       this.setBackground(Color.WHITE);
-      this.addButtons(User user);
+      //this.addButtons(user);
    
       JButton btnPortal = new JButton("Parking Transaction Portal");
       btnPortal.setActionCommand("cmdPortal");
@@ -102,5 +103,6 @@ public class GUIMainMenu extends JPanel
       
       btnPortal.addActionListener(listener);
       btnRegs.addActionListener(listener);
+      
    }
 }
