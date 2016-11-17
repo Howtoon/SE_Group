@@ -1,8 +1,7 @@
 package guis;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.*;
 import application.*;
@@ -19,50 +18,66 @@ public class GUICreateUser extends JPanel
 	
    public GUICreateUser(Controller controller)
    {
-	  
+	   
 	  this.controller = controller;
-	  this.addButtons();
+	  this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 	  this.addFields();
-     
+	  this.addButtons();
+      
    }
 
-   public void addButtons()
-   {
+	public void addButtons()
+	{
+	  
+	   JPanel btnPanel = new JPanel();
+	   btnPanel.setLayout(new FlowLayout());
+      JButton btnLogin = new JButton("Create New User");
+      btnLogin.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
 
-	  JButton btnSubmit = new JButton("Submit");
-	  btnSubmit.addActionListener(new ActionListener() {
-		 public void actionPerformed(ActionEvent e) {
-    	    if (!controller.verifyDuplicate(username.getText(), new String(password.getPassword())))
+            boolean verify = controller.verifyLogin(username.getText(), new String(password.getPassword()));
+            if (verify)
             {
-               controller.displayGUIMainMenu(); //Only if user does not exist
-            }
-		 }
+            	
+               controller.displayGUIMainMenu();
+               
+            }     
+		}
       });
-      this.add(btnSubmit);
-	 
+	   btnPanel.add(btnLogin);
+      
       JButton btnGoBack = new JButton("Go Back");
       btnGoBack.addActionListener(new ActionListener() {
- 		 public void actionPerformed(ActionEvent e) {
+ 		public void actionPerformed(ActionEvent e) {
  			 controller.displayGUIWelcome();
- 		 }
-       });
-      this.add(btnGoBack);
-     
+ 		}
+      });
+      btnPanel.add(btnGoBack);
+      
+      this.add(btnPanel);
+      
 	}
 	
 	public void addFields()
 	{
 		
+		JPanel userPanel = new JPanel();
+		userPanel.setLayout(new FlowLayout());
 		user = new JLabel("User Name: ");
 		username = new JTextField(20);
-	    this.add(user);
-	    this.add(username);
-	     
+		userPanel.add(user);
+		userPanel.add(username);
+	    
+	    JPanel passPanel = new JPanel();
+	    passPanel.setLayout(new FlowLayout());
 	    pass = new JLabel("Password: ");
 	    password = new JPasswordField(20);
 	    password.setEchoChar('#');
-	    this.add(pass);
-	    this.add(password);
+	    passPanel.add(pass);
+	    passPanel.add(password);
+	    
+	    this.add(userPanel);
+	    this.add(passPanel);
 		
 	}
 }
