@@ -1,15 +1,9 @@
 package guis;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import application.*;
 
 public class GUILogin extends JPanel
@@ -26,6 +20,7 @@ public class GUILogin extends JPanel
    {
 	   
 	  this.controller = controller;
+	  this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 	  this.addFields();
 	  this.addButtons();
       
@@ -33,7 +28,9 @@ public class GUILogin extends JPanel
 
 	public void addButtons()
 	{
-
+	  
+	  JPanel btnPanel = new JPanel();
+	  btnPanel.setLayout(new FlowLayout());
       JButton btnLogin = new JButton("Submit for Login");
       btnLogin.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -47,31 +44,40 @@ public class GUILogin extends JPanel
             }     
 		}
       });
-      this.add(btnLogin);
-	      
+	  btnPanel.add(btnLogin);
+      
       JButton btnGoBack = new JButton("Go Back");
       btnGoBack.addActionListener(new ActionListener() {
  		 public void actionPerformed(ActionEvent e) {
  			 controller.displayGUIWelcome();
  		 }
        });
-      this.add(btnGoBack);
+      btnPanel.add(btnGoBack);
+      
+      this.add(btnPanel);
       
 	}
 	
 	public void addFields()
 	{
 		
+		JPanel userPanel = new JPanel();
+		userPanel.setLayout(new FlowLayout());
 		user = new JLabel("User Name: ");
 		username = new JTextField(20);
-	    this.add(user);
-	    this.add(username);
-	     
+		userPanel.add(user);
+		userPanel.add(username);
+	    
+	    JPanel passPanel = new JPanel();
+	    passPanel.setLayout(new FlowLayout());
 	    pass = new JLabel("Password: ");
 	    password = new JPasswordField(20);
 	    password.setEchoChar('#');
-	    this.add(pass);
-	    this.add(password);
+	    passPanel.add(pass);
+	    passPanel.add(password);
+	    
+	    this.add(userPanel);
+	    this.add(passPanel);
 		
 	}
 }
