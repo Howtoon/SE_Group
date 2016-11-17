@@ -92,6 +92,6 @@ public class GUIMainMenu extends JPanel
 		}
       });
       this.add(btnManage);
-	      
+
    }
 }
