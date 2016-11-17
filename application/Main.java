@@ -7,9 +7,8 @@ public class Main
    {
 	   
 	   GUIController gui = new GUIController();
-	  
-	  
+	
       Controller controller = new Controller(gui);
-     // controller.start();
+
    }
 }

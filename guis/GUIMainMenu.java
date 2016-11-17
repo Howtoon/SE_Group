@@ -74,33 +74,38 @@ public class GUIMainMenu extends JPanel
   		}
       });
       this.add(btnRestric);
-           
-      JButton btnReport = new JButton("Create Parking Lot Report");
-      btnReport.setAlignmentX(this.CENTER_ALIGNMENT);
-      btnReport.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+      
+      if (user.getPermissions()=="SUPERVISOR" || getPermissions()==ADMIN)
+      {
+         JButton btnReport = new JButton("Create Parking Lot Report");
+         btnReport.setAlignmentX(this.CENTER_ALIGNMENT);
+         btnReport.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
 			
-		}
-      });
-      this.add(btnReport);
+		   }
+         });
+         this.add(btnReport);
            
-      JButton btnViolate = new JButton("Record Parking Violation");
-      btnViolate.setAlignmentX(this.CENTER_ALIGNMENT);
-      btnViolate.addActionListener(new ActionListener() {
-  		public void actionPerformed(ActionEvent e) {
+         JButton btnViolate = new JButton("Record Parking Violation");
+         btnViolate.setAlignmentX(this.CENTER_ALIGNMENT);
+         btnViolate.addActionListener(new ActionListener() {
+  		   public void actionPerformed(ActionEvent e) {
   			
-  		}
-      });
-      this.add(btnViolate);
-            
-      JButton btnManage = new JButton("Manage Administrators");
-      btnManage.setAlignmentX(this.CENTER_ALIGNMENT);
-      btnManage.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-      });
-      this.add(btnManage);
+  		   }
+         });
+         this.add(btnViolate);
+      }
+      if (getPermissions()==ADMIN)
+      {
 
+         JButton btnManage = new JButton("Manage Administrators");
+         btnManage.setAlignmentX(this.CENTER_ALIGNMENT);
+         btnManage.addActionListener(new ActionListener() {
+   		public void actionPerformed(ActionEvent e) {
+			
+   		}
+         });
+         this.add(btnManage);
+      }
    }
 }
