@@ -12,13 +12,14 @@ public class Controller
    
    public void start()
    {
-      frame = new JFrame("");
+      frame = new JFrame("Parking Application");
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.getContentPane().setBackground(Color.WHITE);
+      frame.setContentPane(new GUIWelcomeNew());
+      //frame.getContentPane().setBackground(Color.WHITE);
       frame.setSize(512,512);
-      frame.setLayout(new GridLayout(0, 1));
+      //frame.setLayout(new GridLayout(0, 1));
       frame.setVisible(true);
-      GUIWelcome welcome = new GUIWelcome(frame, this);
+      //GUIWelcome welcome = new GUIWelcome(frame, this);
    }
    
    public void displayGUILogin()//Called from GUIWelcome()
