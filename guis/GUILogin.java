@@ -49,6 +49,14 @@ public class GUILogin extends JPanel
       });
       this.add(btnLogin);
 	      
+      JButton btnGoBack = new JButton("Go Back");
+      btnGoBack.addActionListener(new ActionListener() {
+ 		 public void actionPerformed(ActionEvent e) {
+ 			 controller.displayGUIWelcome();
+ 		 }
+       });
+      this.add(btnGoBack);
+      
 	}
 	
 	public void addFields()

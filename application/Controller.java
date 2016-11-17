@@ -14,15 +14,15 @@ public class Controller
    {
 	   
 	  this.frame = frame;
-	  this.displayWelcome();
+	  this.displayGUIWelcome();
 	  frame.setVisible(true);
 	  
    }
    
-   public void displayWelcome()
+   public void displayGUIWelcome()
    {
 
-	   frame.setContentPane(new GUIWelcomeNew(this));
+	   frame.setContentPane(new GUIWelcome(this));
 	   frame.revalidate();
 	   
    }
@@ -54,7 +54,9 @@ public class Controller
    }
    public void displayGUICreateUser()  //called from GUILogin
    {
-      GUICreateUser createUser = new GUICreateUser(frame, this);  //calls GUICreateUser() to get details of new user
+	   
+      frame.setContentPane(new GUICreateUser(this));
+      frame.revalidate();
    }
    
    public void createUser(User newUser)  //Calls DBMgr() to create a new user in the database

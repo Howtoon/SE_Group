@@ -9,50 +9,60 @@ import application.*;
 
 public class GUICreateUser extends JPanel
 {
-   public GUICreateUser(JFrame frame, Controller controller)
+	
+	private JLabel user;
+	private JLabel pass;
+	private JTextField username;
+	private JPasswordField password;
+	
+	private Controller controller;
+	
+   public GUICreateUser(Controller controller)
    {
-      JLabel userName = new JLabel("User Name: ");
-      final JTextField tfUserName = new JTextField(20);
-      this.add(userName);
-      this.add(tfUserName);
-
-      JLabel password = new JLabel("Password: ");
-      final JPasswordField tfPassword = new JPasswordField(20);
-      this.add(password);
-      this.add(tfPassword);
-      
-      JButton btnContinue = new JButton("Continue");
-      btnContinue.setActionCommand("cmdContinue");
-      this.add(btnContinue);
-      
-      JButton btnGoBack = new JButton("Go Back");
-      btnGoBack.setActionCommand("cmdGoBack");
-      this.add(btnGoBack);
-   
-      class ListenerClass implements ActionListener
-      {
-         public void actionPerformed(ActionEvent e)
-         {
-            if(e.getActionCommand().equals("cmdContinue"))
-            {
-               if (!controller.verifyDuplicate(tfUserName.getText(), new String(tfPassword.getPassword())))
-               {
-                  controller.displayGUIMainMenu(); //Only if user does not exist
-               }
-               else if (controller.verifyDuplicate(tfUserName.getText(), new String(tfPassword.getPassword())))
-               {
-                  //throw alert message
-               }
-            }
-            else if(e.getActionCommand().equals("cmdGoBack"))
-            {
-
-               controller.displayGUILogin();    
-            }
-         }
-      }
-      ActionListener listener = new ListenerClass();
-      btnContinue.addActionListener(listener);
-      btnGoBack.addActionListener(listener);
+	  
+	  this.controller = controller;
+	  this.addButtons();
+	  this.addFields();
+     
    }
+
+   public void addButtons()
+   {
+
+	  JButton btnSubmit = new JButton("Submit");
+	  btnSubmit.addActionListener(new ActionListener() {
+		 public void actionPerformed(ActionEvent e) {
+    	    if (!controller.verifyDuplicate(username.getText(), new String(password.getPassword())))
+            {
+               controller.displayGUIMainMenu(); //Only if user does not exist
+            }
+		 }
+      });
+      this.add(btnSubmit);
+	 
+      JButton btnGoBack = new JButton("Go Back");
+      btnGoBack.addActionListener(new ActionListener() {
+ 		 public void actionPerformed(ActionEvent e) {
+ 			 controller.displayGUIWelcome();
+ 		 }
+       });
+      this.add(btnGoBack);
+     
+	}
+	
+	public void addFields()
+	{
+		
+		user = new JLabel("User Name: ");
+		username = new JTextField(20);
+	    this.add(user);
+	    this.add(username);
+	     
+	    pass = new JLabel("Password: ");
+	    password = new JPasswordField(20);
+	    password.setEchoChar('#');
+	    this.add(pass);
+	    this.add(password);
+		
+	}
 }
