@@ -11,76 +11,51 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import application.*;
 
-public class GUIMainMenu
+public class GUIMainMenu extends JPanel
 {
-   public GUIMainMenu(JFrame frame, Controller controller, User user)
-   {   
-      JPanel panelPortal = new JPanel();
-      panelPortal.setBackground(Color.WHITE);           
+   public GUIMainMenu(Controller controller, User user)
+   {  
+      this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));         
+      this.setBackground(Color.WHITE);
+      this.addButtons(User user);
+      
+   
       JButton btnPortal = new JButton("Parking Transaction Portal");
       btnPortal.setActionCommand("cmdPortal");
-      panelPortal.add(btnPortal);
-      
-      JPanel panelRegs = new JPanel();
-      panelRegs.setBackground(Color.WHITE);             
+      this.add(btnPortal);
+                  
       JButton btnRegs = new JButton("View Parking Regulations");
       btnRegs.setActionCommand("cmdRegs");
-      panelRegs.add(btnRegs);
+      this.add(btnRegs);
       
-      JPanel panelStats = new JPanel();
-      panelStats.setBackground(Color.WHITE);             
+             
       JButton btnStats = new JButton("View Parking Statistics");
       btnStats.setActionCommand("cmdStats");
-      panelStats.add(btnStats);
-      
-      JPanel panelWalk = new JPanel();
-      panelWalk.setBackground(Color.WHITE);             
+      this.add(btnStats);
+            
       JButton btnWalk = new JButton("View Walking Times");
       btnWalk.setActionCommand("cmdWalk");
-      panelWalk.add(btnWalk);
-      
-      JPanel panelMaps = new JPanel();
-      panelMaps.setBackground(Color.WHITE);             
+      this.add(btnWalk);
+             
       JButton btnMaps = new JButton("View Parking Lot Maps");
       btnMaps.setActionCommand("cmdMaps");
-      panelMaps.add(btnMaps);
-      
-      JPanel panelRestric = new JPanel();
-      panelRestric.setBackground(Color.WHITE);             
+      this.add(btnMaps);
+                
       JButton btnRestric = new JButton("View Parking Lot Restrictions");
       btnRestric.setActionCommand("cmdRestric");
-      panelRestric.add(btnRestric);
-      
-      JPanel panelReport = new JPanel();
-      panelReport.setBackground(Color.WHITE);             
+      this.add(btnRestric);
+           
       JButton btnReport = new JButton("Create Parking Lot Report");
       btnReport.setActionCommand("cmdReport");
-      panelReport.add(btnReport);
-      
-      JPanel panelViolate = new JPanel();
-      panelViolate.setBackground(Color.WHITE);             
+      this.add(btnReport);
+           
       JButton btnViolate = new JButton("Record Parking Violation");
       btnViolate.setActionCommand("cmdViolate");
-      panelViolate.add(btnViolate);
-      
-      JPanel panelManage = new JPanel();
-      panelManage.setBackground(Color.WHITE);             
+      this.add(btnViolate);
+            
       JButton btnManage = new JButton("Manage Administrators");
       btnManage.setActionCommand("cmdManage");
-      panelManage.add(btnManage);
-      
-      frame.add(panelPortal);
-      frame.add(panelRegs);
-      frame.add(panelStats);
-      frame.add(panelWalk);
-      frame.add(panelMaps);
-      frame.add(panelRestric);
-
-      frame.add(panelReport);
-      frame.add(panelViolate);
-
-      frame.add(panelManage);
-      frame.setVisible(true);
+      this.add(btnManage);
    
       class ListenerClass implements ActionListener
       {
@@ -126,6 +101,7 @@ public class GUIMainMenu
          }
       }
       ActionListener listener = new ListenerClass();
+      
       btnPortal.addActionListener(listener);
       btnRegs.addActionListener(listener);
    }
