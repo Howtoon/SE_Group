@@ -18,7 +18,6 @@ public class GUIMainMenu extends JPanel
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));         
       this.setBackground(Color.WHITE);
       this.addButtons(User user);
-      
    
       JButton btnPortal = new JButton("Parking Transaction Portal");
       btnPortal.setActionCommand("cmdPortal");
@@ -27,7 +26,6 @@ public class GUIMainMenu extends JPanel
       JButton btnRegs = new JButton("View Parking Regulations");
       btnRegs.setActionCommand("cmdRegs");
       this.add(btnRegs);
-      
              
       JButton btnStats = new JButton("View Parking Statistics");
       btnStats.setActionCommand("cmdStats");
