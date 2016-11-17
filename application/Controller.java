@@ -39,6 +39,7 @@ public class Controller
    public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password
    {
       user = new User();         //Placeholder for user object returned by DBMgr()
+      //user.setPermissions.setpString("ADMIN");  **Trying to test Permissions.
       return true;//returns true/false based on valid username and password combo
    }
    public boolean verifyDuplicate(String userName, String password)   //DBMgr() to check for duplicate
