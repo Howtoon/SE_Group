@@ -1,17 +1,17 @@
 package guis;
 
 public class User {
-	private String name;
-	private String userID;
-	private Permit permit;
+    private String name;
+    private String userID;
+    //private Permit permit;
     private UserPermissions permissions;
 
-	public User() {
+    public User() {
         this.name = "";
         this.userID = "0000";
-        this.permit = null;
+        //this.permit = null;
         this.permissions = UserPermissions.USER;
-	}
+    }
 
     /**
      * Constructor that can be used for signing up, logging in, etc.
@@ -21,7 +21,7 @@ public class User {
     public User(String uName, String uID) {
         this.name = uName;
         this.userID = uID;
-        this.permit = null;
+        //this.permit = null;
         this.permissions = UserPermissions.USER;
     }
 
@@ -41,13 +41,13 @@ public class User {
         this.userID = userID;
     }
 
-    public Permit getPermit() {
-        return permit;
-    }
+    //public Permit getPermit() {
+    //    return permit;
+    //}
 
-    public void setPermit(Permit permit) {
-        this.permit = permit;
-    }
+    //public void setPermit(Permit permit) {
+    //    this.permit = permit;
+    //}
 
     public UserPermissions getPermissions() {
         return permissions;
