@@ -29,19 +29,18 @@ public class GUICreateUser
       panelPassword.add(password);
       panelPassword.add(tfPassword);
       
-      JPanel panelSelect = new JPanel();
-      panelSelect.setBackground(Color.ORANGE);
-      JButton btnCreate = new JButton("Create a New Account");
-      btnCreate.setActionCommand("cmdCreate");
-      panelSelect.add(btnCreate);
+      JPanel panelOptions = new JPanel();
+      JButton btnContinue = new JButton("Continue");
+      btnContinue.setActionCommand("cmdContinue");
+      panelOptions.add(btnContinue);
       
-      JButton btnLogin = new JButton("Submit for Login");
-      btnLogin.setActionCommand("cmdLogin");
-      panelSelect.add(btnLogin);
+      JButton btnGoBack = new JButton("Go Back");
+      btnGoBack.setActionCommand("cmdGoBack");
+      panelOptions.add(btnGoBack);
       
       frame.add(panelUserName);
       frame.add(panelPassword);
-      frame.add(panelSelect);
+      frame.add(panelOptions);
 
       frame.setVisible(true);
    
@@ -49,28 +48,31 @@ public class GUICreateUser
       {
          public void actionPerformed(ActionEvent e)
          {
-            if(e.getActionCommand().equals("cmdCreate"))
+            if(e.getActionCommand().equals("cmdContinue"))
             {
-               frame.remove(panelUserName);
-               frame.remove(panelPassword);
-               frame.remove(panelSelect);
-               controller.displayGUICreateUser();
-            }
-            else if(e.getActionCommand().equals("cmdLogin"))
-            {
-               boolean verify = controller.verifyLogin(tfUserName.getText(), tfPassword.getText());
-               if (verify)
+               if (!controller.verifyDuplicate(tfUserName.getText(), tfPassword.getText()))
                {
                   frame.remove(panelUserName);
                   frame.remove(panelPassword);
-                  frame.remove(panelSelect);
-                  controller.displayGUIMainMenu();
-               }     
+                  frame.remove(panelOptions);
+                  controller.displayGUIMainMenu();//Only if user does not exist
+               }
+               else if (controller.verifyDuplicate(tfUserName.getText(), tfPassword.getText()))
+               {
+                  //throw alert message
+               }
+            }
+            else if(e.getActionCommand().equals("cmdGoBack"))
+            {
+               frame.remove(panelUserName);
+               frame.remove(panelPassword);
+               frame.remove(panelOptions);
+               controller.displayGUILogin();    
             }
          }
       }
       ActionListener listener = new ListenerClass();
-      btnLogin.addActionListener(listener);
-      btnCreate.addActionListener(listener);
+      btnContinue.addActionListener(listener);
+      btnGoBack.addActionListener(listener);
    }
 }

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.DatabaseMetaData;
 import java.util.Scanner;
 import java.sql.Statement;
 import java.sql.SQLException;
@@ -26,19 +27,24 @@ public class DBManager {
     public static void main (String[] args) throws Exception {
 
         if (args.length == 0)
-            System.out.println("Usage: java -classpath derby.jar;. MailingList database.properties");
+            System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
 
         DBManager dbm = new DBManager();
 
-        dbm.createTables();
+        //dbm.executeCommand("DROP TABLE Users");
+        //dbm.executeCommand("DROP TABLE Lot");
 
-        User sv = new User("supervisor", "123456");
+        //dbm.createTables();
+
+
+        User sv = new User("supervisor3", "12345678");
         sv.setPermissions(UserPermissions.SUPERVISOR);
-        dbm.addUser(sv);
+        //dbm.addUser(sv);
 
-        User userToReturn = dbm.showUser("123456");
-        System.out.println("Here are the values for userToReturn:" + userToReturn.getName() +
-                userToReturn.getUserID() + userToReturn.getPermissions());
+        User userToReturn = dbm.showUser("12345678");
+        //userToReturn.setPermissions(UserPermissions.SUPERVISOR);
+        System.out.println("Here are the values for userToReturn: " + userToReturn.getName() + " " +
+                userToReturn.getUserID() + " " + userToReturn.getPermissions());
 
         dbm.closeConnection();
     }
@@ -66,7 +72,7 @@ public class DBManager {
      */
     public DBManager () throws Exception {
 
-        SimpleDataSource.init("database.properties");
+        SimpleDataSource.init("database/database.properties");
         conn = SimpleDataSource.getConnection();
         stat = conn.createStatement();
     }
@@ -116,14 +122,14 @@ public class DBManager {
         return true;
     }
 
-    /**
+    /*
      * Method used to create a Lot object
      * from information in the Parking Lot table
      */
-    public ParkingLot createLot () {
+   /* public ParkingLot createLot () {
 
         return null;
-    }
+    }*/
 
     /**
      * Method used to create a User object
@@ -186,31 +192,28 @@ public class DBManager {
 
         try
         {
-            try (ResultSet res = this.conn.getMetaData().getTables(null, null, "User", null))
-            {
-                while (res.next())
-                {
-                    String table = res.getString("TABLE_NAME");
-                    if (table != null && table.equals("User"))
-                        return;
-                }
+            DatabaseMetaData meta = conn.getMetaData();
+            result = meta.getTables(null, null, "%", null);
+            while(result.next()) {
+                System.out.println(result.getString("TABLE_NAME"));
+                if (result.getString("TABLE_NAME").equals("USERS"))
+                    return;
             }
-            stat.execute("CREATE TABLE User (User_Name VARCHAR(20)," +
-                " User_Pass VARCHAR(20), Permissions VARCHAR(15))");
+            System.out.println("Well I got this far.");
+            stat.execute("CREATE TABLE Users (User_Name VARCHAR(20)," +
+                    " User_Pass VARCHAR(20), Permissions VARCHAR(15))");
         }
         catch (SQLException s)
-        {   System.out.println("sql exception in creating user table"); }
+        {   System.out.println("sql exception in creating users table"); }
 
         try
         {
-            try (ResultSet res = this.conn.getMetaData().getTables(null, null, "Lot", null))
-            {
-                while (res.next())
-                {
-                    String table = res.getString("TABLE_NAME");
-                    if (table != null && table.equals("Lot"))
-                        return;
-                }
+            DatabaseMetaData meta = conn.getMetaData();
+            result = meta.getTables(null, null, "%", null);
+            while(result.next()) {
+                System.out.println(result.getString("TABLE_NAME"));
+                if (result.getString("TABLE_NAME").equals("LOT"))
+                    return;
             }
             stat.execute("CREATE TABLE Lot (ID VARCHAR(3))");
         }
@@ -223,7 +226,7 @@ public class DBManager {
      */
     public void addUser (User u) {
 
-        String query = "INSERT INTO User VALUES (?, ?, ?)";
+        String query = "INSERT INTO Users VALUES (?, ?, ?)";
         try
         {
             conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
@@ -250,8 +253,8 @@ public class DBManager {
      */
     public User showUser (String uID) {
 
-        User userToReturn = null;
-        String query = "SELECT * FROM User WHERE User_Pass = ?";
+        User userToReturn = new User();
+        String query = "SELECT * FROM Users WHERE User_Pass = ?";
         try
         {
             pStat = conn.prepareStatement(query);
@@ -267,11 +270,15 @@ public class DBManager {
                 {
                     System.out.printf(" %10.15s ", result.getString(i));
                     switch (i) {
-                        case 1: userToReturn.setName(result.getString(i));
+                        case 1:
+                            userToReturn.setName(result.getString(i));
                             break;
-                        case 2: userToReturn.setUserID(result.getString(i));
+                        case 2:
+                            userToReturn.setUserID(result.getString(i));
                             break;
-                        case 3: userToReturn.getPermissions().setpString(result.getString(i));
+                        case 3:
+                            userToReturn.setPermissions(UserPermissions.valueOf(result.getString(i)));
+                            break;
                     }
                 }
                 System.out.print("\n");
@@ -281,7 +288,7 @@ public class DBManager {
         catch (Exception e)
         {   System.out.println("exception in showUser"); }
 
-            return userToReturn;
+        return userToReturn;
 
     }
     /*public void addUser (String q) {

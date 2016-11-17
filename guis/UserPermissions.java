@@ -4,7 +4,7 @@ package guis;
  * Created by julienpugh on 11/16/16.
  */
 public enum UserPermissions {
-    USER("User"), ADMIN("Admin"), SUPERVISOR("Supervisor");
+    USER("USER"), ADMIN("ADMIN"), SUPERVISOR("SUPERVISOR");
 
     private String pString;
 
