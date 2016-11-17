@@ -5,7 +5,11 @@ public class Main
 {
    public static void main(String args[])
    {
-      Controller controller = new Controller();
-      controller.start();
+	   
+	  GUIController gui = new GUIController();
+	  
+	  
+      Controller controller = new Controller(gui);
+     // controller.start();
    }
 }

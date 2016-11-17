@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import application.*;
 
-public class GUILogin
+public class GUILogin extends JPanel
 {
-   public GUILogin(JFrame frame, Controller controller)
+   public GUILogin(Controller controller)
    {
       JPanel panelUserName = new JPanel();
       panelUserName.setBackground(Color.CYAN);
@@ -39,11 +39,11 @@ public class GUILogin
       btnLogin.setActionCommand("cmdLogin");
       panelSelect.add(btnLogin);
       
-      frame.add(panelUserName);
-      frame.add(panelPassword);
-      frame.add(panelSelect);
+      this.add(panelUserName);
+      this.add(panelPassword);
+      this.add(panelSelect);
 
-      frame.setVisible(true);
+     // frame.setVisible(true);
    
       class ListenerClass implements ActionListener
       {
@@ -51,9 +51,10 @@ public class GUILogin
          {
             if(e.getActionCommand().equals("cmdCreate"))
             {
-               frame.remove(panelUserName);
-               frame.remove(panelPassword);
-               frame.remove(panelSelect);
+            	/*
+               this.remove(panelUserName);
+               this.remove(panelPassword);
+               this.remove(panelSelect);*/
                controller.displayGUICreateUser();
             }
             else if(e.getActionCommand().equals("cmdLogin"))
@@ -61,9 +62,10 @@ public class GUILogin
                boolean verify = controller.verifyLogin(tfUserName.getText(), tfPassword.getText());
                if (verify)
                {
-                  frame.remove(panelUserName);
-                  frame.remove(panelPassword);
-                  frame.remove(panelSelect);
+            	   /*
+                  this.remove(panelUserName);
+                  this.remove(panelPassword);
+                  this.remove(panelSelect);*/
                   controller.displayGUIMainMenu();
                }     
             }

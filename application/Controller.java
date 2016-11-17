@@ -10,21 +10,30 @@ public class Controller
    private JFrame frame;
    private User user;
    
-   public void start()
+   public Controller(JFrame frame)
    {
-      frame = new JFrame("Parking Application");
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.setContentPane(new GUIWelcomeNew());
-      //frame.getContentPane().setBackground(Color.WHITE);
-      frame.setSize(512,512);
-      //frame.setLayout(new GridLayout(0, 1));
-      frame.setVisible(true);
-      //GUIWelcome welcome = new GUIWelcome(frame, this);
+	   
+	  this.frame = frame;
+	  this.displayWelcome();
+	  frame.setVisible(true);
+	  
    }
    
+   public void displayWelcome()
+   {
+
+	   frame.setContentPane(new GUIWelcomeNew(this));
+	   frame.revalidate();
+	   
+   }
+
    public void displayGUILogin()//Called from GUIWelcome()
    {
-      GUILogin login = new GUILogin(frame, this); //passes frame and controller to the login GUI
+	   
+     // GUILogin login = new GUILogin(frame, this); //passes frame and controller to the login GUI
+      frame.setContentPane(new GUILogin(this));
+      frame.revalidate();
+   
    }
    
    public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password
