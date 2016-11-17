@@ -65,7 +65,9 @@ public class Controller
    
    public void displayGUIMainMenu()//Called from GUILogin first, other GUIs can come back to the MainMenu
    {
-      GUIMainMenu mainMenu = new GUIMainMenu(this, user);  //passes the frame, controller, and user object to the menu
+     // GUIMainMenu mainMenu = new GUIMainMenu(this, user);  //passes the frame, controller, and user object to the menu
+      frame.setContentPane(new GUIMainMenu(this, user));
+      frame.revalidate();
    }
    /*
    public void displayGUIPortal()

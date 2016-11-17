@@ -14,59 +14,57 @@ import application.*;
 
 public class GUILogin extends JPanel
 {
+	
+	private JLabel user;
+	private JLabel pass;
+	private JTextField username;
+	private JPasswordField password;
+	
+	private Controller controller;
+	
    public GUILogin(Controller controller)
    {
-      JLabel userName = new JLabel("User Name: ");
-      final JTextField tfUserName = new JTextField(20);
-      this.add(userName);
-      this.add(tfUserName);
+	   
+	  this.controller = controller;
+	  this.addFields();
+	  this.addButtons();
       
-      JLabel password = new JLabel("Password: ");
-      final JPasswordField tfPassword = new JPasswordField(20);
-      tfPassword.setEchoChar('#');
-      this.add(password);
-      this.add(tfPassword);
-      
-      JButton btnCreate = new JButton("Create a New Account");
-      btnCreate.setActionCommand("cmdCreate");
-      this.add(btnCreate);
-      
-      JButton btnLogin = new JButton("Submit for Login");
-      btnLogin.setActionCommand("cmdLogin");
-      this.add(btnLogin);
-
-
-     // frame.setVisible(true);
-   
-      class ListenerClass implements ActionListener
-      {
-         public void actionPerformed(ActionEvent e)
-         {
-            if(e.getActionCommand().equals("cmdCreate"))
-            {
-            	/*
-               this.remove(panelUserName);
-               this.remove(panelPassword);
-               this.remove(panelSelect);*/
-               controller.displayGUICreateUser();
-            }
-            else if(e.getActionCommand().equals("cmdLogin"))
-            {
-               boolean verify = controller.verifyLogin(tfUserName.getText(), new String(tfPassword.getPassword()));
-               if (verify)
-               {
-            	   /*
-                  this.remove(panelUserName);
-                  this.remove(panelPassword);
-                  this.remove(panelSelect);*/
-                  controller.displayGUIMainMenu();
-               }     
-            }
-         }
-      }
-      ActionListener listener = new ListenerClass();
-      btnLogin.addActionListener(listener);
-      btnCreate.addActionListener(listener);
    }
+
+	public void addButtons()
+	{
+
+      JButton btnLogin = new JButton("Submit for Login");
+      btnLogin.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+            boolean verify = controller.verifyLogin(username.getText(), new String(password.getPassword()));
+            if (verify)
+            {
+            	
+               controller.displayGUIMainMenu();
+               
+            }     
+		}
+      });
+      this.add(btnLogin);
+	      
+	}
+	
+	public void addFields()
+	{
+		
+		user = new JLabel("User Name: ");
+		username = new JTextField(20);
+	    this.add(user);
+	    this.add(username);
+	     
+	    pass = new JLabel("Password: ");
+	    password = new JPasswordField(20);
+	    password.setEchoChar('#');
+	    this.add(pass);
+	    this.add(password);
+		
+	}
 }
    
