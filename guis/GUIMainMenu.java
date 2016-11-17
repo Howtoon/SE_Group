@@ -75,8 +75,10 @@ public class GUIMainMenu
       frame.add(panelWalk);
       frame.add(panelMaps);
       frame.add(panelRestric);
+
       frame.add(panelReport);
       frame.add(panelViolate);
+
       frame.add(panelManage);
       frame.setVisible(true);
    
