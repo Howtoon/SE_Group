@@ -32,8 +32,10 @@ public class GUICreateUser extends JPanel
 	   JPanel btnPanel = new JPanel();
 	   btnPanel.setLayout(new FlowLayout());
       JButton btnLogin = new JButton("Create New User");
-      btnLogin.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+      btnLogin.addActionListener(new ActionListener()
+      {
+		   public void actionPerformed(ActionEvent e)
+         {
 
             boolean verify = controller.verifyLogin(username.getText(), new String(password.getPassword()));
             if (verify)
@@ -42,42 +44,41 @@ public class GUICreateUser extends JPanel
                controller.displayGUIMainMenu();
                
             }     
-		}
+		   }
       });
 	   btnPanel.add(btnLogin);
       
       JButton btnGoBack = new JButton("Go Back");
-      btnGoBack.addActionListener(new ActionListener() {
- 		public void actionPerformed(ActionEvent e) {
- 			 controller.displayGUIWelcome();
- 		}
+      btnGoBack.addActionListener(new ActionListener()
+      {
+ 		   public void actionPerformed(ActionEvent e)
+         {
+ 			   controller.displayGUIWelcome();
+ 		   }
       });
       btnPanel.add(btnGoBack);
       
-      this.add(btnPanel);
-      
+      this.add(btnPanel);  
 	}
 	
 	public void addFields()
 	{
-		
-		JPanel userPanel = new JPanel();
+      JPanel userPanel = new JPanel();
 		userPanel.setLayout(new FlowLayout());
 		user = new JLabel("User Name: ");
 		username = new JTextField(20);
 		userPanel.add(user);
 		userPanel.add(username);
 	    
-	    JPanel passPanel = new JPanel();
-	    passPanel.setLayout(new FlowLayout());
-	    pass = new JLabel("Password: ");
-	    password = new JPasswordField(20);
-	    password.setEchoChar('#');
-	    passPanel.add(pass);
-	    passPanel.add(password);
+	   JPanel passPanel = new JPanel();
+	   passPanel.setLayout(new FlowLayout());
+	   pass = new JLabel("Password: ");
+	   password = new JPasswordField(20);
+      password.setEchoChar('#');
+	   passPanel.add(pass);
+	   passPanel.add(password);
 	    
-	    this.add(userPanel);
-	    this.add(passPanel);
-		
+	   this.add(userPanel);
+	   this.add(passPanel);
 	}
 }

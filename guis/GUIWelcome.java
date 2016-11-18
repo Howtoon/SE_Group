@@ -32,16 +32,20 @@ public class GUIWelcome extends JPanel
 		
 		JButton signUp = new JButton("Signup");
 		signUp.setAlignmentX(this.CENTER_ALIGNMENT);
-		signUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		signUp.addActionListener(new ActionListener()
+      {
+			public void actionPerformed(ActionEvent e)
+         {
 				controller.displayGUICreateUser();
 			}
 		});
 		
 		JButton logIn = new JButton("Login");
 		logIn.setAlignmentX(this.CENTER_ALIGNMENT);
-		logIn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		logIn.addActionListener(new ActionListener()
+      {
+			public void actionPerformed(ActionEvent e)
+         {
 				controller.displayGUILogin();
 			}
 		});
