@@ -39,7 +39,7 @@ public class Controller
    public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password
    {
       user = new User();         //Placeholder for user object returned by DBMgr()
-      //user.setPermissions.setpString("ADMIN");  **Trying to test Permissions.
+      user.setPermissions(UserPermissions.SUPERVISOR);  //Trying to test Permissions.
       return true;//returns true/false based on valid username and password combo
    }
    public boolean verifyDuplicate(String userName, String password)   //DBMgr() to check for duplicate
@@ -47,7 +47,7 @@ public class Controller
       if (!false) //if the user does not already exist
       {
          user = new User();         //Placeholder for user object returned by DBMgr()
-         //add new user to database
+         user.setPermissions(UserPermissions.SUPERVISOR);//add new user to database
          return false;//returns true/false based on valid username and password combo
       }
       //if user already exists, return true
