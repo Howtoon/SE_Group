@@ -72,12 +72,7 @@ public class Controller
       frame.setContentPane(new GUIMainMenu(this, user));
       frame.revalidate();
    }
-   /*
-   public void displayGUIPortal()
-   {
-      GUIPortal portal = new GUIPortal();
-   }
-   */
+
    /*
    public void displayGUIRegs()
    {

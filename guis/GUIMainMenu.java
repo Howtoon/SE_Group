@@ -23,18 +23,37 @@ public class GUIMainMenu extends JPanel
 	   
 	   JButton btnPortal = new JButton("Parking Transaction Portal");
       btnPortal.setAlignmentX(this.CENTER_ALIGNMENT);
-	   btnPortal.addActionListener(new ActionListener() {
-	   public void actionPerformed(ActionEvent e) {
-			
-		}
+	   btnPortal.addActionListener(new ActionListener()
+      {
+	      public void actionPerformed(ActionEvent e)
+         {
+  			   try
+            {
+               String URL = "https://uwfparking.t2hosted.com/cmn/auth_ext.aspx";
+               java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+            }
+            catch (Exception a)
+            {
+               JOptionPane.showMessageDialog(null,a.getMessage());
+            }
+  		   }
 	   });
       this.add(btnPortal);
                   
       JButton btnRegs = new JButton("View Parking Regulations");
       btnRegs.setAlignmentX(this.CENTER_ALIGNMENT);
       btnRegs.addActionListener(new ActionListener() {
-  		public void actionPerformed(ActionEvent e) {
-  			
+  		public void actionPerformed(ActionEvent e)
+      {
+  			try
+         {
+            String URL = "https://www.google.com/";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+         }
+         catch (Exception a)
+         {
+            JOptionPane.showMessageDialog(null,a.getMessage());
+         }
   		}
   	   });
       this.add(btnRegs);
