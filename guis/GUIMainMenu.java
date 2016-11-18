@@ -42,7 +42,15 @@ public class GUIMainMenu extends JPanel
       {
   		   public void actionPerformed(ActionEvent e)
          {
-  			
+  			   try
+            {
+               String URL = "https://youtu.be/ylfgXDy8bgo";
+               java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+            }
+            catch (Exception a)
+            {
+               JOptionPane.showMessageDialog(null,a.getMessage());
+            }
   		   }
   	   });
       this.add(btnRegs);
