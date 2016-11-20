@@ -4,14 +4,12 @@ import guis.*;
 //import guis.User;
 //import guis.UserPermissions;
 //import guis.ParkingLot;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.DatabaseMetaData;
-import java.util.Scanner;
 import java.sql.Statement;
 import java.sql.SQLException;
 /**
@@ -42,7 +40,6 @@ public class DBManager {
         //dbm.addUser(sv);
 
         User userToReturn = dbm.showUser("12345678");
-        //userToReturn.setPermissions(UserPermissions.SUPERVISOR);
         System.out.println("Here are the values for userToReturn: " + userToReturn.getName() + " " +
                 userToReturn.getUserID() + " " + userToReturn.getPermissions());
 
@@ -64,8 +61,6 @@ public class DBManager {
     /** Used to store properties of our results */
     private ResultSetMetaData rsm;
 
-    //private Scanner fileToRead;
-
     /**
      * Default constructor that reads the properties file and initializes access to the database
      * Also enables SQL statements to be issued.
@@ -78,112 +73,6 @@ public class DBManager {
     }
 
     /**
-     * Method used to execute commands.
-     * (CREATE, DROP, UPDATE, DELETE, etc)
-     * @param c statement to send
-     */
-    public void executeCommand(String c) {
-
-        try
-        {
-            stat.execute(c);
-            System.out.println("executed command");
-        }
-        catch (SQLException s)
-        {   System.out.println("sql exception in addContacts"); }
-    }
-
-    /**
-     * Method used to execute queries.
-     * (SELECT FROM)
-     * @param q query to send
-     */
-    public void executeQuery(String q) {
-
-    }
-
-    /**
-     * Method used to check user password in User table
-     * and return if the user exists.
-     * @return whether or not the user can view the app.
-     */
-    public boolean validateUserPass () {
-
-        return true;
-    }
-
-    /**
-     * Method used to check lot ID in Parking Lot table
-     * and returns whether that lot exists.
-     * @return whether or not the lot information can be displayed.
-     */
-    public boolean validateLotID () {
-
-        return true;
-    }
-
-    /*
-     * Method used to create a Lot object
-     * from information in the Parking Lot table
-     */
-   /* public ParkingLot createLot () {
-
-        return null;
-    }*/
-
-    /**
-     * Method used to create a User object
-     * from information in the User table.
-     * @return user
-     */
-    public User createUser () {
-
-        return null;
-    }
-
-    /**
-     * Method used show to close the connection
-     */
-    public void closeConnection () {
-
-        try
-        { conn.close(); }
-        catch (Exception e)
-        { System.out.println ("no connection open"); }
-    }
-
-    /*
-     * Method used to read a file.
-     * @param fileName name of the file
-     * @return file to read
-     */
-    /*public void readFile (String fileName) {
-
-        try { this.fileToRead.close(); }
-        catch (Exception e)
-        {
-            System.out.println("no file to close");
-        }
-
-        try
-        {
-            this.fileToRead = new Scanner(new FileInputStream(fileName));
-            this.fileToRead.useDelimiter("\n");
-        }
-        catch (FileNotFoundException f)
-        {
-            System.out.println("no file found");
-        }
-    }*/
-
-    /*
-     * Method used to write to a file.
-     * @param fileName name of the file
-     * @return file to read
-     */
-    //public void writeFile (String fileName) throws FileNotFoundException { }
-
-    /**
      * Method used to create the User and Lot tables.
      * Always checks to makes sure the tables do not
      * exist before creating them.
@@ -192,14 +81,15 @@ public class DBManager {
 
         try
         {
+            conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+
             DatabaseMetaData meta = conn.getMetaData();
             result = meta.getTables(null, null, "%", null);
             while(result.next()) {
-                System.out.println(result.getString("TABLE_NAME"));
+                //System.out.println(result.getString("TABLE_NAME"));
                 if (result.getString("TABLE_NAME").equals("USERS"))
                     return;
             }
-            System.out.println("Well I got this far.");
             stat.execute("CREATE TABLE Users (User_Name VARCHAR(20)," +
                     " User_Pass VARCHAR(20), Permissions VARCHAR(15))");
         }
@@ -211,7 +101,7 @@ public class DBManager {
             DatabaseMetaData meta = conn.getMetaData();
             result = meta.getTables(null, null, "%", null);
             while(result.next()) {
-                System.out.println(result.getString("TABLE_NAME"));
+                //System.out.println(result.getString("TABLE_NAME"));
                 if (result.getString("TABLE_NAME").equals("LOT"))
                     return;
             }
@@ -222,19 +112,166 @@ public class DBManager {
     }
 
     /**
-     * Method used to add to the User table
+     * Method used to add to the User table.
+     * Will also check to see if Username alredy exists
+     * and return false if so.
+     * @param u User to add
+     * @return whether or not the user can create an account
      */
-    public void addUser (User u) {
+    public boolean addUser (User u) {
 
         String query = "INSERT INTO Users VALUES (?, ?, ?)";
         try
         {
             conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
 
-            pStat = conn.prepareStatement(query);                                              // prepare the statement
+            pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
             pStat.setString(1, u.getName());
-            pStat.setString(2, u.getUserID());
-            pStat.setString(3, u.getPermissions().toString());
+
+            boolean toAdd;
+            toAdd = pStat.execute();
+            conn.commit();
+
+            if (toAdd)
+            {
+                System.out.println("Username exists");
+                return false;
+            }
+            else
+            {
+                pStat = conn.prepareStatement(query);                  // prepare the statement
+                pStat.setString(1, u.getName());
+                pStat.setString(2, u.getUserID());
+                pStat.setString(3, u.getPermissions().toString());
+
+                pStat.executeUpdate();                                                      // update the statement
+                conn.commit();                                                              // and send it to the table
+
+                conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+                System.out.println("executed command");
+            }
+        }
+        catch (SQLException s)
+        {
+            System.out.println("sql exception in addUser");
+        }
+        return true;
+    }
+
+    /**
+     * Method used to create a User object
+     * from information in the User table.
+     * @param uName username
+     * @return user
+     */
+    public User createUser (String uName) {
+
+        User userToReturn = new User();
+        String query = "SELECT * FROM Users WHERE User_Name = ?";
+        try
+        {
+            conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+
+            pStat = conn.prepareStatement(query);
+            pStat.setString(1, uName);
+            result = pStat.executeQuery();                  // result from selecting all where username = uName
+            rsm = result.getMetaData();
+            int cols = rsm.getColumnCount();
+
+            while (result.next())                          // should always be ONE User!
+                for (int i = 1; i <= cols; i++)
+                    switch (i)
+                    {
+                        case 1:
+                            userToReturn.setName(result.getString(i));
+                            break;
+                        case 2:
+                            userToReturn.setUserID(result.getString(i));
+                            break;
+                        case 3:
+                            userToReturn.setPermissions(UserPermissions.valueOf(result.getString(i)));
+                            break;
+                    }
+
+            System.out.println("\ncompleted query\n");
+        }
+        catch (Exception e)
+        {
+            System.out.println("User does not exist");
+            return null;
+        }
+        return userToReturn;
+    }
+
+    /**
+     * Method used to check if the user exists.
+     * @return whether or not the user can view the app.
+     */
+    public boolean validateUserInfo (String uName, String uID) {
+
+        try
+        {
+            conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
+
+            pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
+            PreparedStatement passCheck =
+                    conn.prepareStatement("SELECT 1 FROM Users WHERE User_Pass = ?");
+
+            pStat.setString(1, uName);
+            passCheck.setString(1, uID);
+
+            boolean uNameExists = pStat.execute();
+            boolean uIDExists = passCheck.execute();
+
+            conn.commit();
+
+            if (!uNameExists)
+            {
+                System.out.println("User does not exist");
+                return false;
+            }
+            else if (!uIDExists)
+            {
+                System.out.println("Incorrect password");
+                return false;
+            }
+            else
+                conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+        }
+        catch (SQLException s)
+        {
+            System.out.println("sql exception in addUser");
+        }
+        return true;
+    }
+
+    /**
+     * Method used by Supervisor to promote or demote User to/from Admin
+     * @param uName username of User to promote/demote
+     * @param status whether or not to promote (1) or demote (0)
+     * @return if successful or not
+     */
+    public boolean updatePermissions (String uName, int status) {
+
+        String query = "UPDATE Users " +
+                "SET Permissions = ? " +
+                "WHERE User_Name = ?";
+        try
+        {
+            conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
+
+            if (status == 1)
+            {
+                pStat = conn.prepareStatement(query);                                              // prepare the statement
+                pStat.setString(1, "ADMIN");
+                pStat.setString(2, uName);
+            }
+            else
+            {
+                pStat = conn.prepareStatement(query);                                              // prepare the statement
+                pStat.setString(1, "USER");
+                pStat.setString(2, uName);
+            }
 
             pStat.executeUpdate();                                                      // update the statement
             conn.commit();                                                              // and send it to the table
@@ -243,7 +280,12 @@ public class DBManager {
             System.out.println("executed command");
         }
         catch (SQLException s)
-        {   System.out.println("sql exception in addUser"); }
+        {
+            System.out.println("sql exception in updatePermissions");
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -289,17 +331,17 @@ public class DBManager {
         {   System.out.println("exception in showUser"); }
 
         return userToReturn;
-
     }
-    /*public void addUser (String q) {
 
-        try {
-            stat.execute(q);
-        }
-        catch (SQLException s)
-        {
-            System.out.println("unable to add user");
-        }
-    }*/
+    /**
+     * Method used show to close the connection
+     */
+    public void closeConnection () {
+
+        try
+        { conn.close(); }
+        catch (Exception e)
+        { System.out.println ("no connection open"); }
+    }
 }
 
