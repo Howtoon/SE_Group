@@ -1,8 +1,16 @@
 package guis;
 
 public class ParkingLot {
-	
+
+	private String lotID;
+
 	private int total = 0;
+    private int occupied = 0;
+    private int available = 0;
+    private boolean isOpen = true;
+    // Image map
+    // Violation object?
+
 	private int reserved = 0;
 	private int handicapped = 0;
 	private int commuter = 0;
@@ -10,8 +18,13 @@ public class ParkingLot {
 	private int staff = 0;
 	private int visitor = 0;
 	private int motorcycle = 0;
-	
-	
+
+
+    public ParkingLot(String ID, int numCars) {
+        super();
+        this.occupied = numCars;
+    }
+
 	public ParkingLot(int total, int reserved, int handicapped, int commuter, int resident, int staff, int visitor,
 			int motorcycle) {
 		super();
@@ -24,7 +37,7 @@ public class ParkingLot {
 		this.visitor = visitor;
 		this.motorcycle = motorcycle;
 	}
-	
+
 	public int getVisitor() {
 		return visitor;
 	}

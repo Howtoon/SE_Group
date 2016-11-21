@@ -113,7 +113,7 @@ public class DBManager {
 
     /**
      * Method used to add to the User table.
-     * Will also check to see if Username alredy exists
+     * Will also check to see if Username already exists
      * and return false if so.
      * @param u User to add
      * @return whether or not the user can create an account
@@ -284,6 +284,54 @@ public class DBManager {
             System.out.println("sql exception in updatePermissions");
             return false;
         }
+
+        return true;
+    }
+
+    /**
+     * Method used to add to the Lot table.
+     * @param p lot to add
+     */
+    public void addLot (ParkingLot p) {
+
+    }
+
+    /**
+     * Method used to create a ParkingLot object.
+     * Will also check to see if lot exists
+     * and return false if it doesn't.
+     * @param lotID the name of the lot to find
+     * @return whether or not the user can see a lot's info
+     */
+    public ParkingLot createLot (String lotID) {
+
+        ParkingLot lotToReturn = null;
+
+        return lotToReturn;
+    }
+
+    /**
+     * Method used to update a lot's statistics.
+     * Will also check to see if a lot exists
+     * and return false if it doesn't.
+     * @param  lotID name of lot to find
+     * @param numCars number of cars to enter
+     * @return whether or not the user has updated a lot
+     */
+    public boolean updateLot (String lotID, int numCars) {
+
+        return true;
+    }
+
+    /**
+     * Method used to add update lot's availability
+     * Will also check to see if lot exists
+     * and return false if it doesn't.
+     * @param lotID name of lot to find
+     * @param  isOpen a lot's status (open/true or close/false)
+     * @return whether or not the user has updated a lot
+     */
+    public boolean updateLotStatus (String lotID, boolean isOpen) {
 
         return true;
     }
