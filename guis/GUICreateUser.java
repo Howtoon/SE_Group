@@ -40,9 +40,7 @@ public class GUICreateUser extends JPanel
             boolean verify = controller.verifyLogin(username.getText(), new String(password.getPassword()));
             if (verify)
             {
-            	
                controller.displayGUIMainMenu();
-               
             }     
 		   }
       });
