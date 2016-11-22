@@ -20,8 +20,7 @@ public class UserDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-     
-    public static void main (String[] args) throws Exception {
+    /*public static void main (String[] args) throws Exception {
 
         if (args.length == 0)
             System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
@@ -43,8 +42,8 @@ public class UserDBManager {
                 userToReturn.getUserID() + " " + userToReturn.getPermissions());
 
         dbm.closeConnection();
-    }
-   
+    }*/
+
     /** Used to access database */
     private Connection conn;
 
@@ -64,11 +63,17 @@ public class UserDBManager {
      * Default constructor that reads the properties file and initializes access to the database
      * Also enables SQL statements to be issued.
      */
-    public UserDBManager () throws Exception {
-
-        SimpleDataSource.init("database/database.properties");
-        openConnection();
-        stat = conn.createStatement();
+    public UserDBManager () {
+        try
+        {
+            SimpleDataSource.init("database/database.properties");
+            openConnection();
+            stat = conn.createStatement();
+        }
+        catch (Exception e)
+        {
+            System.out.println("exception in creating user db manager");
+        }
     }
 
     /**
