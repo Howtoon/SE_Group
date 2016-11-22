@@ -1,7 +1,6 @@
 package database;
 
-import guis.*;
-//import guis.ParkingLot;
+import objects.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +9,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.DatabaseMetaData;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 /**
  * Created by julienpugh on 11/14/16.
  */
@@ -23,24 +24,13 @@ public class LotDBManager {
     public static void main (String[] args) throws Exception {
 
         if (args.length == 0)
-            System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
+            System.out.println("Usage: java -classpath database/derby.jar:. database/LotDBManager");
 
         LotDBManager dbm = new LotDBManager();
 
-        //dbm.executeCommand("DROP TABLE Users");
-        //dbm.executeCommand("DROP TABLE Lot");
-
-        //dbm.createTables();
-
-
-        User sv = new User("supervisor3", "12345678");
-        sv.setPermissions(UserPermissions.SUPERVISOR);
-        //dbm.addUser(sv);
-
-        //User userToReturn = dbm.showUser("12345678");
-
-
-        dbm.closeConnection();
+        User a = new User();
+        ParkingLot ab = new ParkingLot("E", 4);
+        System.out.println("Hello!");
     }
 
     /** Used to access database */
@@ -115,7 +105,7 @@ public class LotDBManager {
                     stat.execute("CREATE TABLE Lot (Lot_ID VARCHAR2(3), Total INTEGER, Available INTEGER, " +
                             "Occupied INTEGER, Reserved INTEGER, Handicap INTEGER, Commuter INTEGER, " +
                             "Resident INTEGER, Staff INTEGER, Visitor INTEGER, Motorcycle INTEGER, " +
-                            "Time TIMESTAMP, Status VARCHAR2(10))");
+                            "Status VARCHAR2(10), Time TIMESTAMP)");
                 case 1:
                     stat.execute("CREATE TABLE Violation (Lot_ID VARCHAR2(3), Summary VARCHAR2(100), " +
                             "Violation_ID VARCHAR2(10), Time TIMESTAMP");
@@ -138,7 +128,40 @@ public class LotDBManager {
      * @param p lot to add
      */
     public void addLot (ParkingLot p) {
+        String query = "INSERT INTO Lot VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try
+        {
+            conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
 
+            pStat = conn.prepareStatement(query);                  // prepare the statement
+            pStat.setString(1, p.getLotID());
+            pStat.setInt(2, p.getTotal());
+            pStat.setInt(3, p.getAvailable());
+            pStat.setInt(4, p.getOccupied());
+            pStat.setInt(5, p.getReserved());
+            pStat.setInt(6, p.getHandicapped());
+            pStat.setInt(7, p.getCommuter());
+            pStat.setInt(8, p.getResident());
+            pStat.setInt(9, p.getStaff());
+            pStat.setInt(10, p.getVisitor());
+            pStat.setInt(11, p.getMotorcycle());
+            if (p.isOpen())
+                pStat.setString(12, "open");
+            else
+                pStat.setString(12, "close");
+
+            pStat.setTimestamp(13, new Timestamp(p.getRecordDate().getTime()));
+
+            pStat.executeUpdate();                                                      // update the statement
+            conn.commit();                                                              // and send it to the table
+
+            conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+            System.out.println("executed command");
+        }
+        catch (SQLException s)
+        {
+            System.out.println("sql exception in addUser");
+        }
     }
 
     /**
@@ -150,7 +173,44 @@ public class LotDBManager {
      */
     public ParkingLot createLot (String lotID) {
 
-        ParkingLot lotToReturn = null;
+        ParkingLot lotToReturn = new ParkingLot();
+        String query = "SELECT * FROM Lot WHERE Lot_ID = ?";
+        try
+        {
+            conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+
+            pStat = conn.prepareStatement(query);
+            pStat.setString(1, lotID);
+            result = pStat.executeQuery();
+            rsm = result.getMetaData();
+            //int cols = rsm.getColumnCount();
+
+            while (result.next())
+            {
+                lotToReturn.setLotID(result.getString(1));
+                lotToReturn.setTotal(result.getInt(2));
+                lotToReturn.setAvailable(result.getInt(3));
+                lotToReturn.setOccupied(result.getInt(4));
+                lotToReturn.setReserved(result.getInt(5));
+                lotToReturn.setHandicapped(result.getInt(6));
+                lotToReturn.setCommuter(result.getInt(7));
+                lotToReturn.setResident(result.getInt(8));
+                lotToReturn.setStaff(result.getInt(9));
+                lotToReturn.setVisitor(result.getInt(10));
+                lotToReturn.setMotorcycle(result.getInt(11));
+                if (result.getString(12).equals("OPEN") || result.getString(12).equals("open"))
+                    lotToReturn.setOpen(true);
+                else
+                    lotToReturn.setOpen(false);
+                lotToReturn.setRecordDate(new Date(result.getTimestamp(13).getTime()));
+            }
+            System.out.println("\ncompleted query\n");
+        }
+        catch (Exception e)
+        {
+            System.out.println("exception in creating Lot object");
+            return lotToReturn;
+        }
 
         return lotToReturn;
     }

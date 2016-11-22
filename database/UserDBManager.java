@@ -1,9 +1,7 @@
 package database;
 
-import guis.*;
-//import guis.User;
-//import guis.UserPermissions;
-//import guis.ParkingLot;
+import objects.User;
+import objects.UserPermissions;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -154,6 +152,7 @@ public class UserDBManager {
                 pStat.setString(1, u.getName());
                 pStat.setString(2, u.getUserID());
                 pStat.setString(3, u.getPermissions().toString());
+                // add permit info to permit table and permit id to both user and permit tables
 
                 pStat.executeUpdate();                                                      // update the statement
                 conn.commit();                                                              // and send it to the table
@@ -329,7 +328,9 @@ public class UserDBManager {
                         case 2:
                             userToReturn.setUserID(result.getString(i));
                             break;
-                        case 3:
+                        //case 3:
+                            //userToReturn.setPermit(result.getString(i));
+                        case 4:
                             userToReturn.setPermissions(UserPermissions.valueOf(result.getString(i)));
                             break;
                     }
