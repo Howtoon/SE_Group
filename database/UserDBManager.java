@@ -20,6 +20,7 @@ public class UserDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
+     
     public static void main (String[] args) throws Exception {
 
         if (args.length == 0)
@@ -43,7 +44,7 @@ public class UserDBManager {
 
         dbm.closeConnection();
     }
-
+   
     /** Used to access database */
     private Connection conn;
 

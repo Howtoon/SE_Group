@@ -1,6 +1,7 @@
 package application;
 import javax.swing.JFrame;
 
+import database.*;
 import guis.*;
 import objects.User;
 import objects.UserPermissions;
@@ -10,6 +11,7 @@ public class Controller
 {
    private JFrame frame;
    private User user;
+   private UserDBManager userDBManager = new UserDBManager();
    
    public Controller(JFrame frame)
    {
@@ -39,17 +41,24 @@ public class Controller
    
    public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password
    {
-      user = new User();         //Placeholder for user object returned by DBMgr()
-      user.setPermissions(UserPermissions.SUPERVISOR);  //Trying to test Permissions.
-      return true;//returns true/false based on valid username and password combo
+      if (userDBManager.validateUserInfo(userName, password))
+      {
+         user = new User();         //Placeholder for user object returned by DBMgr()
+         user.setPermissions(UserPermissions.SUPERVISOR);  //Trying to test Permissions.
+         return true;//returns true/false based on valid username and password combo
+      }
+      else
+      {
+         return false;
+      }
    }
    public boolean verifyDuplicate(String userName, String password)   //DBMgr() to check for duplicate
    {
-      if (!false) //if the user does not already exist
+      user = new User(userName, password);
+      if (userDBManager.addUser(user)) //if the user does not already exist
       {
-         user = new User();         //Placeholder for user object returned by DBMgr()
-         user.setPermissions(UserPermissions.SUPERVISOR);//add new user to database
-         return false;//returns true/false based on valid username and password combo
+         //add new user to database
+         return true;//returns true/false based on valid username and password combo
       }
       //if user already exists, return true
       return false;//Just in case for testing
