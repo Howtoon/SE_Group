@@ -1,4 +1,6 @@
-package guis;
+package objects;
+
+import java.util.Date;
 
 public class ParkingLot {
 
@@ -19,10 +21,17 @@ public class ParkingLot {
 	private int visitor = 0;
 	private int motorcycle = 0;
 
+	private Date recordDate;
+
+
+    public ParkingLot() {
+
+    }
 
     public ParkingLot(String ID, int numCars) {
         super();
         this.occupied = numCars;
+        recordDate = new Date();
     }
 
 	public ParkingLot(int total, int reserved, int handicapped, int commuter, int resident, int staff, int visitor,
@@ -36,8 +45,11 @@ public class ParkingLot {
 		this.staff = staff;
 		this.visitor = visitor;
 		this.motorcycle = motorcycle;
+        recordDate = new Date();
 	}
 
+	public String getLotID() { return lotID; }
+	public void setLotID(String id) { this.lotID = id; }
 	public int getVisitor() {
 		return visitor;
 	}
@@ -86,4 +98,36 @@ public class ParkingLot {
 	public void setStaff(int staff) {
 		this.staff = staff;
 	}
+
+	public int getOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(int occupied) {
+		this.occupied = occupied;
+	}
+
+	public int getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(int available) {
+		this.available = available;
+	}
+
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	public void setOpen(boolean open) {
+		isOpen = open;
+	}
+
+    public Date getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(Date recordDate) {
+        this.recordDate = recordDate;
+    }
 }

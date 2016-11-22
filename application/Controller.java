@@ -1,8 +1,9 @@
 package application;
 import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.GridLayout;
+
 import guis.*;
+import objects.User;
+import objects.UserPermissions;
 
 
 public class Controller

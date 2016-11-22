@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import application.*;
+import objects.User;
+import objects.UserPermissions;
 
 public class GUIMainMenu extends JPanel
 {
@@ -100,7 +102,7 @@ public class GUIMainMenu extends JPanel
       });
       this.add(btnRestric);
       
-      if (user.getPermissions()==UserPermissions.SUPERVISOR || user.getPermissions()==UserPermissions.ADMIN)
+      if (user.getPermissions()== UserPermissions.SUPERVISOR || user.getPermissions()==UserPermissions.ADMIN)
       {
          JButton btnReport = new JButton("Create Parking Lot Report");
          btnReport.setAlignmentX(this.CENTER_ALIGNMENT);
