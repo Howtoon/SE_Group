@@ -9,7 +9,7 @@ public class User {
     public User() {
         this.name = "";
         this.userID = "0000";
-        this.permit = null;
+        this.permit = new Permit();
         this.permissions = UserPermissions.USER;
     }
 
@@ -21,7 +21,7 @@ public class User {
     public User(String uName, String uID) {
         this.name = uName;
         this.userID = uID;
-        this.permit = null;
+        this.permit = new Permit();
         this.permissions = UserPermissions.USER;
     }
 

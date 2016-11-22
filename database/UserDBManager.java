@@ -20,10 +20,10 @@ public class UserDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-    /*public static void main (String[] args) throws Exception {
+    public static void main (String[] args) throws Exception {
 
-        if (args.length == 0)
-            System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
+        //if (args.length == 0)
+         //   System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
 
         UserDBManager dbm = new UserDBManager();
 
@@ -31,7 +31,7 @@ public class UserDBManager {
         //dbm.executeCommand("DROP TABLE Lot");
 
         //dbm.createTables();
-
+/*
 
         User sv = new User("supervisor3", "12345678");
         sv.setPermissions(UserPermissions.SUPERVISOR);
@@ -39,10 +39,10 @@ public class UserDBManager {
 
         User userToReturn = dbm.showUser("12345678");
         System.out.println("Here are the values for userToReturn: " + userToReturn.getName() + " " +
-                userToReturn.getUserID() + " " + userToReturn.getPermissions());
+                userToReturn.getUserID() + " " + userToReturn.getPermissions());*/
 
         dbm.closeConnection();
-    }*/
+    }
 
     /** Used to access database */
     private Connection conn;
@@ -63,23 +63,21 @@ public class UserDBManager {
      * Default constructor that reads the properties file and initializes access to the database
      * Also enables SQL statements to be issued.
      */
-    public UserDBManager () {
-
+    public UserDBManager() {
         User s = new User("supervisor", "12345");
         s.setPermissions(UserPermissions.SUPERVISOR);
-        try
-        {
+
+        try {
             SimpleDataSource.init("database/database.properties");
-            openConnection();
-            stat = conn.createStatement();
-            createTables(0);
-            createTables(1);
-            addUser(s);
+            this.openConnection();
+            this.stat = this.conn.createStatement();
+            this.createTables(0);
+            this.createTables(1);
+            this.addUser(s);
+        } catch (Exception e) {
+            System.out.println("exception in creating user db manager");
         }
-        catch (Exception e)
-        {
-            System.out.println("exception in creating UserDBmanager()");
-        }
+
     }
 
     /**
@@ -88,13 +86,9 @@ public class UserDBManager {
     public void openConnection () {
 
         try
-        {
-            conn = SimpleDataSource.getConnection();
-        }
+        { conn = SimpleDataSource.getConnection(); }
         catch (Exception e)
-        {
-            System.out.println ("connection already open");
-        }
+        { System.out.println ("connection already open"); }
     }
 
     /**
@@ -103,50 +97,35 @@ public class UserDBManager {
      * Always checks to makes sure the tables do not
      * exist before creating them.
      */
-    public void createTables (int tableToCreate) {
+    public void createTables(int tableToCreate) {
+        try {
+            this.conn.setAutoCommit(true);
+            DatabaseMetaData s = this.conn.getMetaData();
+            this.result = s.getTables(null, null, "%", null);
 
-        try
-        {
-            conn.setAutoCommit(true);                                               // turn on automatic SQL statements
-
-            DatabaseMetaData meta = conn.getMetaData();
-            result = meta.getTables(null, null, "%", null);
-            while(result.next())
-            {
-                System.out.println(result.getString("TABLE_NAME"));
-                switch (tableToCreate)
-                {
+            while(this.result.next()) {
+                switch(tableToCreate) {
                     case 0:
-                        //System.out.println("lets check to see if USERS exists");
-                        if (result.getString("TABLE_NAME").equals("USERS"))
-                        {
-                           System.out.println("USERS exists");
-                           return;
-                        }
-                        else continue;
-                    default:
-                        //System.out.println("lets check to see if PERMIT exists");
-                        if (result.getString("TABLE_NAME").equals("PERMIT"))
-                        {
-                            System.out.println("PERMIT exists");
+                        if(this.result.getString("TABLE_NAME").equals("USERS")) {
                             return;
                         }
-                        else continue;
+                    default:
+                        if(this.result.getString("TABLE_NAME").equals("PERMIT")) {
+                            return;
+                        }
                 }
             }
-            switch (tableToCreate)
-            {
-                case 0:
-                    stat.execute("CREATE TABLE Users (User_Name VARCHAR2(20), User_Pass VARCHAR2(20),"
-                            + " Permit_ID VARCHAR2(10), Permissions VARCHAR2(15))");
-                default:
-                    stat.execute("CREATE TABLE Permit (Permit_ID VARCHAR2(10), " +
-                            "Permit_TYPE VARCHAR2(20), Expiration DATE)");
-            }
-        }
-        catch (SQLException s)
-        {   System.out.println("sql exception in createTable"); }
 
+            switch(tableToCreate) {
+                case 0:
+                    this.stat.execute("CREATE TABLE Users (User_Name VARCHAR(20), User_Pass VARCHAR(20), Permit_ID VARCHAR(10), Permissions VARCHAR(15))");
+                    break;
+                default:
+                    this.stat.execute("CREATE TABLE Permit (Permit_ID VARCHAR(10), Permit_TYPE VARCHAR(20), Expiration DATE)");
+            }
+        } catch (SQLException s) {
+            System.out.println("sql exception in creating users table");
+        }
     }
 
     /**
@@ -158,29 +137,34 @@ public class UserDBManager {
      */
     public boolean addUser (User u) {
 
-        String query = "INSERT INTO Users VALUES (?, ?, ?)";
+        String query = "INSERT INTO Users VALUES (?, ?, ?, ?)";
         try
         {
-            conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
+            //conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
 
-            pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
-            pStat.setString(1, u.getName());
+            //pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
+            //pStat.setString(1, u.getName());
 
-            boolean toAdd;
-            toAdd = pStat.execute();
-            conn.commit();
+            String query2 = String.format("SELECT * FROM Users WHERE User_Name = '%s'", u.getName());
+            //boolean toAdd;
+            result = stat.executeQuery(query2);
+            //conn.commit();
 
-            if (toAdd)
+            //System.out.println("DOOO");
+            if (result.next())
             {
                 System.out.println("Username exists");
                 return false;
             }
             else
             {
+                conn.setAutoCommit(false);
                 pStat = conn.prepareStatement(query);                  // prepare the statement
                 pStat.setString(1, u.getName());
                 pStat.setString(2, u.getUserID());
-                pStat.setString(3, u.getPermissions().toString());
+                pStat.setString(3, u.getPermit().getId());
+                pStat.setString(4, u.getPermissions().toString());
+
                 // add permit info to permit table and permit id to both user and permit tables
 
                 pStat.executeUpdate();                                                      // update the statement
@@ -193,7 +177,6 @@ public class UserDBManager {
         catch (SQLException s)
         {
             System.out.println("sql exception in addUser");
-            return false;
         }
         return true;
     }
@@ -280,8 +263,7 @@ public class UserDBManager {
         }
         catch (SQLException s)
         {
-            System.out.println("sql exception in validateUserInfo");
-            return false;
+            System.out.println("sql exception in addUser");
         }
         return true;
     }
@@ -371,9 +353,7 @@ public class UserDBManager {
             System.out.println("\ncompleted query\n");
         }
         catch (Exception e)
-        {
-            System.out.println("exception in showUser");
-        }
+        {   System.out.println("exception in showUser"); }
 
         return userToReturn;
     }
@@ -384,13 +364,9 @@ public class UserDBManager {
     public void closeConnection () {
 
         try
-        {
-            conn.close();
-        }
+        { conn.close(); }
         catch (Exception e)
-        {
-            System.out.println ("no connection open");
-        }
+        { System.out.println ("no connection open"); }
     }
 }
 
