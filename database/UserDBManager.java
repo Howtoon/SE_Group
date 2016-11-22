@@ -193,6 +193,7 @@ public class UserDBManager {
         catch (SQLException s)
         {
             System.out.println("sql exception in addUser");
+            return false;
         }
         return true;
     }
@@ -280,7 +281,6 @@ public class UserDBManager {
         catch (SQLException s)
         {
             System.out.println("sql exception in validateUserInfo");
-            
             return false;
         }
         return true;

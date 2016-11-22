@@ -37,7 +37,7 @@ public class GUICreateUser extends JPanel
 		   public void actionPerformed(ActionEvent e)
          {
 
-            boolean verify = controller.verifyLogin(username.getText(), new String(password.getPassword()));
+            boolean verify = controller.verifyDuplicate(username.getText(), new String(password.getPassword()));
             if (verify)
             {
                controller.displayGUIMainMenu();
