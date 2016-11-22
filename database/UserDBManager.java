@@ -20,29 +20,29 @@ public class UserDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-    public static void main (String[] args) throws Exception {
+    //public static void main (String[] args) throws Exception {
 
         //if (args.length == 0)
          //   System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
 
-        UserDBManager dbm = new UserDBManager();
+        //UserDBManager dbm = new UserDBManager();
 
         //dbm.executeCommand("DROP TABLE Users");
         //dbm.executeCommand("DROP TABLE Lot");
 
         //dbm.createTables();
-/*
 
-        User sv = new User("supervisor3", "12345678");
-        sv.setPermissions(UserPermissions.SUPERVISOR);
+
+        //User sv = new User("supervisor3", "12345678");
+        //sv.setPermissions(UserPermissions.SUPERVISOR);
         //dbm.addUser(sv);
 
-        User userToReturn = dbm.showUser("12345678");
-        System.out.println("Here are the values for userToReturn: " + userToReturn.getName() + " " +
-                userToReturn.getUserID() + " " + userToReturn.getPermissions());*/
+        //User userToReturn = dbm.showUser("12345678");
+        //System.out.println("Here are the values for userToReturn: " + userToReturn.getName() + " " +
+          //      userToReturn.getUserID() + " " + userToReturn.getPermissions());*/
 
-        dbm.closeConnection();
-    }
+        //dbm.closeConnection();
+    //}
 
     /** Used to access database */
     private Connection conn;
