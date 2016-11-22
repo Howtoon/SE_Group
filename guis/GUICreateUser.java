@@ -41,7 +41,11 @@ public class GUICreateUser extends JPanel
             if (verify)
             {
                controller.displayGUIMainMenu();
-            }     
+            }
+            else
+            {
+            	controller.displayCreateUserError();
+            }
 		   }
       });
 	   btnPanel.add(btnLogin);

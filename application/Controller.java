@@ -99,10 +99,17 @@ public class Controller
       frame.revalidate();
    }
    
+   public void displayCreateUserError()
+   {
+	   
+	   JOptionPane.showMessageDialog(frame, "Username already exists.");
+	   
+   }
+   
    public void displayLoginError()
    {
 	   
-	   JOptionPane.showMessageDialog(frame, "Incorrect Username/Password combination");
+	   JOptionPane.showMessageDialog(frame, "Incorrect Username/Password combination.");
 	   
    }
    
