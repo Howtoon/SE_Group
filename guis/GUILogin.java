@@ -36,7 +36,7 @@ public class GUILogin extends JPanel
             }
             else
             {
-            	JOptionPane.showInputDialog(this, "Incorrect Username/Password combination");
+            	controller.displayLoginError();
             }
 		   }
       });

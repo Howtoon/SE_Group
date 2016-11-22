@@ -1,5 +1,6 @@
 package application;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import database.*;
 import guis.*;
@@ -96,6 +97,13 @@ public class Controller
    {
       frame.setContentPane(new GUIStats(this, user));
       frame.revalidate();
+   }
+   
+   public void displayLoginError()
+   {
+	   
+	   JOptionPane.showMessageDialog(frame, "Incorrect Username/Password combination");
+	   
    }
    
    /*
