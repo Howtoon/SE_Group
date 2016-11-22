@@ -19,6 +19,7 @@ public class Controller
 	  this.frame = frame;
 	  this.displayGUIWelcome();
 	  frame.setVisible(true);
+     //userDBManager.closeConnection()
 	  
    }
    
@@ -39,8 +40,9 @@ public class Controller
    
    }
    
-   public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password
-   {
+   public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password 
+   {           //Called by CreateNewUser()
+      //userDBManager.openConnection()
       if (userDBManager.validateUserInfo(userName, password))
       {
          user = new User();         //Placeholder for user object returned by DBMgr()
@@ -89,12 +91,13 @@ public class Controller
       GUIRegs regs = new GUIRegs();
    }
    */
-   /*
+   
    public void displayGUIStats()
    {
-      GUIStats stats = new GUIStats();
+      frame.setContentPane(new GUIStats(this, user));
+      frame.revalidate();
    }
-   */
+   
    /*
    public void displayGUIWalk()
    {

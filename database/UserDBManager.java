@@ -78,7 +78,7 @@ public class UserDBManager {
         }
         catch (Exception e)
         {
-            System.out.println("exception in creating user db manager");
+            System.out.println("exception in creating UserDBmanager()");
         }
     }
 
@@ -88,9 +88,13 @@ public class UserDBManager {
     public void openConnection () {
 
         try
-        { conn = SimpleDataSource.getConnection(); }
+        {
+            conn = SimpleDataSource.getConnection();
+        }
         catch (Exception e)
-        { System.out.println ("connection already open"); }
+        {
+            System.out.println ("connection already open");
+        }
     }
 
     /**
@@ -108,15 +112,28 @@ public class UserDBManager {
             DatabaseMetaData meta = conn.getMetaData();
             result = meta.getTables(null, null, "%", null);
             while(result.next())
+            {
+                System.out.println(result.getString("TABLE_NAME"));
                 switch (tableToCreate)
                 {
                     case 0:
+                        //System.out.println("lets check to see if USERS exists");
                         if (result.getString("TABLE_NAME").equals("USERS"))
-                            return;
+                        {
+                           System.out.println("USERS exists");
+                           return;
+                        }
+                        else continue;
                     default:
+                        //System.out.println("lets check to see if PERMIT exists");
                         if (result.getString("TABLE_NAME").equals("PERMIT"))
+                        {
+                            System.out.println("PERMIT exists");
                             return;
+                        }
+                        else continue;
                 }
+            }
             switch (tableToCreate)
             {
                 case 0:
@@ -128,7 +145,7 @@ public class UserDBManager {
             }
         }
         catch (SQLException s)
-        {   System.out.println("sql exception in creating users table"); }
+        {   System.out.println("sql exception in createTable"); }
 
     }
 
@@ -354,7 +371,9 @@ public class UserDBManager {
             System.out.println("\ncompleted query\n");
         }
         catch (Exception e)
-        {   System.out.println("exception in showUser"); }
+        {
+            System.out.println("exception in showUser");
+        }
 
         return userToReturn;
     }
@@ -365,9 +384,13 @@ public class UserDBManager {
     public void closeConnection () {
 
         try
-        { conn.close(); }
+        {
+            conn.close();
+        }
         catch (Exception e)
-        { System.out.println ("no connection open"); }
+        {
+            System.out.println ("no connection open");
+        }
     }
 }
 
