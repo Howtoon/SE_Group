@@ -64,11 +64,17 @@ public class UserDBManager {
      * Also enables SQL statements to be issued.
      */
     public UserDBManager () {
+
+        User s = new User("supervisor", "12345");
+        s.setPermissions(UserPermissions.SUPERVISOR);
         try
         {
             SimpleDataSource.init("database/database.properties");
             openConnection();
             stat = conn.createStatement();
+            createTables(0);
+            createTables(1);
+            addUser(s);
         }
         catch (Exception e)
         {
