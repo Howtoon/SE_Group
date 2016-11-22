@@ -11,8 +11,11 @@ import objects.UserPermissions;
 
 public class GUIMainMenu extends JPanel
 {
+   private Controller controller;
+
    public GUIMainMenu(Controller controller, User user)
    {  
+      this.controller = controller;
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));         
       this.setBackground(Color.WHITE);
       this.addButtons(user);
