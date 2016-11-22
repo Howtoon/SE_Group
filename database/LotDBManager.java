@@ -103,7 +103,7 @@ public class LotDBManager {
             {
                 case 0:
                     stat.execute("CREATE TABLE Lot (Lot_ID VARCHAR2(3), Total INTEGER, Available INTEGER, " +
-                            "Occupied INTEGER, Reserved INTEGER, Handicap INTEGER, Commuter INTEGER, " +
+                            "Occupied INTEGER, Reserved INTEGER, Handicapped INTEGER, Commuter INTEGER, " +
                             "Resident INTEGER, Staff INTEGER, Visitor INTEGER, Motorcycle INTEGER, " +
                             "Status VARCHAR2(10), Time TIMESTAMP)");
                 case 1:
@@ -125,6 +125,7 @@ public class LotDBManager {
 
     /**
      * Method used to add to the Lot table.
+     * (Call once per lot, use updateLot for updates)
      * @param p lot to add
      */
     public void addLot (ParkingLot p) {
@@ -166,6 +167,8 @@ public class LotDBManager {
 
     /**
      * Method used to create a ParkingLot object.
+     * A lot is retrieved through lotID
+     * and latest timestamp (date and time).
      * Will also check to see if lot exists
      * and return false if it doesn't.
      * @param lotID the name of the lot to find
@@ -174,7 +177,10 @@ public class LotDBManager {
     public ParkingLot createLot (String lotID) {
 
         ParkingLot lotToReturn = new ParkingLot();
-        String query = "SELECT * FROM Lot WHERE Lot_ID = ?";
+        String query = "SELECT * FROM Lot" +
+                " WHERE Lot_ID = ?" +
+                " ORDER BY time DESC" +
+                " LIMIT 1";
         try
         {
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
@@ -208,37 +214,110 @@ public class LotDBManager {
         }
         catch (Exception e)
         {
-            System.out.println("exception in creating Lot object");
-            return lotToReturn;
+            System.out.println("lot doesn't exist");
+            return null;
         }
 
         return lotToReturn;
     }
 
     /**
-     * Method used to update a lot's statistics.
-     * Will also check to see if a lot exists
-     * and return false if it doesn't.
+     * Method used to update a lot's available spaces.
+     * Creates a lot object from latest info
+     * Applies it back after adjusting available
+     * & occupied spaces. Updates the Timestamp.
+     * Adds it back to the table.
+     * Return false if lot doesn't exist.
      * @param  lotID name of lot to find
      * @param numCars number of cars to enter
-     * @return whether or not the user has updated a lot
+     * @return ParkingLot object updated.
      */
-    public boolean updateLot (String lotID, int numCars) {
+    public ParkingLot updateLotCars (String lotID, int numCars) {
 
-        return true;
+        ParkingLot tempLot = createLot(lotID);
+
+        if (tempLot == null)
+        {
+            System.out.println("Lot does not exist");
+            return null;
+        }
+        else
+            {
+                tempLot.setOccupied(numCars);
+                tempLot.setAvailable(tempLot.getTotal() - numCars);
+                tempLot.setRecordDate(new Date());
+                addLot(tempLot);
+            }
+        return tempLot;
     }
 
     /**
-     * Method used to add update lot's availability
+     * Method used to update a lot's space information.
+     * Use Strings to classify spaces
+     * - "resident", "staff", "motorcycle", ...
+     * Updates latest row.
+     * Return false if lot doesn't exist.
+     * @param  lotID name of lot to find
+     * @param category type of space
+     * @return ParkingLot object updated.
+     */
+    public ParkingLot updateLotSpaces (String lotID, String category, int numSpaces) {
+
+        String query = "UPDATE Lot SET " + category + " = ? " +
+                "WHERE Lot_ID = ? " +
+                "AND Time = (SELECT max(Time) FROM Lot WHERE Lot_ID = ?";
+
+        ParkingLot tempLot = createLot(lotID);
+
+        try
+        {
+            conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
+
+            pStat = conn.prepareStatement(query);                  // prepare the statement
+            pStat.setInt(1, numSpaces);
+            pStat.setString(2, lotID);
+            pStat.setString(3, lotID);
+
+            pStat.executeUpdate();                                                      // update the statement
+            conn.commit();                                                              // and send it to the table
+
+            conn.setAutoCommit(true);                                               // turn on automatic SQL statements
+            System.out.println("executed command");
+        }
+        catch (SQLException s)
+        {
+            System.out.println("lot does not exist");
+            return null;
+        }
+        return tempLot;
+    }
+
+    /**
+     * Method used to update a lot's availability
+     * A new row is made and added with new time.
      * Will also check to see if lot exists
      * and return false if it doesn't.
      * @param lotID name of lot to find
      * @param  isOpen a lot's status (open/true or close/false)
-     * @return whether or not the user has updated a lot
+     * @return ParkingLot object updated
      */
-    public boolean updateLotStatus (String lotID, boolean isOpen) {
+    public ParkingLot updateLotStatus (String lotID, boolean isOpen) {
 
-        return true;
+        ParkingLot tempLot = createLot(lotID);
+
+        if (tempLot == null)
+        {
+            System.out.println("Lot does not exist");
+            return null;
+        }
+        else
+        {
+            tempLot.setOpen(isOpen);
+            tempLot.setRecordDate(new Date());
+            addLot(tempLot);
+        }
+
+        return tempLot;
     }
 
     /**
