@@ -43,8 +43,8 @@ public class GUIManage extends JPanel
             }
             else
             {
-               
                userDisplayPanel.removeAll();
+               frame.revalidate();
             	displayUser();
                System.out.println("Display User");
             }
@@ -56,7 +56,7 @@ public class GUIManage extends JPanel
       {
  		   public void actionPerformed(ActionEvent e)
          {
- 			   controller.displayGUIWelcome();
+ 			   controller.displayGUIMainMenu();
  		   }
       });
       btnPanel.add(btnGoBack);
@@ -82,7 +82,7 @@ public class GUIManage extends JPanel
       JLabel userPermissions = new JLabel(user.getPermissions().getpString());
       userDisplayPanel.add(userName);
       userDisplayPanel.add(userPermissions);
-      
+
       this.add(userDisplayPanel);
       frame.revalidate();
    }
