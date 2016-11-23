@@ -24,7 +24,7 @@ public class UserDBManager {
         //if (args.length == 0)
          //   System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
         UserDBManager dbm = new UserDBManager();
-        dbm.validateUserInfo("supervisor", "12345");
+        //dbm.validateUserInfo("supervisor", "12345");
         //User bob = new User("bob", "54321");
         //System.out.println("HEY!!!!" + bob.getPermit().getId());
         //dbm.addUser(bob);
@@ -38,15 +38,17 @@ public class UserDBManager {
         //User bub = dbm.getUser("budfb");
         //User bob2 = dbm.getUser("bob");
        // dbm.validateUserInfo("spervisor", "1234");
+        //User s = dbm.getUser("supervisor");
+        //dbm.showUser("12345");
+        //System.out.println("Supervisor  " + s.getName() + s.getUserID() + s.getPermissions());
 
-
-        System.out.println("Here are the values for returned Bub object: " + bub.getName() + " " +
-                bub.getUserID() + " " + bub.getPermit().getId() + " " + bub.getPermissions());
-        System.out.println("Here are the values for returned Bob object: " + bob2.getName() + " " +
-                bob2.getUserID() + " " + bob2.getPermit().getId() + " " + bob2.getPermissions());*/
+        //System.out.println("Here are the values for returned Bub object: " + bub.getName() + " " +
+        //        bub.getUserID() + " " + bub.getPermit().getId() + " " + bub.getPermissions());
+       // System.out.println("Here are the values for returned Bob object: " + bob2.getName() + " " +
+         //       bob2.getUserID() + " " + bob2.getPermit().getId() + " " + bob2.getPermissions());
         //dbm.dropTables();
         //dbm.closeConnection();
-    // }*/
+     }*/
 
     /** Used to access database */
     private Connection conn;
@@ -103,6 +105,7 @@ public class UserDBManager {
     public void dropTables() {
         try
         {
+            result.close();
             stat.execute("DROP TABLE Users");
         }
         catch (Exception e) {
@@ -207,14 +210,25 @@ public class UserDBManager {
     public User getUser (String uName) {
 
         User userToReturn = new User();
-        String query = "SELECT * FROM Users WHERE User_Name = ?";
+        //String query = "SELECT * FROM Users WHERE User_Name = ?";
         try
         {
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
 
-            pStat = conn.prepareStatement(query);
-            pStat.setString(1, uName);
-            result = pStat.executeQuery();                  // result from selecting all where username = uName
+
+            String query = String.format("SELECT * FROM Users WHERE User_Name = '%s'", uName);
+            //boolean toAdd;
+            result = stat.executeQuery(query);
+            //conn.commit();
+
+           /* if (!result.next())
+            {
+                System.out.println("User does not exist");
+                return null;
+            }*/
+            //pStat = conn.prepareStatement(query);
+            //pStat.setString(1, uName);
+            //result = pStat.executeQuery();                  // result from selecting all where username = uName
             rsm = result.getMetaData();
             int cols = rsm.getColumnCount();
 
@@ -224,10 +238,12 @@ public class UserDBManager {
                 return null;
             }
 
+            result = stat.executeQuery(query);
+            rsm = result.getMetaData();
             while (result.next())                          // should always be ONE User!
+            {
                 for (int i = 1; i <= cols; i++)
-                    switch (i)
-                    {
+                    switch (i) {
                         case 1:
                             userToReturn.setName(result.getString(i));
                             break;
@@ -241,7 +257,7 @@ public class UserDBManager {
                             userToReturn.setPermissions(UserPermissions.valueOf(result.getString(i)));
                             break;
                     }
-
+            }
             System.out.println("\ncompleted query\n");
         }
         catch (Exception e)
