@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import application.*;
 import objects.User;
+import objects.UserPermissions;
 import database.*;
 
 public class GUIManage extends JPanel
@@ -14,6 +15,7 @@ public class GUIManage extends JPanel
    private User user;
    private JFrame frame;
    private JPanel userDisplayPanel;
+   private JPanel changeBtnPanel;
 	
    
    public GUIManage(Controller controller, JFrame frame)
@@ -24,6 +26,7 @@ public class GUIManage extends JPanel
 	   this.addFields();
 	   this.addButtons();
       this.userDisplayPanel = new JPanel();
+      this.changeBtnPanel = new JPanel();
       
    }
 
@@ -44,8 +47,10 @@ public class GUIManage extends JPanel
             else
             {
                userDisplayPanel.removeAll();
+               changeBtnPanel.removeAll();
                frame.revalidate();
             	displayUser();
+               displayModBtn();
                System.out.println("Display User");
             }
 		   }
@@ -85,6 +90,47 @@ public class GUIManage extends JPanel
 
       this.add(userDisplayPanel);
       frame.revalidate();
+   }
+   
+   public void displayModBtn()
+   {  
+      JButton changePermission = new JButton("Toggle User Permission");
+      changePermission.addActionListener(new ActionListener()
+      {
+ 		   public void actionPerformed(ActionEvent e)
+         {
+ 			   if (user.getPermissions().getpString() == "USER")
+            {
+               controller.updatePermissions (user.getName(), 1);
+            }
+            else if (user.getPermissions().getpString() == "ADMIN")
+            {
+               controller.updatePermissions (user.getName(), 0);
+            }
+            else if (user.getPermissions().getpString() == "SUPERVISOR")
+            {
+               controller.displayError("You Cannot Change The Supervisor's Permissions!!!");
+            }
+            user = controller.getUser(username.getText());
+            if (user == null)
+            {
+               controller.displayError("User Does Not Exist.");
+            }
+            else
+            {
+               userDisplayPanel.removeAll();
+               changeBtnPanel.removeAll();
+               frame.revalidate();
+            	displayUser();
+               displayModBtn();
+               System.out.println("Display User");
+            }
+ 		   }
+      });
+      changeBtnPanel.add(changePermission);
+      this.add(changeBtnPanel);
+      frame.revalidate();
+      
    }
    
 }

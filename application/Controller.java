@@ -165,7 +165,10 @@ public class Controller
       return userDBManager.getUser(userName);
    }
    
-   
+   public void updatePermissions(String userName, int status)
+   {
+      boolean toggle = userDBManager.updatePermissions(userName, status);
+   }
    
    public void logOut()
    {
