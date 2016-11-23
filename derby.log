@@ -1,12 +1,6 @@
 ----------------------------------------------------------------
-<<<<<<< HEAD
-2016-11-22 21:03:29.527 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.2.2.0 - (485682): instance c013800d-0158-8dd9-c6b1-000007138268
-on database directory C:\Users\natha\git\SE_Group\DBManager  
-=======
-2016-11-22 21:44:30.527 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.2.2.0 - (485682): instance c013800d-0158-8dff-540a-00000705d060
+2016-11-23 02:44:52.503 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.2.2.0 - (485682): instance c013800d-0158-8f12-524d-000006ff0328
 on database directory /Users/Howtoon/Desktop/SE_Group/DBManager  
->>>>>>> cc86aa957bc0d8a6d67bf08bf8e50180b78f69ce
 
 Database Class Loader started - derby.database.classpath=''
