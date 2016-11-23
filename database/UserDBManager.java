@@ -210,7 +210,7 @@ public class UserDBManager {
      * @param uName username
      * @return user
      */
-    public User createUser (String uName) {
+    public User getUser (String uName) {
 
         User userToReturn = new User();
         String query = "SELECT * FROM Users WHERE User_Name = ?";

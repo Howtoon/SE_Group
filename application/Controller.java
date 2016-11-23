@@ -46,8 +46,7 @@ public class Controller
       //userDBManager.openConnection()
       if (userDBManager.validateUserInfo(userName, password))
       {
-         user = new User();         //Placeholder for user object returned by DBMgr()
-         user.setPermissions(UserPermissions.SUPERVISOR);  //Trying to test Permissions.
+         user = userDBManager.getUser(userName);
          return true;//returns true/false based on valid username and password combo
       }
       else

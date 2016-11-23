@@ -29,8 +29,7 @@ public class GUILogin extends JPanel
       {
 		   public void actionPerformed(ActionEvent e)
          {
-            boolean verify = controller.verifyLogin(username.getText(), new String(password.getPassword()));
-            if (verify)
+            if (controller.verifyLogin(username.getText(), new String(password.getPassword())))
             {
                controller.displayGUIMainMenu();
             }
