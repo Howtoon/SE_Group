@@ -21,24 +21,44 @@ public class LotDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-    //public static void main (String[] args) throws Exception {
+    /*public static void main (String[] args) throws Exception {
 
-        /*LotDBManager dbm = new LotDBManager();
-        /*ParkingLot a = new ParkingLot("A", 90, 3, 5,
+        LotDBManager dbm = new LotDBManager();
+
+
+
+        ParkingLot a = dbm.getLot("A");
+        ParkingLot b = dbm.getLot("B");
+        ParkingLot c = dbm.getLot("C");
+
+        System.out.printf("Here are Lot A's statistics before updating: %s, total - %d, " +
+                        "available - %d, occupied = %d, visitor - %d, commuter - %d, %b, %s\n",
+                a.getLotID(), a.getTotal(), a.getAvailable(), a.getOccupied(),
+                a.getVisitor(), a.getCommuter(), a.isOpen(), a.getRecordDate());
+
+        dbm.updateLotCars("a", 5);
+        dbm.updateLotCars("A", 30);
+        System.out.println("After updating object a");
+        a = dbm.getLot("A");
+        System.out.println("After 2nd getLot");
+        System.out.printf("Here are Lot A's statistics after updating: %s, total - %d, " +
+                        "available - %d, occupied = %d, visitor - %d, commuter - %d, %b, %s\n",
+                a.getLotID(), a.getTotal(), a.getAvailable(), a.getOccupied(),
+                a.getVisitor(), a.getCommuter(), a.isOpen(), a.getRecordDate());
+        dbm.closeConnection();
+
+
+        ParkingLot a = new ParkingLot("A", 90, 3, 5,
                 7, 8, 9, 10, 11, true);
-
-        System.out.printf("Here are Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
-                a.getLotID(), a.getTotal(), a.getVisitor(), a.getCommuter(), a.isOpen(), a.getRecordDate());
-        ParkingLot ab = new ParkingLot("E", 4);
-
+        System.out.printf("Here are Lot A's total, occupied and available: %s, %d, %d, %d, %s\n",
+                a.getLotID(), a.getTotal(), a.getOccupied(), a.getAvailable(), a.getRecordDate());
         dbm.addLot(a);
-        dbm.getLot("E");
+        dbm.updateLotCars("A", 50);
         ParkingLot newA = dbm.getLot("A");
-
-        System.out.printf("Here are NEW Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
-                newA.getLotID(), newA.getTotal(), newA.getVisitor(), newA.getCommuter(), newA.isOpen(), newA.getRecordDate());*/
-        //dbm.closeConnection();*/
-    //}
+        System.out.printf("Here are NEW Lot A's total, occupied and available: %s, %d, %d, %d, %s\n",
+                newA.getLotID(), newA.getTotal(), newA.getOccupied(), newA.getAvailable(), newA.getRecordDate());
+        dbm.closeConnection();
+    }*/
 
     /** Used to access database */
     private Connection conn;
@@ -61,22 +81,22 @@ public class LotDBManager {
      */
     public LotDBManager () {
 
-        ParkingLot a = new ParkingLot("A",35,5,5,
-                5, 5,5,5,5, true);
-        ParkingLot b = new ParkingLot("B",56,8,8,
-                8, 8,8,8,8, false);
-        ParkingLot c = new ParkingLot("C", 60);
+        ParkingLot e = new ParkingLot("E",180,0,0,
+                0, 0,0,180,0, true);
+        ParkingLot z = new ParkingLot("Z",125,0,0,
+                0, 0,0,125,0, true);
         try
         {
             SimpleDataSource.init("database/database.properties");
             this.openConnection();
             this.stat = this.conn.createStatement();
             this.createTables(0);
-            addLot(a);
-            addLot(b);
-            addLot(c);
+            addLot(e);
+            updateLotCars("E", 74);
+            addLot(z);
+            updateLotCars("Z", 44);
             //stat.execute("DROP TABLE Lot");
-        } catch (Exception e) {
+        } catch (Exception ex) {
             System.out.println("exception in creating user db manager");
         }
     }
@@ -188,7 +208,7 @@ public class LotDBManager {
             conn.commit();                                                              // and send it to the table
 
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
-            System.out.println("executed command");
+            System.out.println("added lot");
         }
         catch (SQLException s)
         {
@@ -208,7 +228,9 @@ public class LotDBManager {
     public ParkingLot getLot (String lotID) {
 
         ParkingLot lotToReturn = new ParkingLot();
-        String query = "SELECT * FROM Lot" +
+        String query1 = "SELECT * FROM Lot" +
+                " WHERE Lot_ID = ?";
+        String query2 = "SELECT * FROM Lot" +
                 " WHERE Lot_ID = ?" +
                 " AND Time IN (SELECT MAX(Time) FROM Lot)";
         // " ORDER BY Time DESC"
@@ -216,7 +238,7 @@ public class LotDBManager {
         {
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
 
-            pStat = conn.prepareStatement(query);
+            pStat = conn.prepareStatement(query1);
             pStat.setString(1, lotID);
             result = pStat.executeQuery();
             rsm = result.getMetaData();
@@ -226,6 +248,12 @@ public class LotDBManager {
                 System.out.println("lot does not exist");
                 return null;
             }
+
+            pStat = conn.prepareStatement(query2);
+            pStat.setString(1, lotID);
+            result = pStat.executeQuery();
+            rsm = result.getMetaData();
+
             while (result.next())
             {
                 lotToReturn.setLotID(result.getString(1));
@@ -245,7 +273,7 @@ public class LotDBManager {
                     lotToReturn.setOpen(false);
                 lotToReturn.setRecordDate(new Date(result.getTimestamp(13).getTime()));
             }
-            System.out.println("\ncompleted query\n");
+            System.out.println("updated lot");
         }
         catch (Exception e)
         {
@@ -279,6 +307,8 @@ public class LotDBManager {
         }
         else
             {
+                if (tempLot.getTotal() < numCars)
+                    tempLot.setTotal(numCars);
                 tempLot.setOccupied(numCars);
                 tempLot.setAvailable(tempLot.getTotal() - numCars);
                 tempLot.setRecordDate(new Date());
