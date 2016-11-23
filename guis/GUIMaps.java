@@ -19,7 +19,7 @@ public class GUIMaps extends JPanel
 	   this.controller = controller;
 	   this.addButtons();
 	   
-   	}
+   }
 	
 	private void addButtons()
 	{

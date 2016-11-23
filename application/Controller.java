@@ -130,12 +130,11 @@ public class Controller
          JOptionPane.showMessageDialog(null,a.getMessage());
       }
    }
-   /*
    public void displayGUIMaps()
    {
-      GUIMaps maps = new GUIMaps();
+      frame.setContentPane(new GUIMaps(this));
+      frame.revalidate();
    }
-   */
    /*
    public void displayGUIRestric()
    {

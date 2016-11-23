@@ -81,7 +81,7 @@ public class GUIMainMenu extends JPanel
       {
 		   public void actionPerformed(ActionEvent e)
          {
-			   
+			   controller.displayGUIMaps();
 		   }
       });
       this.add(btnMaps);
@@ -92,7 +92,7 @@ public class GUIMainMenu extends JPanel
       {
   		   public void actionPerformed(ActionEvent e)
          {
-  			
+  			   
   		   }
       });
       this.add(btnRestric);
