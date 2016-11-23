@@ -12,16 +12,18 @@ import objects.UserPermissions;
 public class GUIMainMenu extends JPanel
 {
    private Controller controller;
+   private User user;
 
    public GUIMainMenu(Controller controller, User user)
    {  
       this.controller = controller;
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));         
       this.setBackground(Color.WHITE);
-      this.addButtons(user);
+      this.user = user;
+      this.addButtons();
    }
    
-   public void addButtons(User user)
+   public void addButtons()
    {
 	   JButton btnPortal = new JButton("Parking Transaction Portal");
       btnPortal.setAlignmentX(this.CENTER_ALIGNMENT);
@@ -135,5 +137,18 @@ public class GUIMainMenu extends JPanel
          });
          this.add(btnManage);
       }
+      
+      JButton btnLogOut = new JButton("Log Out");
+      btnLogOut.setAlignmentX(this.CENTER_ALIGNMENT);
+      btnLogOut.addActionListener(new ActionListener()
+      {
+		      public void actionPerformed(ActionEvent e)
+		      {
+		    	  user = null;
+		    	  controller.displayGUIWelcome();
+		      }
+      });
+      this.add(btnLogOut);
+      
    }
 }
