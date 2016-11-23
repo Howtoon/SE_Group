@@ -78,8 +78,6 @@ public class GUIManage extends JPanel
    
    public void displayUser()
    {
-      //userDisplayPanel = new JPanel();
-      //userDisplayPanel.setLayout(new FlowLayout());
       JLabel userName = new JLabel(user.getName());
       JLabel userPermissions = new JLabel(user.getPermissions().getpString());
       userDisplayPanel.add(userName);
