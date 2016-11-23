@@ -21,10 +21,10 @@ public class LotDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-    /*public static void main (String[] args) throws Exception {
+    //public static void main (String[] args) throws Exception {
 
-        LotDBManager dbm = new LotDBManager();
-        ParkingLot a = new ParkingLot("A", 90, 3, 5,
+        /*LotDBManager dbm = new LotDBManager();
+        /*ParkingLot a = new ParkingLot("A", 90, 3, 5,
                 7, 8, 9, 10, 11, true);
 
         System.out.printf("Here are Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
@@ -36,8 +36,9 @@ public class LotDBManager {
         ParkingLot newA = dbm.getLot("A");
 
         System.out.printf("Here are NEW Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
-                newA.getLotID(), newA.getTotal(), newA.getVisitor(), newA.getCommuter(), newA.isOpen(), newA.getRecordDate());
-    }*/
+                newA.getLotID(), newA.getTotal(), newA.getVisitor(), newA.getCommuter(), newA.isOpen(), newA.getRecordDate());*/
+        //dbm.closeConnection();*/
+    //}
 
     /** Used to access database */
     private Connection conn;
@@ -60,11 +61,21 @@ public class LotDBManager {
      */
     public LotDBManager () {
 
-        try {
+        ParkingLot a = new ParkingLot("A",35,5,5,
+                5, 5,5,5,5, true);
+        ParkingLot b = new ParkingLot("B",56,8,8,
+                8, 8,8,8,8, false);
+        ParkingLot c = new ParkingLot("C", 60);
+        try
+        {
             SimpleDataSource.init("database/database.properties");
             this.openConnection();
             this.stat = this.conn.createStatement();
             this.createTables(0);
+            addLot(a);
+            addLot(b);
+            addLot(c);
+            //stat.execute("DROP TABLE Lot");
         } catch (Exception e) {
             System.out.println("exception in creating user db manager");
         }
@@ -76,7 +87,9 @@ public class LotDBManager {
     public void openConnection () {
 
         try
-        { conn = SimpleDataSource.getConnection(); }
+        {
+            conn = SimpleDataSource.getConnection();
+        }
         catch (Exception e)
         { System.out.println ("connection already open"); }
     }

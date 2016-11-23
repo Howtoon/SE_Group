@@ -33,6 +33,7 @@ public class ParkingLot {
     public ParkingLot (String ID, int numCars) {
         super();
         this.lotID = ID;
+        this.total = numCars;
         this.occupied = numCars;
         recordDate = new Date();
     }
