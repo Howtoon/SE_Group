@@ -132,7 +132,7 @@ public class GUIMainMenu extends JPanel
          {
    		   public void actionPerformed(ActionEvent e)
             {
-			      //controller.displayGUIManage();
+			      controller.displayGUIManage();
    		   }
          });
          this.add(btnManage);
@@ -144,8 +144,8 @@ public class GUIMainMenu extends JPanel
       {
 		      public void actionPerformed(ActionEvent e)
 		      {
-		    	  user = null;
-		    	  controller.displayGUIWelcome();
+               user = null;
+		    	  controller.logOut();
 		      }
       });
       this.add(btnLogOut);

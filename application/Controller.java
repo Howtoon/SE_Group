@@ -104,6 +104,11 @@ public class Controller
       frame.revalidate();
    }
    
+   public void displayError(String e)
+   {
+      JOptionPane.showMessageDialog(frame, e);
+   }
+   
    public void displayCreateUserError()
    {
 	   
@@ -153,10 +158,22 @@ public class Controller
       GUIViolate violate = new GUIViolate();
    }
    */
-   /*
+
    public void displayGUIManage()
    {
-      GUIManage manage = new GUIManage();
+      frame.setContentPane(new GUIManage(this));
+      frame.revalidate();
    }
-   */
+    
+   public User getUser(String userName)
+   {
+      return userDBManager.getUser(userName);
+   }
+   
+   public void logOut()
+   {
+      user = null;
+      displayGUIWelcome();
+   }
+
 }

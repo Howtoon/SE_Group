@@ -44,7 +44,7 @@ public class GUICreateUser extends JPanel
             }
             else
             {
-            	controller.displayCreateUserError();
+            	controller.displayError("Username already exists.");
             }
 		   }
       });
