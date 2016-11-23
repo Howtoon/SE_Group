@@ -1,5 +1,4 @@
 package guis;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,13 +8,11 @@ import application.*;
 import objects.User;
 import objects.UserPermissions;
 
-
 public class GUIRegs extends JFrame
  {
      public GUIRegs()
      {
          setLayout(new BorderLayout());
-
          //file you want to play
          URL mediaURL = "https://youtu.be/ylfgXDy8bgo";  //Whatever
          //create the media player with the media url
