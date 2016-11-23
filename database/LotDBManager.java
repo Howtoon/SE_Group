@@ -27,10 +27,19 @@ public class LotDBManager {
             System.out.println("Usage: java -classpath database/derby.jar:. database/LotDBManager");
 
         LotDBManager dbm = new LotDBManager();
+        ParkingLot a = new ParkingLot("A", 90, 3, 5,
+                7, 8, 9, 10, 11, true);
 
-        User a = new User();
+        System.out.printf("Here are Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
+                a.getLotID(), a.getTotal(), a.getVisitor(), a.getCommuter(), a.isOpen(), a.getRecordDate());
         ParkingLot ab = new ParkingLot("E", 4);
-        System.out.println("Hello!");
+
+        dbm.addLot(a);
+        dbm.getLot("E");
+        ParkingLot newA = dbm.getLot("A");
+
+        System.out.printf("Here are NEW Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
+                newA.getLotID(), newA.getTotal(), newA.getVisitor(), newA.getCommuter(), newA.isOpen(), newA.getRecordDate());
     }
 
     /** Used to access database */
@@ -52,11 +61,16 @@ public class LotDBManager {
      * Default constructor that reads the properties file and initializes access to the database
      * Also enables SQL statements to be issued.
      */
-    public LotDBManager () throws Exception {
+    public LotDBManager () {
 
-        SimpleDataSource.init("database/database.properties");
-        openConnection();
-        stat = conn.createStatement();
+        try {
+            SimpleDataSource.init("database/database.properties");
+            this.openConnection();
+            this.stat = this.conn.createStatement();
+            this.createTables(0);
+        } catch (Exception e) {
+            System.out.println("exception in creating user db manager");
+        }
     }
 
     /**
@@ -77,13 +91,13 @@ public class LotDBManager {
      * exist before creating them.
      * @param tableToCreate determines what table to create
      */
-    public void createTable (int tableToCreate) {
+    public void createTables (int tableToCreate) {
 
         try
         {
             DatabaseMetaData meta = conn.getMetaData();
             result = meta.getTables(null, null, "%", null);
-            while(result.next())
+            while(this.result.next())
                 switch (tableToCreate)
                 {
                     case 0:
@@ -102,29 +116,36 @@ public class LotDBManager {
             switch (tableToCreate)
             {
                 case 0:
-                    stat.execute("CREATE TABLE Lot (Lot_ID VARCHAR2(3), Total INTEGER, Available INTEGER, " +
+                    stat.execute("CREATE TABLE Lot (Lot_ID VARCHAR(3), Total INTEGER, Available INTEGER, " +
                             "Occupied INTEGER, Reserved INTEGER, Handicapped INTEGER, Commuter INTEGER, " +
                             "Resident INTEGER, Staff INTEGER, Visitor INTEGER, Motorcycle INTEGER, " +
-                            "Status VARCHAR2(10), Time TIMESTAMP)");
+                            "Status VARCHAR(10), Time TIMESTAMP)");
+                    System.out.println("Lot table created");
+                    break;
                 case 1:
-                    stat.execute("CREATE TABLE Violation (Lot_ID VARCHAR2(3), Summary VARCHAR2(100), " +
-                            "Violation_ID VARCHAR2(10), Time TIMESTAMP");
+                    stat.execute("CREATE TABLE Violation (Lot_ID VARCHAR2(3), Summary VARCHAR(100), " +
+                            "Violation_ID VARCHAR(10), Time TIMESTAMP");
+                    System.out.println("Violation table created");
+                    break;
                 case 2:
-                    stat.execute("CREATE TABLE Walk_Time (Lot_ID VARCHAR2(3), Village_East INTEGER, CEPS INTEGER, " +
+                    stat.execute("CREATE TABLE Walk_Time (Lot_ID VARCHAR(3), Village_East INTEGER, CEPS INTEGER, " +
                             "HLES INTEGER, Bldg_58 INTEGER, Martin INTEGER, CFPA INTEGER, COB INTEGER, " +
                             "Bldg_10 INTEGER, Bldg_18 INTEGER, Library INTEGER, Commons INTEGER)");
+                    System.out.println("Walking Times table created");
+                    break;
                 default:
-                    stat.execute("CREATE TABLE Map (Lot_ID VARCHAR2(3), Map_Location VARCHAR2(50)");
+                    stat.execute("CREATE TABLE Map (Lot_ID VARCHAR(3), Map_Location VARCHAR(50)");
+                    System.out.println("Map table created");
             }
         }
         catch (SQLException s)
         {   System.out.println("sql exception in creating lot tables"); }
 
-
     }
 
     /**
      * Method used to add to the Lot table.
+     * (SEND OVER SUPERVISOR-CREATED OBJECT)
      * (Call once per lot, use updateLot for updates)
      * @param p lot to add
      */
@@ -174,13 +195,13 @@ public class LotDBManager {
      * @param lotID the name of the lot to find
      * @return whether or not the user can see a lot's info
      */
-    public ParkingLot createLot (String lotID) {
+    public ParkingLot getLot (String lotID) {
 
         ParkingLot lotToReturn = new ParkingLot();
         String query = "SELECT * FROM Lot" +
                 " WHERE Lot_ID = ?" +
-                " ORDER BY time DESC" +
-                " LIMIT 1";
+                " AND Time IN (SELECT MAX(Time) FROM Lot)";
+        // " ORDER BY Time DESC"
         try
         {
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
@@ -190,7 +211,11 @@ public class LotDBManager {
             result = pStat.executeQuery();
             rsm = result.getMetaData();
             //int cols = rsm.getColumnCount();
-
+            if (!result.next())
+            {
+                System.out.println("lot does not exist");
+                return null;
+            }
             while (result.next())
             {
                 lotToReturn.setLotID(result.getString(1));
@@ -215,6 +240,7 @@ public class LotDBManager {
         catch (Exception e)
         {
             System.out.println("lot doesn't exist");
+            e.printStackTrace();
             return null;
         }
 
@@ -234,7 +260,7 @@ public class LotDBManager {
      */
     public ParkingLot updateLotCars (String lotID, int numCars) {
 
-        ParkingLot tempLot = createLot(lotID);
+        ParkingLot tempLot = getLot(lotID);
 
         if (tempLot == null)
         {
@@ -267,7 +293,7 @@ public class LotDBManager {
                 "WHERE Lot_ID = ? " +
                 "AND Time = (SELECT max(Time) FROM Lot WHERE Lot_ID = ?";
 
-        ParkingLot tempLot = createLot(lotID);
+        ParkingLot tempLot = getLot(lotID);
 
         try
         {
@@ -303,7 +329,7 @@ public class LotDBManager {
      */
     public ParkingLot updateLotStatus (String lotID, boolean isOpen) {
 
-        ParkingLot tempLot = createLot(lotID);
+        ParkingLot tempLot = getLot(lotID);
 
         if (tempLot == null)
         {
