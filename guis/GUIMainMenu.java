@@ -99,8 +99,8 @@ public class GUIMainMenu extends JPanel
       });
       this.add(btnRestric);
       
-      if (user.getPermissions()== UserPermissions.SUPERVISOR || user.getPermissions()==UserPermissions.ADMIN)
-      {
+      //if (user.getPermissions()== UserPermissions.SUPERVISOR || user.getPermissions()==UserPermissions.ADMIN)
+      //{
          JButton btnReport = new JButton("Create Parking Lot Report");
          btnReport.setAlignmentX(this.CENTER_ALIGNMENT);
          btnReport.addActionListener(new ActionListener()
@@ -122,9 +122,9 @@ public class GUIMainMenu extends JPanel
   		      }
          });
          this.add(btnViolate);
-      }
-      if (user.getPermissions()==UserPermissions.SUPERVISOR)
-      {
+      //}
+      //if (user.getPermissions()==UserPermissions.SUPERVISOR)
+      //{
 
          JButton btnManage = new JButton("Manage Administrators");
          btnManage.setAlignmentX(this.CENTER_ALIGNMENT);
@@ -136,7 +136,7 @@ public class GUIMainMenu extends JPanel
    		   }
          });
          this.add(btnManage);
-      }
+      //}
       
       JButton btnLogOut = new JButton("Log Out");
       btnLogOut.setAlignmentX(this.CENTER_ALIGNMENT);

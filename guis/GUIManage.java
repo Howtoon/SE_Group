@@ -12,14 +12,19 @@ public class GUIManage extends JPanel
 	private JTextField username;
 	private Controller controller;
    private User user;
+   private JFrame frame;
+   private JPanel userDisplayPanel;
 	
    
-   public GUIManage(Controller controller)
+   public GUIManage(Controller controller, JFrame frame)
    {
+      this.frame = frame;
 	   this.controller = controller;
 	   this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 	   this.addFields();
 	   this.addButtons();
+      this.userDisplayPanel = new JPanel();
+      
    }
 
 	public void addButtons()
@@ -38,11 +43,10 @@ public class GUIManage extends JPanel
             }
             else
             {
-            	JPanel userDisplayPanel = new JPanel();
-               userDisplayPanel.setLayout(new FlowLayout());
-               JLabel userName = new JLabel(user.getName());
                
-               JLabel userPermissions = new JLabel(user.getPermissions().getpString());
+               userDisplayPanel.removeAll();
+            	displayUser();
+               System.out.println("Display User");
             }
 		   }
       });
@@ -71,4 +75,18 @@ public class GUIManage extends JPanel
 	   this.add(userPanel);
 
 	}
+   
+   public void displayUser()
+   {
+      //userDisplayPanel = new JPanel();
+      //userDisplayPanel.setLayout(new FlowLayout());
+      JLabel userName = new JLabel(user.getName());
+      JLabel userPermissions = new JLabel(user.getPermissions().getpString());
+      userDisplayPanel.add(userName);
+      userDisplayPanel.add(userPermissions);
+      
+      this.add(userDisplayPanel);
+      frame.revalidate();
+   }
+   
 }

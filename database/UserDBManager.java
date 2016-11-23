@@ -67,6 +67,8 @@ public class UserDBManager {
      * Default constructor that reads the properties file and initializes access to the database
      * Also enables SQL statements to be issued.
      */
+     
+     
     public UserDBManager() {
         User s = new User("supervisor", "12345");
         s.setPermissions(UserPermissions.SUPERVISOR);

@@ -108,7 +108,7 @@ public class Controller
    {
       JOptionPane.showMessageDialog(frame, e);
    }
-   
+   /*
    public void displayCreateUserError()
    {
 	   
@@ -122,7 +122,7 @@ public class Controller
 	   JOptionPane.showMessageDialog(frame, "Incorrect Username/Password combination.");
 	   
    }
-   
+   */
    public void displayGUIWalk()
    {
       try   //http://uwf.edu/media/university-of-west-florida/offices/trustees/regulations/UWF-REG-5-001-Parking-and-Registration-6.16.16.pdf
@@ -161,7 +161,7 @@ public class Controller
 
    public void displayGUIManage()
    {
-      frame.setContentPane(new GUIManage(this));
+      frame.setContentPane(new GUIManage(this, frame));
       frame.revalidate();
    }
     
@@ -169,6 +169,8 @@ public class Controller
    {
       return userDBManager.getUser(userName);
    }
+   
+   
    
    public void logOut()
    {
