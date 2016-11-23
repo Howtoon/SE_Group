@@ -89,7 +89,7 @@ public class Controller
    {
       try   //http://uwf.edu/media/university-of-west-florida/offices/trustees/regulations/UWF-REG-5-001-Parking-and-Registration-6.16.16.pdf
       {
-         String URL = "https://youtu.be/ylfgXDy8bgo";  //http://uwf.edu/offices/business-auxiliary-services/parking-and-transportation/parking-regulations/
+         String URL = "http://uwf.edu/offices/business-auxiliary-services/parking-and-transportation/parking-regulations/";  
          java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
       }
       catch (Exception a)
@@ -175,5 +175,4 @@ public class Controller
       user = null;
       displayGUIWelcome();
    }
-
 }

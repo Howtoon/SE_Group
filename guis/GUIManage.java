@@ -130,7 +130,5 @@ public class GUIManage extends JPanel
       changeBtnPanel.add(changePermission);
       this.add(changeBtnPanel);
       frame.revalidate();
-      
    }
-   
 }

@@ -23,7 +23,7 @@ public class GUIStats extends JPanel
    
    public void addButtons(User user)
    {
-	   JButton btnPortal = new JButton("Parking Transaction Portal");
+	   JButton btnPortal = new JButton("");
       btnPortal.setAlignmentX(this.CENTER_ALIGNMENT);
 	   btnPortal.addActionListener(new ActionListener()
       {
