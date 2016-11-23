@@ -21,10 +21,7 @@ public class LotDBManager {
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-    public static void main (String[] args) throws Exception {
-
-        if (args.length == 0)
-            System.out.println("Usage: java -classpath database/derby.jar:. database/LotDBManager");
+    /*public static void main (String[] args) throws Exception {
 
         LotDBManager dbm = new LotDBManager();
         ParkingLot a = new ParkingLot("A", 90, 3, 5,
@@ -40,7 +37,7 @@ public class LotDBManager {
 
         System.out.printf("Here are NEW Lot A's statistics: %s, total - %d, visitor - %d, commuter - %d, %b, %s\n",
                 newA.getLotID(), newA.getTotal(), newA.getVisitor(), newA.getCommuter(), newA.isOpen(), newA.getRecordDate());
-    }
+    }*/
 
     /** Used to access database */
     private Connection conn;
