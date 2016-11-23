@@ -25,19 +25,25 @@ public class ParkingLot {
 
 
     public ParkingLot() {
-
+        this.lotID = "";
+        recordDate = new Date();
     }
 
-    public ParkingLot(String ID, int numCars) {
+    /** Admin/Super - update Lot constructor*/
+    public ParkingLot (String ID, int numCars) {
         super();
+        this.lotID = ID;
         this.occupied = numCars;
         recordDate = new Date();
     }
 
-	public ParkingLot(int total, int reserved, int handicapped, int commuter, int resident, int staff, int visitor,
-			int motorcycle) {
+    /** Supervisor - add Lot constructor */
+	public ParkingLot (String ID, int total, int reserved, int handicapped, int commuter,
+					   int resident, int staff, int visitor, int motorcycle, boolean isOpen) {
 		super();
+		this.lotID = ID;
 		this.total = total;
+		this.available = total;
 		this.reserved = reserved;
 		this.handicapped = handicapped;
 		this.commuter = commuter;

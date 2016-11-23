@@ -21,52 +21,32 @@ public class UserDBManager {
      * (TEST METHOD ONLY, DELETE LATER)
      */
     /*public static void main (String[] args) throws Exception {
-
         //if (args.length == 0)
          //   System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
-
         UserDBManager dbm = new UserDBManager();
-
         dbm.validateUserInfo("supervisor", "12345");
-
-        User bob = new User("bob", "54321");
-        //System.out.println(bob.getPermit().getId());
-
-        dbm.addUser(bob);
-        dbm.validateUserInfo("bob", "5432");
-        dbm.validateUserInfo("bob", "54321");
-
-        dbm.updatePermissions("bob", 1);
-
-        dbm.showUser("12345");
-        dbm.showUser("54321");
-
-        dbm.updatePermissions("bob", 0);
-
-        dbm.showUser("54321");
-
-        User bub = dbm.createUser("bub");
-        User bob2 = dbm.createUser("bob");
-        //dbm.validateUserInfo("spervisor", "1234");
-        //dbm.executeCommand("DROP TABLE Users");
-        //dbm.executeCommand("DROP TABLE Lot");
-
-        //dbm.createTables();
+        //User bob = new User("bob", "54321");
+        //System.out.println("HEY!!!!" + bob.getPermit().getId());
+        //dbm.addUser(bob);
+        //dbm.validateUserInfo("bob", "5432");
+        //dbm.validateUserInfo("bob", "54321");
+        //dbm.updatePermissions("bob", 1);
+        //dbm.showUser("12345");
+        //dbm.showUser("54321");
+        //dbm.updatePermissions("bob", 0);
+        //dbm.showUser("54321");
+        //User bub = dbm.getUser("budfb");
+        //User bob2 = dbm.getUser("bob");
+       // dbm.validateUserInfo("spervisor", "1234");
 
 
-        //User sv = new User("supervisor3", "12345678");
-        //sv.setPermissions(UserPermissions.SUPERVISOR);
-        //dbm.addUser(sv);
-
-        //User userToReturn = dbm.showUser("12345678");
         System.out.println("Here are the values for returned Bub object: " + bub.getName() + " " +
                 bub.getUserID() + " " + bub.getPermit().getId() + " " + bub.getPermissions());
-
         System.out.println("Here are the values for returned Bob object: " + bob2.getName() + " " +
-                bob2.getUserID() + " " + bob2.getPermit().getId() + " " + bob2.getPermissions());
-
-        dbm.closeConnection();
-    }*/
+                bob2.getUserID() + " " + bob2.getPermit().getId() + " " + bob2.getPermissions());*/
+        //dbm.dropTables();
+        //dbm.closeConnection();
+    // }*/
 
     /** Used to access database */
     private Connection conn;
@@ -116,6 +96,18 @@ public class UserDBManager {
     }
 
     /**
+     * Method used drop the tables.
+     */
+    public void dropTables() {
+        try
+        {
+            stat.execute("DROP TABLE Users");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /**
      * Method used to create the User tables.
      * 0 - User, other - Permit
      * Always checks to makes sure the tables do not
@@ -130,16 +122,16 @@ public class UserDBManager {
             while(this.result.next()) {
                 switch(tableToCreate) {
                     case 0:
-                        if(this.result.getString("TABLE_NAME").equals("USERS")) {
+                        //System.out.println("!");
+                        if(this.result.getString("TABLE_NAME").equals("USERS"))
                             return;
-                        }
+                        break;
                     default:
                         if(this.result.getString("TABLE_NAME").equals("PERMIT")) {
                             return;
                         }
                 }
             }
-
             switch(tableToCreate) {
                 case 0:
                     this.stat.execute("CREATE TABLE Users (User_Name VARCHAR(20), User_Pass VARCHAR(20), Permit_ID VARCHAR(10), Permissions VARCHAR(15))");
@@ -224,6 +216,12 @@ public class UserDBManager {
             rsm = result.getMetaData();
             int cols = rsm.getColumnCount();
 
+            if (!result.next())
+            {
+                System.out.println("User does not exist");
+                return null;
+            }
+
             while (result.next())                          // should always be ONE User!
                 for (int i = 1; i <= cols; i++)
                     switch (i)
@@ -270,10 +268,10 @@ public class UserDBManager {
             //ResultSet passCheck = stat2.executeQuery(query2);
             //pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
             //PreparedStatement passCheck =
-             //       conn.prepareStatement("SELECT 1 FROM Users WHERE User_Pass = ?");
+            //       conn.prepareStatement("SELECT 1 FROM Users WHERE User_Pass = ?");
 
 
-           // pStat.setString(1, uName);
+            // pStat.setString(1, uName);
             //passCheck.setString(1, uID);
 
             //boolean uNameExists = pStat.execute();
@@ -406,4 +404,3 @@ public class UserDBManager {
         { System.out.println ("no connection open"); }
     }
 }
-

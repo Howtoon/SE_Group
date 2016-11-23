@@ -3,6 +3,7 @@ package guis;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
@@ -39,10 +40,25 @@ public class GUIMaps extends JPanel
 	
 	public void paintComponent(Graphics g)
 	{
-		
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		
-		Image image = toolkit.getImage("resources/parking_map.png");
-		g.drawImage(image, 0, 0, this);
+		BufferedImage bi = null;
+		try
+		{
+			
+			ImageIcon imageicon = new ImageIcon("resources/parking_map.png");
+			bi = new BufferedImage(imageicon.getIconWidth(), imageicon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+			Graphics2D g2d = (Graphics2D) bi.createGraphics();
+			g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+			g2d.drawImage(imageicon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		/*
+		ImageIcon imageicon = new ImageIcon("resources/parking_map.png");
+		Image image = imageicon.getImage().getScaledInstance(imageicon.getIconHeight(), imageicon.getIconWidth(), Image.SCALE_SMOOTH);
+		*/
+		g.drawImage(bi, 0, 0, this);
 	}
 }
