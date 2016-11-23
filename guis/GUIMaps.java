@@ -55,10 +55,8 @@ public class GUIMaps extends JPanel
 		{
 			e.printStackTrace();
 		}
-		/*
-		ImageIcon imageicon = new ImageIcon("resources/parking_map.png");
-		Image image = imageicon.getImage().getScaledInstance(imageicon.getIconHeight(), imageicon.getIconWidth(), Image.SCALE_SMOOTH);
-		*/
+		
 		g.drawImage(bi, 0, 0, this);
+		
 	}
 }
