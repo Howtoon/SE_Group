@@ -10,7 +10,8 @@ public class Controller
 {
 	private JFrame frame;
 	private User user;
-	private UserDBManager userDBManager = new UserDBManager();
+	private UserDBManager userDBManager;
+	private LotDBManager lotDBManager;
 
 	/**
 	 * Parameterized constructor which sets up the frame when first opened
@@ -22,6 +23,8 @@ public class Controller
 		this.frame = frame;
 		this.displayGUIWelcome();
 		frame.setVisible(true);
+		userDBManager = new UserDBManager();
+		lotDBManager = new LotDBManager();
 		//userDBManager.closeConnection()
 
 	}
@@ -237,6 +240,18 @@ public class Controller
 
 	}
 
+	/**
+	 * Returns the parking lot object based on the lot id given or null if it does not exist in the database
+	 * @param lotID
+	 * @return the parking lot if it exists in the database or null if it does not
+	 */
+	public ParkingLot getLot(String lotID)
+	{
+		
+		return lotDBManager.getLot(lotID);
+		
+	}
+	
 	/**
 	 * Logs out the current user and displays the welcome page
 	 */

@@ -9,11 +9,13 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 import application.Controller;
+import objects.ParkingLot;
 
 public class GUIReport extends JPanel
 {
 
 	private Controller controller;
+	private ParkingLot lot;
 	private JLabel lotImage;
 	
 
@@ -24,6 +26,7 @@ public class GUIReport extends JPanel
 		this.lotImage = new JLabel("");
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.addComponents();
+		this.addStatistics();
 		this.add(lotImage);
 
 	}
@@ -42,11 +45,13 @@ public class GUIReport extends JPanel
 
 			public void actionPerformed(ActionEvent e)
 			{
-				
-				if(lotField.getText().equals(""))
-					controller.displayError("No lot ID specified");
+				lot = controller.getLot(lotField.getText());
+				if(lot == null)
+					controller.displayError("There is no lot with that ID");
+				else if(lotField.getText().equals(""))
+					controller.displayError("There is not a lot specified");
 				else
-					drawParkingLot(lotField.getText().toLowerCase());
+					drawParkingLot(lot.getLotID().toLowerCase());
 				
 			}
 
@@ -55,9 +60,26 @@ public class GUIReport extends JPanel
 		componentPanel.add(lotID);
 		componentPanel.add(lotField);
 		componentPanel.add(btnViewLot);
-
+		
+		JButton btnGoBack = new JButton("Go Back");
+		btnGoBack.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				controller.displayGUIMainMenu();
+			}
+		});
+		
 		this.add(componentPanel);
+		this.add(btnGoBack);
 
+	}
+	
+	private void addStatistics()
+	{
+		
+		
+		
 	}
 	
 	private void drawParkingLot(String lotID)
@@ -69,15 +91,17 @@ public class GUIReport extends JPanel
 		{
 
 			ImageIcon imageicon = new ImageIcon(String.format("resources/%s_lot.png", lotID));
+			
 			bi = new BufferedImage(imageicon.getIconWidth(), imageicon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
 			Graphics2D g2d = (Graphics2D) bi.createGraphics();
 			g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
 			g2d.drawImage(imageicon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
-			
 
 		}
 		catch(Exception e)
 		{
+
+			System.out.println("Here is the lot id: " + lotID);
 			e.printStackTrace();
 		}
 
@@ -86,5 +110,6 @@ public class GUIReport extends JPanel
 		this.revalidate();
 		
 	}
+	
 
 }

@@ -37,37 +37,37 @@ public class GUIManage extends JPanel
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new FlowLayout());
 		JButton btnLogin = new JButton("Search for User");
-				btnLogin.addActionListener(new ActionListener()
+		btnLogin.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				user = controller.getUser(username.getText());
+				if (user == null)
 				{
-					public void actionPerformed(ActionEvent e)
-					{
-						user = controller.getUser(username.getText());
-						if (user == null)
-						{
-							controller.displayError("User Does Not Exist.");
-						}
-						else
-						{
-							userDisplayPanel.removeAll();
-							changeBtnPanel.removeAll();
-							frame.revalidate();
-							displayUser();
-							displayModBtn();
-							System.out.println("Display User");
-						}
-					}
-				});
-				btnPanel.add(btnLogin);
-				JButton btnGoBack = new JButton("Go Back");
-				btnGoBack.addActionListener(new ActionListener()
+					controller.displayError("User Does Not Exist.");
+				}
+				else
 				{
-					public void actionPerformed(ActionEvent e)
-					{
-						controller.displayGUIMainMenu();
-					}
-				});
-				btnPanel.add(btnGoBack);
-				this.add(btnPanel);
+					userDisplayPanel.removeAll();
+					changeBtnPanel.removeAll();
+					frame.revalidate();
+					displayUser();
+					displayModBtn();
+					System.out.println("Display User");
+				}
+			}
+		});
+		btnPanel.add(btnLogin);
+		JButton btnGoBack = new JButton("Go Back");
+		btnGoBack.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				controller.displayGUIMainMenu();
+			}
+		});
+		btnPanel.add(btnGoBack);
+		this.add(btnPanel);
 	}
 
 	public void addFields()
