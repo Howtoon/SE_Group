@@ -7,11 +7,11 @@ public class ParkingLot {
 	private String lotID;
 
 	private int total = 0;
-    private int occupied = 0;
-    private int available = 0;
-    private boolean isOpen = true;
-    // Image map
-    // Violation object?
+	private int occupied = 0;
+	private int available = 0;
+	private boolean isOpen = true;
+	// Image map
+	// Violation object?
 
 	private int reserved = 0;
 	private int handicapped = 0;
@@ -24,23 +24,23 @@ public class ParkingLot {
 	private Date recordDate;
 
 
-    public ParkingLot() {
-        this.lotID = "";
-        recordDate = new Date();
-    }
+	public ParkingLot() {
+		this.lotID = "";
+		recordDate = new Date();
+	}
 
-    /** Admin/Super - update Lot constructor*/
-    public ParkingLot (String ID, int numCars) {
-        super();
-        this.lotID = ID;
-        this.total = numCars;
-        this.occupied = numCars;
-        recordDate = new Date();
-    }
+	/** Admin/Super - update Lot constructor*/
+	public ParkingLot (String ID, int numCars) {
+		super();
+		this.lotID = ID;
+		this.total = numCars;
+		this.occupied = numCars;
+		recordDate = new Date();
+	}
 
-    /** Supervisor - add Lot constructor */
+	/** Supervisor - add Lot constructor */
 	public ParkingLot (String ID, int total, int reserved, int handicapped, int commuter,
-					   int resident, int staff, int visitor, int motorcycle, boolean isOpen) {
+			int resident, int staff, int visitor, int motorcycle, boolean isOpen) {
 		super();
 		this.lotID = ID;
 		this.total = total;
@@ -52,7 +52,7 @@ public class ParkingLot {
 		this.staff = staff;
 		this.visitor = visitor;
 		this.motorcycle = motorcycle;
-        recordDate = new Date();
+		recordDate = new Date();
 	}
 
 	public String getLotID() { return lotID; }
@@ -130,11 +130,11 @@ public class ParkingLot {
 		isOpen = open;
 	}
 
-    public Date getRecordDate() {
-        return recordDate;
-    }
+	public Date getRecordDate() {
+		return recordDate;
+	}
 
-    public void setRecordDate(Date recordDate) {
-        this.recordDate = recordDate;
-    }
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+	}
 }
