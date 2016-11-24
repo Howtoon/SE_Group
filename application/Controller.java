@@ -57,7 +57,7 @@ public class Controller
 	public boolean verifyLogin(String userName, String password)   //calls DBMgr() to verify username and password 
 	{           //Called by CreateNewUser()
 		//userDBManager.openConnection()
-		
+
 		if (userDBManager.validateUserInfo(userName, password))
 		{
 			user = userDBManager.getUser(userName);
@@ -67,9 +67,9 @@ public class Controller
 		{
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Verifies if a username is already in use or not
 	 * @param userName
@@ -87,7 +87,7 @@ public class Controller
 		//if user already exists, return true
 		return false;//Just in case for testing
 	}
-	
+
 	/**
 	 * Changes the application's main panel to the create user page
 	 */
@@ -96,7 +96,7 @@ public class Controller
 
 		frame.setContentPane(new GUICreateUser(this));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
-		
+
 	}
 
 	/**
@@ -105,10 +105,10 @@ public class Controller
 	 */
 	public void createUser(User newUser)  //Calls DBMgr() to create a new user in the database
 	{
-		
+
 		user = newUser;         //assigns instance variable to public variable for referencing
 		displayGUIMainMenu();   //calls GUIMainMenu()
-		
+
 	}
 
 	/**
@@ -116,10 +116,10 @@ public class Controller
 	 */
 	public void displayGUIMainMenu()//Called from GUILogin first, other GUIs can come back to the MainMenu
 	{
-		
+
 		frame.setContentPane(new GUIMainMenu(this, user));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
-		
+
 	}
 
 	/**
@@ -143,10 +143,10 @@ public class Controller
 	 */
 	public void displayGUIStats()
 	{
-		
+
 		frame.setContentPane(new GUIStats(this, user));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
-		
+
 	}
 
 	/**
@@ -155,11 +155,11 @@ public class Controller
 	 */
 	public void displayError(String e)
 	{
-		
+
 		JOptionPane.showMessageDialog(frame, e);
-		
+
 	}
-	
+
 	/**
 	 * Changes the application's main panel to the walking times page
 	 */
@@ -170,13 +170,13 @@ public class Controller
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
 
 	}
-	
+
 	public void displayGUIMaps()
 	{
-		
+
 		frame.setContentPane(new GUIMaps(this));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
-		
+
 	}
 	/*
    public void displayGUIRestric()
@@ -184,12 +184,17 @@ public class Controller
       GUIRestric restric = new GUIRestric();
    }
 	 */
-	/*
-   public void displayGUIReport()
-   {
-      GUIReport report = new GUIReport();
-   }
+	
+	/**
+	 * Changes the application's main panel to the parking lot report page
 	 */
+	public void displayGUIReport()
+	{
+		
+		frame.setContentPane(new GUIReport(this));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.revalidate();	/* Updates the frame to display the new panel that was added */
+		
+	}
 	/*
    public void displayGUIViolate()
    {
@@ -202,10 +207,10 @@ public class Controller
 	 */
 	public void displayGUIManage()
 	{
-		
+
 		frame.setContentPane(new GUIManage(this, frame));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
-		
+
 	}
 
 	/**
@@ -215,21 +220,21 @@ public class Controller
 	 */
 	public User getUser(String userName)
 	{
-		
+
 		return userDBManager.getUser(userName);
-		
+
 	}
 
 	/**
-	 * 
-	 * @param userName
+	 * Updates the permissions of a specific user
+	 * @param userName the username of the specific user that will have their permissions updated
 	 * @param status
 	 */
 	public void updatePermissions(String userName, int status)
 	{
-		
+
 		boolean toggle = userDBManager.updatePermissions(userName, status);
-		
+
 	}
 
 	/**
@@ -237,10 +242,10 @@ public class Controller
 	 */
 	public void logOut()
 	{
-		
+
 		user = null;
 		displayGUIWelcome();
-		
+
 	}
-	
+
 }
