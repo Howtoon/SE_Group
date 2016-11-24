@@ -12,6 +12,10 @@ public class Controller
 	private User user;
 	private UserDBManager userDBManager = new UserDBManager();
 
+	/**
+	 * Parameterized constructor which sets up the frame when first opened
+	 * @param frame
+	 */
 	public Controller(JFrame frame)
 	{
 
@@ -33,6 +37,9 @@ public class Controller
 
 	}
 
+	/**
+	 * Changes the application's main panel to the login page
+	 */
 	public void displayGUILogin()//Called from GUIWelcome()
 	{
 
@@ -109,11 +116,15 @@ public class Controller
 	 */
 	public void displayGUIMainMenu()//Called from GUILogin first, other GUIs can come back to the MainMenu
 	{
-		// GUIMainMenu mainMenu = new GUIMainMenu(this, user);  //passes the frame, controller, and user object to the menu
-		frame.setContentPane(new GUIMainMenu(this, user));
-		frame.revalidate();
+		
+		frame.setContentPane(new GUIMainMenu(this, user));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.revalidate();	/* Updates the frame to display the new panel that was added */
+		
 	}
 
+	/**
+	 * Changes the application's main panel to the regulation page
+	 */
 	public void displayGUIRegs()
 	{
 		try   //http://uwf.edu/media/university-of-west-florida/offices/trustees/regulations/UWF-REG-5-001-Parking-and-Registration-6.16.16.pdf
@@ -127,42 +138,45 @@ public class Controller
 		}
 	}
 
+	/**
+	 * Changes the application's main panel to the parking lot statistics page
+	 */
 	public void displayGUIStats()
 	{
-		frame.setContentPane(new GUIStats(this, user));
-		frame.revalidate();
+		
+		frame.setContentPane(new GUIStats(this, user));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.revalidate();	/* Updates the frame to display the new panel that was added */
+		
 	}
 
+	/**
+	 * Pop ups an error dialog box with the given error message
+	 * @param e the error message to be displayed
+	 */
 	public void displayError(String e)
 	{
+		
 		JOptionPane.showMessageDialog(frame, e);
+		
 	}
-	/*
-   public void displayCreateUserError()
-   {
-
-	   JOptionPane.showMessageDialog(frame, "Username already exists.");
-
-   }
-
-   public void displayLoginError()
-   {
-
-	   JOptionPane.showMessageDialog(frame, "Incorrect Username/Password combination.");
-
-   }
+	
+	/**
+	 * Changes the application's main panel to the walking times page
 	 */
 	public void displayGUIWalk()
 	{
 
-		frame.setContentPane(new GUIWalk(this));
-		frame.revalidate();
+		frame.setContentPane(new GUIWalk(this));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.revalidate();	/* Updates the frame to display the new panel that was added */
 
 	}
+	
 	public void displayGUIMaps()
 	{
-		frame.setContentPane(new GUIMaps(this));
-		frame.revalidate();
+		
+		frame.setContentPane(new GUIMaps(this));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.revalidate();	/* Updates the frame to display the new panel that was added */
+		
 	}
 	/*
    public void displayGUIRestric()
@@ -183,25 +197,50 @@ public class Controller
    }
 	 */
 
+	/**
+	 * Changes the application's main panel to the permissions management page
+	 */
 	public void displayGUIManage()
 	{
-		frame.setContentPane(new GUIManage(this, frame));
-		frame.revalidate();
+		
+		frame.setContentPane(new GUIManage(this, frame));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.revalidate();	/* Updates the frame to display the new panel that was added */
+		
 	}
 
+	/**
+	 * Searches the database for a user based on a given user name and returns that user if found or null if not
+	 * @param userName the username of the user to be searched
+	 * @return the user object if the user is found or null if not
+	 */
 	public User getUser(String userName)
 	{
+		
 		return userDBManager.getUser(userName);
+		
 	}
 
+	/**
+	 * 
+	 * @param userName
+	 * @param status
+	 */
 	public void updatePermissions(String userName, int status)
 	{
+		
 		boolean toggle = userDBManager.updatePermissions(userName, status);
+		
 	}
 
+	/**
+	 * Logs out the current user and displays the welcome page
+	 */
 	public void logOut()
 	{
+		
 		user = null;
 		displayGUIWelcome();
+		
 	}
+	
 }
