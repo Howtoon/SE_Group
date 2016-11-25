@@ -9,8 +9,6 @@ import application.*;
 public class GUICreateUser extends JPanel
 {
 
-	private JLabel user;
-	private JLabel pass;
 	private JTextField username;
 	private JPasswordField password;
 
@@ -67,14 +65,14 @@ public class GUICreateUser extends JPanel
 	{
 		JPanel userPanel = new JPanel();
 		userPanel.setLayout(new FlowLayout());
-		user = new JLabel("User Name: ");
+		JLabel user = new JLabel("User Name: ");
 		username = new JTextField(20);
 		userPanel.add(user);
 		userPanel.add(username);
 
 		JPanel passPanel = new JPanel();
 		passPanel.setLayout(new FlowLayout());
-		pass = new JLabel("Password: ");
+		JLabel pass = new JLabel("Password: ");
 		password = new JPasswordField(20);
 		password.setEchoChar('#');
 		passPanel.add(pass);
