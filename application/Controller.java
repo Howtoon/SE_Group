@@ -149,7 +149,7 @@ public class Controller
 	public void displayGUIStats()
 	{
 
-		frame.setContentPane(new GUIStats(this, user));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
+		frame.setContentPane(new GUIStats(this, frame));	/* Sets the new panel in the JFrame. It will also overwrite any previous panels */
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
 
 	}

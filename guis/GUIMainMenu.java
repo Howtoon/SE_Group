@@ -61,7 +61,7 @@ public class GUIMainMenu extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				controller.displayGUIReport();
+				controller.displayGUIStats();
 			}
 		});
 		this.add(btnStats);
