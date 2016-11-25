@@ -94,7 +94,7 @@ public class GUIMainMenu extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-
+            controller.displayGUIRestric();
 			}
 		});
 		this.add(btnRestric);

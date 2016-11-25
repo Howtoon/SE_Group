@@ -11,6 +11,7 @@ public class Controller
 {
 	private JFrame frame;
 	private User user;
+   private ParkingLot lot;
 	private UserDBManager userDBManager;
 	private LotDBManager lotDBManager;
 
@@ -185,12 +186,13 @@ public class Controller
    
    public void displayGUIRestric()
    {
-      GUIRestric restric = new GUIRestric();
+      frame.setContentPane(new GUIRestric(this, frame));
+      frame.revalidate();
    }
    
    public ParkingLot updateLotStatus (String lotID, boolean isOpen)
    {
-      ParkingLot lot = lotDBManager.updateLotStatus(lotID, isOpen);
+      lot = lotDBManager.updateLotStatus(lotID, isOpen);
       return lot;
    }
 	
@@ -229,9 +231,7 @@ public class Controller
 	 */
 	public User getUser(String userName)
 	{
-
 		return userDBManager.getUser(userName);
-
 	}
 
 	/**
@@ -251,13 +251,19 @@ public class Controller
 	 */
 	public ParkingLot getLot(String lotID)
 	{
-		return lotDBManager.getLot(lotID);
+		lot = lotDBManager.getLot(lotID);
+      return lot;
 	}
    
    public ParkingLot updateLotCars (String lotID, int numCars)
    {
       ParkingLot tempLot = lotDBManager.updateLotCars(lotID, numCars);
       return tempLot;
+   }
+   
+   public void setOpen(boolean open)
+   {
+      lot.setOpen(open);
    }
 	
 	/**

@@ -10,7 +10,7 @@ public class ParkingLot {
 	private int occupied = 0;
 	private int available = 0;
 	private boolean isOpen = true;
-	// Image map
+	// Image map                yes, I think that these would be helpful.
 	// Violation object?
 
 	private int reserved = 0;
@@ -55,8 +55,14 @@ public class ParkingLot {
 		recordDate = new Date();
 	}
 
-	public String getLotID() { return lotID; }
-	public void setLotID(String id) { this.lotID = id; }
+	public String getLotID()
+   {
+      return lotID;
+   }
+	public void setLotID(String id)
+   {
+      this.lotID = id;
+   }
 	public int getVisitor() {
 		return visitor;
 	}

@@ -15,7 +15,7 @@ public class GUIRestric extends JPanel
 	private Controller controller;
 	private ParkingLot lot;
 	private JFrame frame;
-	private JPanel userDisplayPanel;
+	private JPanel lotDisplayPanel;
 	private JPanel changeBtnPanel;
 
 
@@ -25,10 +25,10 @@ public class GUIRestric extends JPanel
 		this.frame = frame;
 		this.controller = controller;
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.addFields();
-		this.addButtons();
-		this.userDisplayPanel = new JPanel();
-		this.changeBtnPanel = new JPanel();
+		this.addFields();                                                 //add search field
+		this.addButtons();                                                //add search and go-back buttons
+		this.lotDisplayPanel = new JPanel();                              //create global var for panel to display lot info
+		this.changeBtnPanel = new JPanel();                               //create global var for panel for toggle button
 
 	}
 
@@ -41,24 +41,24 @@ public class GUIRestric extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				lot = controller.getLot(lotName.getText());
+				lot = controller.getLot(lotName.getText());        //Look up Lot by LotID and assign ParkingLot object to var lot
 				if (lot == null)
 				{
 					controller.displayError("Parking Lot Does Not Exist.");
 				}
 				else
 				{
-					userDisplayPanel.removeAll();
-					changeBtnPanel.removeAll();
-					frame.revalidate();
-					displayLot();
-					displayModBtn();
-					System.out.println("Display Parking Lot");
+					lotDisplayPanel.removeAll();           //Remove all previous lot info
+					changeBtnPanel.removeAll();            //Remove all toggle buttons
+					frame.revalidate();                    //revalidate to ensure everything cleared
+					displayLot();                          //redisplay lot info after change has been made
+					displayModBtn();                       //reload toggle buttons
+					System.out.println("Display Parking Lot");   
 				}
 			}
 		});
-		btnPanel.add(btnLookUp);
-		JButton btnGoBack = new JButton("Go Back");
+		btnPanel.add(btnLookUp);                        //Add search buttons
+		JButton btnGoBack = new JButton("Go Back");     //returns user to GUIMainMenu()
 		btnGoBack.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -72,65 +72,70 @@ public class GUIRestric extends JPanel
 
 	public void addFields()
 	{
-		JPanel lotPanel = new JPanel();
-		lotPanel.setLayout(new FlowLayout());
-      JLabel lotLabel = new JLabel("Enter Parking Lot ID: ");
+		JPanel fieldPanel = new JPanel();                           //search field panel
+		fieldPanel.setLayout(new FlowLayout());
+      JLabel lotLabel = new JLabel("Enter Parking Lot ID: ");     
 		lotName = new JTextField(20);
-		lotPanel.add(lotLabel);
-		lotPanel.add(lotName);
+		fieldPanel.add(lotLabel);
+		fieldPanel.add(lotName);
 
-		this.add(lotPanel);
+		this.add(fieldPanel);
 
 	}
 
 	public void displayLot()
 	{
-      ////
-		JLabel lotName = new JLabel(user.getName());
-		JLabel userPermissions = new JLabel(user.getPermissions().getpString());
-		userDisplayPanel.add(userName);
-		userDisplayPanel.add(userPermissions);
+      String restric;
+		JLabel nameLabel = new JLabel(lotName.getText());//
+		if (lot.isOpen() == true)
+      {
+         restric = "Open";
+      }
+      else
+      {
+         restric = "Closed";
+      }
+      JLabel lotRestriction = new JLabel(restric);
+		lotDisplayPanel.add(nameLabel);//
+		lotDisplayPanel.add(lotRestriction);
 
-		this.add(userDisplayPanel);
+		this.add(lotDisplayPanel);
 		frame.revalidate();
 	}
 
 	public void displayModBtn()
 	{  
-		JButton changePermission = new JButton("Toggle User Permission");
-		changePermission.addActionListener(new ActionListener()
+		JButton changeRestriction = new JButton("Toggle Lot Permission");
+		changeRestriction.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if (user.getPermissions().getpString() == "USER")
+				if (lot.isOpen() == true)
 				{
-					controller.updatePermissions (user.getName(), 1);
+					controller.setOpen(false);
 				}
-				else if (user.getPermissions().getpString() == "ADMIN")
+				else if (lot.isOpen() == false)
 				{
-					controller.updatePermissions (user.getName(), 0);
+					controller.setOpen(true);
 				}
-				else if (user.getPermissions().getpString() == "SUPERVISOR")
+				String lotNm = lot.getLotID();
+				if (lot == null)
 				{
-					controller.displayError("You Cannot Change The Supervisor's Permissions!!!");
-				}
-				user = controller.getUser(username.getText());
-				if (user == null)
-				{
-					controller.displayError("User Does Not Exist.");
+					controller.displayError("Lot Does Not Exist.");
 				}
 				else
 				{
-					userDisplayPanel.removeAll();
+					lotDisplayPanel.removeAll();
 					changeBtnPanel.removeAll();
 					frame.revalidate();
-					displayUser();
+					displayLot();
 					displayModBtn();
-					System.out.println("Display User");
+               frame.revalidate();
+					System.out.println("Display Lot");
 				}
 			}
 		});
-		changeBtnPanel.add(changePermission);
+		changeBtnPanel.add(changeRestriction);
 		this.add(changeBtnPanel);
 		frame.revalidate();
 	}

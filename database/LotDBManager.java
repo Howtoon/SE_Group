@@ -274,7 +274,7 @@ public class LotDBManager {
             e.printStackTrace();
             return null;
         }
-
+        System.out.println("return lot for lotDBManager.getLot()");
         return lotToReturn;
     }
 
