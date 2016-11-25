@@ -35,6 +35,7 @@ public class GUIManage extends JPanel
 	{
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new FlowLayout());
+      btnPanel.setBackground(Color.CYAN);
 		JButton btnLogin = new JButton("Search for User");
 		btnLogin.addActionListener(new ActionListener()
 		{
@@ -73,10 +74,11 @@ public class GUIManage extends JPanel
 	{
 		JPanel userPanel = new JPanel();
 		userPanel.setLayout(new FlowLayout());
-        JLabel userLabel = new JLabel("Enter User Name: ");
+      JLabel userLabel = new JLabel("Enter User Name: ");
 		username = new JTextField(20);
 		userPanel.add(userLabel);
 		userPanel.add(username);
+      userPanel.setBackground(Color.CYAN);
 
 		this.add(userPanel);
 
@@ -88,7 +90,7 @@ public class GUIManage extends JPanel
 		JLabel userPermissions = new JLabel(user.getPermissions().getpString());
 		userDisplayPanel.add(userName);
 		userDisplayPanel.add(userPermissions);
-
+      
 		this.add(userDisplayPanel);
 		frame.revalidate();
 	}
@@ -128,6 +130,7 @@ public class GUIManage extends JPanel
 				}
 			}
 		});
+      changeBtnPanel.setBackground(Color.ORANGE);
 		changeBtnPanel.add(changePermission);
 		this.add(changeBtnPanel);
 		frame.revalidate();
