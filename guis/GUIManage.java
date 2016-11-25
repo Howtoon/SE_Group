@@ -42,6 +42,7 @@ public class GUIManage extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				user = controller.getUser(username.getText());
+
 				if (user == null)
 				{
 					controller.displayError("User Does Not Exist.");

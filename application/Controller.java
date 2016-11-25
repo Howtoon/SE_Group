@@ -7,6 +7,9 @@ import guis.*;
 import objects.User;
 import objects.ParkingLot;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Controller
 {
 	private JFrame frame;
