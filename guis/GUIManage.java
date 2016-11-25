@@ -9,9 +9,8 @@ import database.*;
 
 public class GUIManage extends JPanel
 {
-	
-	private JLabel userLabel;
-	private JTextField username;
+
+    private JTextField username;
 	private Controller controller;
 	private User user;
 	private JFrame frame;
@@ -74,7 +73,7 @@ public class GUIManage extends JPanel
 	{
 		JPanel userPanel = new JPanel();
 		userPanel.setLayout(new FlowLayout());
-		userLabel = new JLabel("Enter User Name: ");
+        JLabel userLabel = new JLabel("Enter User Name: ");
 		username = new JTextField(20);
 		userPanel.add(userLabel);
 		userPanel.add(username);
