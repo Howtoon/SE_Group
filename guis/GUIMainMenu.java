@@ -88,17 +88,6 @@ public class GUIMainMenu extends JPanel
 		});
 		this.add(btnMaps);
 
-		JButton btnRestric = new JButton("View Parking Lot Restrictions");
-		btnRestric.setAlignmentX(this.CENTER_ALIGNMENT);
-		btnRestric.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-            controller.displayGUIRestric();
-			}
-		});
-		this.add(btnRestric);
-
 		if (user.getPermissions()== UserPermissions.SUPERVISOR || user.getPermissions()==UserPermissions.ADMIN)
 		{
 			JButton btnReport = new JButton("Create Parking Lot Report");
@@ -125,6 +114,17 @@ public class GUIMainMenu extends JPanel
 		}
 		if (user.getPermissions()==UserPermissions.SUPERVISOR)
 		{
+         
+   		JButton btnRestric = new JButton("Toggle Parking Lot Open/Closed");
+   		btnRestric.setAlignmentX(this.CENTER_ALIGNMENT);
+   		btnRestric.addActionListener(new ActionListener()
+   		{
+   			public void actionPerformed(ActionEvent e)
+   			{
+               controller.displayGUIRestric();
+   			}
+   		});
+   		this.add(btnRestric);
 
 			JButton btnManage = new JButton("Manage Administrators");
 			btnManage.setAlignmentX(this.CENTER_ALIGNMENT);
