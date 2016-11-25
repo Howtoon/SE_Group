@@ -4,7 +4,8 @@ import javax.swing.*;
 
 import database.*;
 import guis.*;
-import objects.*;
+import objects.User;
+import objects.ParkingLot;
 
 public class Controller
 {
@@ -181,12 +182,17 @@ public class Controller
 		frame.revalidate();	/* Updates the frame to display the new panel that was added */
 
 	}
-	/*
+   
    public void displayGUIRestric()
    {
       GUIRestric restric = new GUIRestric();
    }
-	 */
+   
+   public ParkingLot updateLotStatus (String lotID, boolean isOpen)
+   {
+      ParkingLot lot = lotDBManager.updateLotStatus(lotID, isOpen);
+      return lot;
+   }
 	
 	/**
 	 * Changes the application's main panel to the parking lot report page
@@ -235,9 +241,7 @@ public class Controller
 	 */
 	public void updatePermissions(String userName, int status)
 	{
-
 		boolean toggle = userDBManager.updatePermissions(userName, status);
-
 	}
 
 	/**
@@ -247,20 +251,22 @@ public class Controller
 	 */
 	public ParkingLot getLot(String lotID)
 	{
-		
 		return lotDBManager.getLot(lotID);
-		
 	}
+   
+   public ParkingLot updateLotCars (String lotID, int numCars)
+   {
+      ParkingLot tempLot = lotDBManager.updateLotCars(lotID, numCars);
+      return tempLot;
+   }
 	
 	/**
 	 * Logs out the current user and displays the welcome page
 	 */
 	public void logOut()
 	{
-
 		user = null;
 		displayGUIWelcome();
-
 	}
 
 }

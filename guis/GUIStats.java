@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 import application.*;
-import objects.*;
+import objects.User;
 
 public class GUIStats extends JPanel
 {

@@ -17,6 +17,7 @@ public class GUIReport extends JPanel
 	private Controller controller;
 	private ParkingLot lot;
 	private JLabel lotImage;
+   private String parkingLotID;
 	
 
 	public GUIReport(Controller controller)
@@ -26,7 +27,6 @@ public class GUIReport extends JPanel
 		this.lotImage = new JLabel("");
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.addComponents();
-		this.addStatistics();
 		this.add(lotImage);
 
 	}
@@ -38,11 +38,11 @@ public class GUIReport extends JPanel
 
 		JLabel lotID = new JLabel("Lot ID:");
 		JTextField lotField = new JTextField(20);
+      parkingLotID = lotField.getText();
 
 		JButton btnViewLot = new JButton("View Parking Lot");
 		btnViewLot.addActionListener(new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e)
 			{
 				lot = controller.getLot(lotField.getText());
@@ -51,10 +51,9 @@ public class GUIReport extends JPanel
 				else if(lotField.getText().equals(""))
 					controller.displayError("There is not a lot specified");
 				else
-					drawParkingLot(lot.getLotID().toLowerCase());
-				
+               addStatistics();
+					//drawParkingLot(lot.getLotID().toLowerCase());
 			}
-
 		});
 
 		componentPanel.add(lotID);
@@ -77,15 +76,39 @@ public class GUIReport extends JPanel
 	
 	private void addStatistics()
 	{
-		
-		
-		
+	   JPanel componentPanel = new JPanel();
+
+		JLabel spaceAvail = new JLabel("Enter # of spaces available: ");
+		JTextField numSpaces = new JTextField(5);
+      
+		JButton btnAddStats = new JButton("Add Statistics");
+		btnAddStats.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+            int space = Integer.parseInt(numSpaces.getText());
+            ParkingLot result = controller.updateLotCars(parkingLotID, space);
+            if (result != null)
+            {
+               controller.displayError("Report was successfully submitted");
+            }
+            if (result == null)
+            {
+               controller.displayError("An error occurred while updating lot information");
+            }
+			}
+		});
+      
+      componentPanel.add(spaceAvail);
+		componentPanel.add(numSpaces);
+		componentPanel.add(btnAddStats);
+      
+      this.add(componentPanel);
+      this.revalidate();
 	}
 	
 	private void drawParkingLot(String lotID)
 	{
-		
-		
 		BufferedImage bi = null;
 		try
 		{
@@ -108,7 +131,6 @@ public class GUIReport extends JPanel
 		lotImage.setIcon(new ImageIcon(bi));
 		
 		this.revalidate();
-		
 	}
 	
 
