@@ -30,8 +30,6 @@ public class GUIReport extends JPanel
         this.initializeStats();
         this.addComponents();
         this.add(lotImage);
-        this.revalidate();
-        this.repaint();
 
     }
 
@@ -202,12 +200,14 @@ public class GUIReport extends JPanel
         {
 
             ImageIcon imageicon = new ImageIcon(String.format("resources/%s_lot.png", lotID));
-
             bi = new BufferedImage(imageicon.getIconWidth(), imageicon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = (Graphics2D) bi.createGraphics();
             g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
             g2d.drawImage(imageicon.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
 
+
+            lotImage.setText(lotID);
+            lotImage.setIcon(new ImageIcon(bi));
         }
         catch (Exception e)
         {
@@ -216,8 +216,6 @@ public class GUIReport extends JPanel
             e.printStackTrace();
         }
 
-        lotImage.setText(lotID);
-        lotImage.setIcon(new ImageIcon(bi));
     }
 
     public void paintComponent(Graphics g)
