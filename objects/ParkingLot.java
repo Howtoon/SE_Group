@@ -52,6 +52,7 @@ public class ParkingLot {
 		this.staff = staff;
 		this.visitor = visitor;
 		this.motorcycle = motorcycle;
+		this.violations = 0;
 		recordDate = new Date();
 	}
 

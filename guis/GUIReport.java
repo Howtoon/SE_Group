@@ -19,9 +19,9 @@ public class GUIReport extends JPanel
     private Controller controller;
     private ParkingLot lot;
     private JPanel stats;
-    JLabel spaceAvail = new JLabel("Spaces Available: --");
-    JLabel numCars = new JLabel("Number of Cars: --");
-    JLabel violations = new JLabel("Violations: --");
+    private JLabel spaceAvail;
+    private JLabel numCars;
+    private JLabel violations;
     private JLabel lotImage;
 
     public GUIReport(Controller controller)
@@ -41,6 +41,9 @@ public class GUIReport extends JPanel
 
         stats = new JPanel();
         stats.setLayout(new BoxLayout(stats, BoxLayout.PAGE_AXIS));
+        spaceAvail = new JLabel("Spaces Available: --");
+        numCars = new JLabel("Number of Cars: --");
+        violations = new JLabel("Violations: --");
         stats.add(spaceAvail);
         stats.add(numCars);
         stats.add(violations);
@@ -54,6 +57,7 @@ public class GUIReport extends JPanel
 
         spaceAvail.setText("Spaces Available: " + lot.getAvailable());
         numCars.setText("Number of Cars: " + lot.getOccupied());
+        violations.setText("Violations: " + lot.getViolations());
         this.revalidate();
         this.repaint();
 
@@ -80,7 +84,9 @@ public class GUIReport extends JPanel
                 try
                 {
                     int space = Integer.parseInt(carField.getText());
-                    lot = controller.updateLotCars(lot.getLotID(), space);
+                    int violations = Integer.parseInt(violationField.getText());
+
+                    lot = controller.updateLot(lot.getLotID(), space, violations);
                     if (lot != null)
                     {
                         controller.displayError("Report was successfully submitted");
@@ -88,7 +94,7 @@ public class GUIReport extends JPanel
                     }
                     if (lot == null)
                     {
-                        controller.displayError("An error occurred while updating lot information");
+                        controller.displayError("An error occurred while updating the lot's information");
                     }
 
 
@@ -96,6 +102,7 @@ public class GUIReport extends JPanel
                 catch (Exception e1)
                 {
                     e1.printStackTrace();
+                    controller.displayError("An error occurred while updating the lot's information");
                 }
             }
         });

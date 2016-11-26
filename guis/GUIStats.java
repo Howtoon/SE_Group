@@ -33,7 +33,10 @@ public class GUIStats extends JPanel
         this.addFields();                                                 //add search field
         this.addButtons();                                                //add search and go-back buttons
         this.lotDisplayPanel = new JPanel();                              //create global var for panel to display lot info
+        this.lotDisplayPanel.setLayout(new BoxLayout(this.lotDisplayPanel, BoxLayout.PAGE_AXIS));
         this.changeBtnPanel = new JPanel();                               //create global var for panel for toggle button
+        this.add(lotDisplayPanel);
+        this.add(changeBtnPanel);
         this.add(lotImage);
     }
 
@@ -91,8 +94,9 @@ public class GUIStats extends JPanel
 
     public void displayLot()
     {
+
         String restric;
-        JLabel nameLabel = new JLabel(lotName.getText());
+        JLabel nameLabel = new JLabel("Lot ID: " + lotName.getText());
         if (lot.isOpen() == true)
         {
             restric = "Open";
@@ -100,18 +104,19 @@ public class GUIStats extends JPanel
         {
             restric = "Closed";
         }
-        JLabel total = new JLabel(Integer.toString(lot.getTotal()));
-        JLabel occupied = new JLabel(Integer.toString(lot.getOccupied()));
-        JLabel free = new JLabel(Integer.toString(lot.getTotal() - lot.getOccupied()));
-        JLabel lotRestriction = new JLabel(restric);
+        JLabel total = new JLabel("Total Spaces: " + lot.getTotal());
+        JLabel occupied = new JLabel("Number of Cars: " + lot.getOccupied());
+        JLabel free = new JLabel("Available Spaces: " + (lot.getTotal() - lot.getOccupied()));
+        JLabel lotRestriction = new JLabel("This lot is: " + restric);
         lotDisplayPanel.add(nameLabel);
         lotDisplayPanel.add(total);
         lotDisplayPanel.add(occupied);
         lotDisplayPanel.add(free);
         lotDisplayPanel.add(lotRestriction);
 
-        this.add(lotDisplayPanel);
+        //this.add(lotDisplayPanel);
         frame.revalidate();
+
     }
 
     private void drawParkingLot(String lotID)

@@ -309,6 +309,41 @@ public class LotDBManager
     }
 
     /**
+     * Method used to update a lot's number of cars and violations.
+     * Creates a lot object from latest info
+     * Applies it back after adjusting available
+     * & occupied spaces. Updates the Timestamp.
+     * Adds it back to the table.
+     * Return false if lot doesn't exist.
+     *
+     * @param lotID   name of lot to find
+     * @param numCars number of cars to enter
+     * @param violations number of violations to enter
+     * @return ParkingLot object updated.
+     */
+    public ParkingLot updateLot(String lotID, int numCars, int violations)
+    {
+
+        ParkingLot tempLot = getLot(lotID);
+
+        if (tempLot == null)
+        {
+            System.out.println("Lot does not exist");
+            return null;
+        } else
+        {
+            if (tempLot.getTotal() < numCars)
+                tempLot.setTotal(numCars);
+            tempLot.setOccupied(numCars);
+            tempLot.setAvailable(tempLot.getTotal() - numCars);
+            tempLot.setRecordDate(new Date());
+            tempLot.setViolations(tempLot.getViolations() + violations);
+            addLot(tempLot);
+        }
+        return tempLot;
+    }
+
+    /**
      * Method used to update a lot's available spaces.
      * Creates a lot object from latest info
      * Applies it back after adjusting available
