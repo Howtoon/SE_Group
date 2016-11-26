@@ -5,12 +5,13 @@ import javax.swing.JFrame;
 public class GUIController extends JFrame
 {
 
-	public GUIController()
-	{
+    public GUIController()
+    {
 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(512,512);
+        this.setTitle("Parking Lot App");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(512, 512);
 
-	}
+    }
 
 }

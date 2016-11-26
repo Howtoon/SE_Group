@@ -19,8 +19,6 @@ public class GUIReport extends JPanel
     JLabel spaceAvail = new JLabel("Spaces Available: --");
     JLabel violations = new JLabel("Violations: --");
     private JLabel lotImage;
-    private String parkingLotID;
-
 
     public GUIReport(Controller controller)
     {
@@ -32,6 +30,7 @@ public class GUIReport extends JPanel
         this.addComponents();
         this.add(lotImage);
         this.revalidate();
+        this.repaint();
 
     }
 
@@ -76,7 +75,7 @@ public class GUIReport extends JPanel
                 try
                 {
                     int space = Integer.parseInt(availField.getText());
-                    lot = controller.updateLotCars(parkingLotID, space);
+                    lot = controller.updateLotCars(lot.getLotID(), space);
                     if (lot != null)
                     {
                         controller.displayError("Report was successfully submitted");
@@ -86,6 +85,8 @@ public class GUIReport extends JPanel
                     {
                         controller.displayError("An error occurred while updating lot information");
                     }
+
+                    repaint();
                 }
                 catch (Exception e1)
                 {
@@ -144,7 +145,6 @@ public class GUIReport extends JPanel
 
         JLabel lotID = new JLabel("Lot ID:");
         JTextField lotField = new JTextField(20);
-        parkingLotID = lotField.getText();
 
         JButton btnViewLot = new JButton("View Parking Lot");
         btnViewLot.addActionListener(new ActionListener()
@@ -163,6 +163,7 @@ public class GUIReport extends JPanel
                     viewStats();
 
                 }
+                repaint();
             }
         });
 
