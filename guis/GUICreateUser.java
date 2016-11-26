@@ -21,6 +21,7 @@ public class GUICreateUser extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.addFields();
 		this.addButtons();
+      this.setBorder(BorderFactory.createLineBorder(Color.black));
 
 	}
 
@@ -28,6 +29,7 @@ public class GUICreateUser extends JPanel
 	{
 
 		JPanel btnPanel = new JPanel();
+      btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		btnPanel.setLayout(new FlowLayout());
 		JButton btnLogin = new JButton("Create New User");
 		btnLogin.addActionListener(new ActionListener()
@@ -64,6 +66,7 @@ public class GUICreateUser extends JPanel
 	public void addFields()
 	{
 		JPanel userPanel = new JPanel();
+      userPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		userPanel.setLayout(new FlowLayout());
 		JLabel user = new JLabel("User Name: ");
 		username = new JTextField(20);
@@ -71,6 +74,7 @@ public class GUICreateUser extends JPanel
 		userPanel.add(username);
 
 		JPanel passPanel = new JPanel();
+      passPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		passPanel.setLayout(new FlowLayout());
 		JLabel pass = new JLabel("Password: ");
 		password = new JPasswordField(20);

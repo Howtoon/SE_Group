@@ -29,12 +29,14 @@ public class GUIRestric extends JPanel
 		this.addButtons();                                                //add search and go-back buttons
 		this.lotDisplayPanel = new JPanel();                              //create global var for panel to display lot info
 		this.changeBtnPanel = new JPanel();                               //create global var for panel for toggle button
+      this.setBorder(BorderFactory.createLineBorder(Color.black));
 
 	}
 
 	public void addButtons()
 	{
 		JPanel btnPanel = new JPanel();
+      btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		btnPanel.setLayout(new FlowLayout());
       btnPanel.setBackground(Color.CYAN);
 		JButton btnLookUp = new JButton("Search for Parking Lot");
@@ -74,6 +76,7 @@ public class GUIRestric extends JPanel
 	public void addFields()
 	{
 		JPanel fieldPanel = new JPanel();                           //search field panel
+      fieldPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		fieldPanel.setLayout(new FlowLayout());
       JLabel lotLabel = new JLabel("Enter Parking Lot ID: ");     
 		lotName = new JTextField(20);
@@ -140,6 +143,7 @@ public class GUIRestric extends JPanel
 			}
 		});
       changeBtnPanel.setBackground(Color.ORANGE);
+      changeBtnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		changeBtnPanel.add(changeRestriction);
 		this.add(changeBtnPanel);
 		frame.revalidate();

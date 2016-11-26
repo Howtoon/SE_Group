@@ -28,6 +28,7 @@ public class GUIManage extends JPanel
 		this.addButtons();
 		this.userDisplayPanel = new JPanel();
 		this.changeBtnPanel = new JPanel();
+      this.setBorder(BorderFactory.createLineBorder(Color.black));
 
 	}
 
@@ -68,6 +69,7 @@ public class GUIManage extends JPanel
 			}
 		});
 		btnPanel.add(btnGoBack);
+      btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(btnPanel);
 	}
 
@@ -80,7 +82,7 @@ public class GUIManage extends JPanel
 		userPanel.add(userLabel);
 		userPanel.add(username);
       userPanel.setBackground(Color.CYAN);
-
+      userPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(userPanel);
 
 	}
@@ -91,7 +93,7 @@ public class GUIManage extends JPanel
 		JLabel userPermissions = new JLabel(user.getPermissions().getpString());
 		userDisplayPanel.add(userName);
 		userDisplayPanel.add(userPermissions);
-      
+      userDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(userDisplayPanel);
 		frame.revalidate();
 	}
@@ -133,6 +135,7 @@ public class GUIManage extends JPanel
 		});
       changeBtnPanel.setBackground(Color.ORANGE);
 		changeBtnPanel.add(changePermission);
+      changeBtnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(changeBtnPanel);
 		frame.revalidate();
 	}

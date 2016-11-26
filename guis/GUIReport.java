@@ -33,6 +33,7 @@ public class GUIReport extends JPanel
         this.initializeStats();
         this.addComponents();
         this.add(lotImage);
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
 
     }
 
@@ -47,7 +48,7 @@ public class GUIReport extends JPanel
         stats.add(spaceAvail);
         stats.add(numCars);
         stats.add(violations);
-
+        stats.setBorder(BorderFactory.createLineBorder(Color.black));
         this.add(stats);
 
     }
@@ -67,7 +68,7 @@ public class GUIReport extends JPanel
     {
 
         JPanel update = new JPanel();
-
+        update.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel carLabel = new JLabel("Number of Cars: ");
         JTextField carField = new JTextField(20);
 

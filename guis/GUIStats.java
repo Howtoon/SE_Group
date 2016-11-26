@@ -38,11 +38,13 @@ public class GUIStats extends JPanel
         this.add(lotDisplayPanel);
         this.add(changeBtnPanel);
         this.add(lotImage);
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
     public void addButtons()
     {
         JPanel btnPanel = new JPanel();
+        btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         btnPanel.setLayout(new FlowLayout());
         btnPanel.setBackground(Color.CYAN);
         JButton btnLookUp = new JButton("Search for Parking Lot");
@@ -87,7 +89,7 @@ public class GUIStats extends JPanel
         fieldPanel.add(lotLabel);
         fieldPanel.add(lotName);
         fieldPanel.setBackground(Color.CYAN);
-
+        fieldPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         this.add(fieldPanel);
 
     }
@@ -113,7 +115,7 @@ public class GUIStats extends JPanel
         lotDisplayPanel.add(occupied);
         lotDisplayPanel.add(free);
         lotDisplayPanel.add(lotRestriction);
-
+        lotDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         //this.add(lotDisplayPanel);
         frame.revalidate();
 

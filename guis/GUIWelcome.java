@@ -20,7 +20,6 @@ public class GUIWelcome extends JPanel
 		this.controller = controller;
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.addButtons();
-
 	}
 
 	public void addButtons()

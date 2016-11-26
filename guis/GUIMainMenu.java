@@ -22,6 +22,7 @@ public class GUIMainMenu extends JPanel
         this.setBackground(Color.WHITE);
         this.user = user;
         this.addButtons();
+        this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
     public void addButtons()

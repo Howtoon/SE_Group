@@ -16,6 +16,7 @@ public class GUILogin extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.addFields();
 		this.addButtons();
+      this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
 	public void addButtons()
@@ -47,6 +48,7 @@ public class GUILogin extends JPanel
 			}
 		});
 		btnPanel.add(btnGoBack);
+      btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(btnPanel);
 	}
 
@@ -66,6 +68,8 @@ public class GUILogin extends JPanel
 		password.setEchoChar('#');
 		passPanel.add(pass);
 		passPanel.add(password);
+      userPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+      passPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(userPanel);
 		this.add(passPanel);
 	}
