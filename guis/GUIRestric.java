@@ -115,10 +115,12 @@ public class GUIRestric extends JPanel
 				if (lot.isOpen() == true)
 				{
 					controller.setOpen(false);
+               controller.updateLotStatus(lot.getLotID(),false);
 				}
 				else if (lot.isOpen() == false)
 				{
 					controller.setOpen(true);
+               controller.updateLotStatus(lot.getLotID(),true);
 				}
 				String lotNm = lot.getLotID();
 				if (lot == null)

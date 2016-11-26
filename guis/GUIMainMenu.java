@@ -101,7 +101,7 @@ public class GUIMainMenu extends JPanel
                 }
             });
             this.add(btnReport);
-
+         /*
             JButton btnViolate = new JButton("Record Parking Violation");
             btnViolate.setAlignmentX(this.CENTER_ALIGNMENT);
             btnViolate.addActionListener(new ActionListener()
@@ -112,6 +112,8 @@ public class GUIMainMenu extends JPanel
                 }
             });
             this.add(btnViolate);
+         */
+        
         }
         if (user.getPermissions() == UserPermissions.SUPERVISOR)
         {

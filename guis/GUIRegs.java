@@ -15,14 +15,14 @@ public class GUIRegs extends JFrame
 	{
 		setLayout(new BorderLayout());
 		//file you want to play
-		URL mediaURL = "https://youtu.be/ylfgXDy8bgo";  //Whatever
+		//URL mediaURL = "https://youtu.be/ylfgXDy8bgo";  //Whatever
 		//create the media player with the media url
-		Player mediaPlayer = Manager.createRealizedPlayer(mediaURL);
+		//Player mediaPlayer = Manager.createRealizedPlayer(mediaURL);
 		//get components for video and playback controls
-		Component video = mediaPlayer.getVisualComponent();
-		Component controls = mediaPlayer.getControlPanelComponent();
-		add(video,BorderLayout.CENTER);
-		add(controls,BorderLayout.SOUTH);
+		//Component video = mediaPlayer.getVisualComponent();
+		//Component controls = mediaPlayer.getControlPanelComponent();
+		//add(video,BorderLayout.CENTER);
+		//add(controls,BorderLayout.SOUTH);
 	}
 	
 }

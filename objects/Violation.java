@@ -1,7 +1,21 @@
 package objects;
 
-/**
- * Created by julienpugh on 11/21/16.
- */
+import java.util.Date;
+
 public class Violation {
+
+    private String violationID;
+
+    private String summary;
+
+    private Date recordDate;
+
+    public Violation () {
+
+
+    }
+
+    public Violation (String summary) {
+
+    }
 }
