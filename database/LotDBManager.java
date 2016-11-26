@@ -23,34 +23,37 @@ public class LotDBManager
      * A mailing list is created and queried.
      * (TEST METHOD ONLY, DELETE LATER)
      */
-    //public static void main (String[] args) throws Exception {
+   /* public static void main (String[] args) {
 
-    // LotDBManager dbm = new LotDBManager();
+     LotDBManager dbm = new LotDBManager();
 
 
-    //ParkingLot e = dbm.getLot("E");
-    //ParkingLot z = dbm.getLot("Z");
+    ParkingLot e = dbm.getLot("E");
+    ParkingLot z = dbm.getLot("Z");
 
-        /*System.out.printf("Here are Lot E's statistics before updating: %s, total - %d, " +
-                        "available - %d, occupied = %d, visitor - %d, commuter - %d, %b, %s\n",
+        System.out.printf("Here are Lot E's statistics before updating: %s, total - %d, " +
+                        "available - %d, occupied = %d, violations - %d, commuter - %d, %b, %s\n",
                 e.getLotID(), e.getTotal(), e.getAvailable(), e.getOccupied(),
-                e.getVisitor(), e.getCommuter(), e.isOpen(), e.getRecordDate());
+                e.getViolations(), e.getCommuter(), e.isOpen(), e.getRecordDate());
 
         System.out.printf("Here are Lot Z's statistics before updating: %s, total - %d, " +
-                        "available - %d, occupied = %d, visitor - %d, commuter - %d, %b, %s\n",
+                        "available - %d, occupied = %d, vis - %d, commuter - %d, %b, %s\n",
                 z.getLotID(), z.getTotal(), z.getAvailable(), z.getOccupied(),
-                z.getVisitor(), z.getCommuter(), z.isOpen(), z.getRecordDate());*/
-        /*dbm.updateLotCars("E", 5);
+                z.getVisitor(), z.getCommuter(), z.isOpen(), z.getRecordDate());
+        dbm.updateLotCars("E", 5);
+        dbm.updateLotViolations("E", 4);
         dbm.updateLotCars("Z", 30);
         System.out.println("After updating object e");
+        dbm.updateLotStatus("E", false);
         e = dbm.getLot("E");
         System.out.println("After 2nd getLot");
+
         System.out.printf("Here are Lot E's statistics after updating: %s, total - %d, " +
-                        "available - %d, occupied = %d, visitor - %d, commuter - %d, %b, %s\n",
+                        "available - %d, occupied = %d, violations - %d, commuter - %d, %b, %s\n",
                 e.getLotID(), e.getTotal(), e.getAvailable(), e.getOccupied(),
-                e.getVisitor(), e.getCommuter(), e.isOpen(), e.getRecordDate());*/
-    //dbm.closeConnection();
-    //}
+                e.getViolations(), e.getCommuter(), e.isOpen(), e.getRecordDate());
+    dbm.closeConnection();
+    }*/
 
     /**
      * Used to access database
@@ -98,7 +101,7 @@ public class LotDBManager
             updateLotCars("E", 74);
             addLot(z);
             updateLotCars("Z", 44);
-            //stat.execute("DROP TABLE Lot");
+            stat.execute("DROP TABLE Lot");
         }
         catch (Exception ex)
         {
@@ -159,7 +162,7 @@ public class LotDBManager
                     stat.execute("CREATE TABLE Lot (Lot_ID VARCHAR(3), Total INTEGER, Available INTEGER, " +
                             "Occupied INTEGER, Reserved INTEGER, Handicapped INTEGER, Commuter INTEGER, " +
                             "Resident INTEGER, Staff INTEGER, Visitor INTEGER, Motorcycle INTEGER, " +
-                            "Status VARCHAR(10), Time TIMESTAMP)");
+                            "Status VARCHAR(10), Violations INTEGER, Time TIMESTAMP)");
                     System.out.println("Lot table created");
                     break;
                 case 1:
@@ -194,7 +197,7 @@ public class LotDBManager
      */
     public void addLot(ParkingLot p)
     {
-        String query = "INSERT INTO Lot VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Lot VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try
         {
             conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
@@ -216,7 +219,8 @@ public class LotDBManager
             else
                 pStat.setString(12, "close");
 
-            pStat.setTimestamp(13, new Timestamp(p.getRecordDate().getTime()));
+            pStat.setInt(13, p.getViolations());
+            pStat.setTimestamp(14, new Timestamp(p.getRecordDate().getTime()));
 
             pStat.executeUpdate();                                                      // update the statement
             conn.commit();                                                              // and send it to the table
@@ -289,7 +293,8 @@ public class LotDBManager
                     lotToReturn.setOpen(true);
                 else
                     lotToReturn.setOpen(false);
-                lotToReturn.setRecordDate(new Date(result.getTimestamp(13).getTime()));
+                lotToReturn.setViolations(result.getInt(13));
+                lotToReturn.setRecordDate(new Date(result.getTimestamp(14).getTime()));
             }
             System.out.println("updated lot");
         }
@@ -330,6 +335,36 @@ public class LotDBManager
                 tempLot.setTotal(numCars);
             tempLot.setOccupied(numCars);
             tempLot.setAvailable(tempLot.getTotal() - numCars);
+            tempLot.setRecordDate(new Date());
+            addLot(tempLot);
+        }
+        return tempLot;
+    }
+
+    /**
+     * Method used to update a lot's number of violations.
+     * Creates a lot object from latest info
+     * Applies it back after adjusting available
+     * & occupied spaces. Updates the Timestamp.
+     * Adds it back to the table.
+     * Return false if lot doesn't exist.
+     *
+     * @param lotID   name of lot to find
+     * @param violations number of violations to enter
+     * @return ParkingLot object updated.
+     */
+    public ParkingLot updateLotViolations(String lotID, int violations)
+    {
+
+        ParkingLot tempLot = getLot(lotID);
+
+        if (tempLot == null)
+        {
+            System.out.println("Lot does not exist");
+            return null;
+        } else
+        {
+            tempLot.setViolations(violations);
             tempLot.setRecordDate(new Date());
             addLot(tempLot);
         }
