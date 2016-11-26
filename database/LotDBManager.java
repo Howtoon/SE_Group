@@ -101,7 +101,7 @@ public class LotDBManager
             updateLotCars("E", 74);
             addLot(z);
             updateLotCars("Z", 44);
-            stat.execute("DROP TABLE Lot");
+            //stat.execute("DROP TABLE Lot");
         }
         catch (Exception ex)
         {
