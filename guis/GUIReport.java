@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import application.Controller;
@@ -195,39 +198,23 @@ public class GUIReport extends JPanel
 
     private void drawParkingLot(String lotID)
     {
+
         BufferedImage bi = null;
         try
         {
-
-            ImageIcon imageicon = new ImageIcon(String.format("resources/%s_lot.png", lotID));
-            bi = new BufferedImage(imageicon.getIconWidth(), imageicon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = (Graphics2D) bi.createGraphics();
-            g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-            g2d.drawImage(imageicon.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
-
-
-            lotImage.setText(lotID);
-            lotImage.setIcon(new ImageIcon(bi));
+            bi = ImageIO.read(new File(String.format("resources/%s_lot.png", lotID.toLowerCase())));
         }
         catch (Exception e)
         {
-
-//            System.out.println("Here is the lot id: " + lotID);
             e.printStackTrace();
         }
 
-    }
-
-    public void paintComponent(Graphics g)
-    {
-
-//        System.out.println("Reload");
-        if (lotImage.getIcon() != null)
-        {
-            drawParkingLot(lotImage.getText());
-        }
+        Image img = bi.getScaledInstance(this.getWidth()/2, this.getHeight()/2, Image.SCALE_FAST);
+        ImageIcon icon = new ImageIcon(img);
+        lotImage.setIcon(icon);
+        lotImage.setAlignmentX(this.CENTER_ALIGNMENT);
+        this.revalidate();
 
     }
-
 
 }

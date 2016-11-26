@@ -10,7 +10,7 @@ public class GUIController extends JFrame
 
         this.setTitle("Parking Lot App");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(512, 512);
+        this.setSize(1024, 1024);
 
     }
 
