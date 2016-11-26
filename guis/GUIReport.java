@@ -17,6 +17,7 @@ public class GUIReport extends JPanel
     private ParkingLot lot;
     private JPanel stats;
     JLabel spaceAvail = new JLabel("Spaces Available: --");
+    JLabel numCars = new JLabel("Number of Cars: --");
     JLabel violations = new JLabel("Violations: --");
     private JLabel lotImage;
 
@@ -40,6 +41,7 @@ public class GUIReport extends JPanel
         stats = new JPanel();
         stats.setLayout(new BoxLayout(stats, BoxLayout.PAGE_AXIS));
         stats.add(spaceAvail);
+        stats.add(numCars);
         stats.add(violations);
 
         this.add(stats);
@@ -50,7 +52,9 @@ public class GUIReport extends JPanel
     {
 
         spaceAvail.setText("Spaces Available: " + lot.getAvailable());
+        numCars.setText("Number of Cars: " + lot.getOccupied());
         this.revalidate();
+        this.repaint();
 
     }
 
@@ -59,8 +63,8 @@ public class GUIReport extends JPanel
 
         JPanel update = new JPanel();
 
-        JLabel availLabel = new JLabel("Spaces Available: ");
-        JTextField availField = new JTextField(20);
+        JLabel carLabel = new JLabel("Number of Cars: ");
+        JTextField carField = new JTextField(20);
 
 
         JLabel violationLabel = new JLabel("Violations: ");
@@ -74,19 +78,20 @@ public class GUIReport extends JPanel
 
                 try
                 {
-                    int space = Integer.parseInt(availField.getText());
+                    int space = Integer.parseInt(carField.getText());
                     lot = controller.updateLotCars(lot.getLotID(), space);
                     if (lot != null)
                     {
                         controller.displayError("Report was successfully submitted");
                         viewStats();
+                        repaint();
                     }
                     if (lot == null)
                     {
                         controller.displayError("An error occurred while updating lot information");
                     }
 
-                    repaint();
+
                 }
                 catch (Exception e1)
                 {
@@ -95,13 +100,16 @@ public class GUIReport extends JPanel
             }
         });
 
-        update.add(availLabel);
-        update.add(availField);
+        update.add(carLabel);
+        update.add(carField);
         update.add(violationLabel);
         update.add(violationField);
         update.add(btnUpdate);
 
         this.add(update);
+
+        this.revalidate();
+        this.repaint();
 
     }
 
@@ -198,7 +206,7 @@ public class GUIReport extends JPanel
             bi = new BufferedImage(imageicon.getIconWidth(), imageicon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = (Graphics2D) bi.createGraphics();
             g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-            g2d.drawImage(imageicon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
+            g2d.drawImage(imageicon.getImage(), 0, 0, this.getWidth(), this.getHeight(), null);
 
         }
         catch (Exception e)
@@ -210,8 +218,6 @@ public class GUIReport extends JPanel
 
         lotImage.setText(lotID);
         lotImage.setIcon(new ImageIcon(bi));
-
-        this.revalidate();
     }
 
     public void paintComponent(Graphics g)
