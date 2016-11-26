@@ -15,6 +15,9 @@ public class GUIReport extends JPanel
 
     private Controller controller;
     private ParkingLot lot;
+    private JPanel stats;
+    JLabel spaceAvail = new JLabel("Spaces Available: --");
+    JLabel violations = new JLabel("Violations: --");
     private JLabel lotImage;
     private String parkingLotID;
 
@@ -25,54 +28,83 @@ public class GUIReport extends JPanel
         this.controller = controller;
         this.lotImage = new JLabel("");
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.initializeStats();
         this.addComponents();
         this.add(lotImage);
+        this.revalidate();
 
     }
 
-    private void addComponents()
+    private void initializeStats()
     {
 
-        JPanel componentPanel = new JPanel();
+        stats = new JPanel();
+        stats.setLayout(new BoxLayout(stats, BoxLayout.PAGE_AXIS));
+        stats.add(spaceAvail);
+        stats.add(violations);
 
-        JLabel lotID = new JLabel("Lot ID:");
-        JTextField lotField = new JTextField(20);
-        parkingLotID = lotField.getText();
-
-        JButton btnViewLot = new JButton("View Parking Lot");
-        btnViewLot.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                lot = controller.getLot(lotField.getText());
-                if (lot == null)
-                    controller.displayError("There is no lot with that ID");
-                else if (lotField.getText().equals(""))
-                    controller.displayError("There is not a lot specified");
-                else
-                    drawParkingLot(lot.getLotID().toLowerCase());
-            }
-        });
-
-        componentPanel.add(lotID);
-        componentPanel.add(lotField);
-        componentPanel.add(btnViewLot);
-
-        JButton btnGoBack = new JButton("Go Back");
-        btnGoBack.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                controller.displayGUIMainMenu();
-            }
-        });
-
-        this.add(componentPanel);
-        this.add(btnGoBack);
+        this.add(stats);
 
     }
 
-    private void addStatistics()
+    private void viewStats()
+    {
+
+        spaceAvail.setText("Spaces Available: " + lot.getAvailable());
+        this.revalidate();
+
+    }
+
+    private void updateStats()
+    {
+
+        JPanel update = new JPanel();
+
+        JLabel availLabel = new JLabel("Spaces Available: ");
+        JTextField availField = new JTextField(20);
+
+
+        JLabel violationLabel = new JLabel("Violations: ");
+        JTextField violationField = new JTextField(20);
+
+        JButton btnUpdate = new JButton("Update Statistics");
+        btnUpdate.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+
+                try
+                {
+                    int space = Integer.parseInt(availField.getText());
+                    lot = controller.updateLotCars(parkingLotID, space);
+                    if (lot != null)
+                    {
+                        controller.displayError("Report was successfully submitted");
+                        viewStats();
+                    }
+                    if (lot == null)
+                    {
+                        controller.displayError("An error occurred while updating lot information");
+                    }
+                }
+                catch (Exception e1)
+                {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        update.add(availLabel);
+        update.add(availField);
+        update.add(violationLabel);
+        update.add(violationField);
+        update.add(btnUpdate);
+
+        this.add(update);
+
+    }
+
+    /*private void addStatistics()
     {
         JPanel componentPanel = new JPanel();
 
@@ -103,6 +135,55 @@ public class GUIReport extends JPanel
 
         this.add(componentPanel);
         this.revalidate();
+    }*/
+
+    private void addComponents()
+    {
+
+        JPanel componentPanel = new JPanel();
+
+        JLabel lotID = new JLabel("Lot ID:");
+        JTextField lotField = new JTextField(20);
+        parkingLotID = lotField.getText();
+
+        JButton btnViewLot = new JButton("View Parking Lot");
+        btnViewLot.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                lot = controller.getLot(lotField.getText());
+                if (lot == null)
+                    controller.displayError("There is no lot with that ID");
+                else if (lotField.getText().equals(""))
+                    controller.displayError("There is not a lot specified");
+                else
+                {
+
+                    drawParkingLot(lot.getLotID().toLowerCase());
+                    viewStats();
+
+                }
+            }
+        });
+
+        componentPanel.add(lotID);
+        componentPanel.add(lotField);
+        componentPanel.add(btnViewLot);
+
+
+        JButton btnGoBack = new JButton("Go Back");
+        btnGoBack.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                controller.displayGUIMainMenu();
+            }
+        });
+
+        this.add(componentPanel);
+        this.updateStats();
+        this.add(btnGoBack);
+
     }
 
     private void drawParkingLot(String lotID)
@@ -122,7 +203,7 @@ public class GUIReport extends JPanel
         catch (Exception e)
         {
 
-            System.out.println("Here is the lot id: " + lotID);
+//            System.out.println("Here is the lot id: " + lotID);
             e.printStackTrace();
         }
 
