@@ -166,7 +166,6 @@ public class GUIReport extends JPanel
                     controller.displayError("There is not a lot specified");
                 else
                 {
-
                     drawParkingLot(lot.getLotID().toLowerCase());
                     viewStats();
 

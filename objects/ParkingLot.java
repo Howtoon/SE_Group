@@ -10,8 +10,7 @@ public class ParkingLot {
 	private int occupied = 0;
 	private int available = 0;
 	private boolean isOpen = true;
-	// Image map                yes, I think that these would be helpful.
-	// Violation object?
+    private int violations = 0;
 
 	private int reserved = 0;
 	private int handicapped = 0;
@@ -29,14 +28,15 @@ public class ParkingLot {
 		recordDate = new Date();
 	}
 
-	/** Admin/Super - update Lot constructor*/
-	public ParkingLot (String ID, int numCars) {
-		super();
-		this.lotID = ID;
-		this.total = numCars;
-		this.occupied = numCars;
-		recordDate = new Date();
-	}
+    /** Admin/Super - update Lot constructor */
+    public ParkingLot (String ID, int numCars, int vio) {
+        super();
+        this.lotID = ID;
+        this.total = numCars;
+        this.occupied = numCars;
+        this.violations = vio;
+        recordDate = new Date();
+    }
 
 	/** Supervisor - add Lot constructor */
 	public ParkingLot (String ID, int total, int reserved, int handicapped, int commuter,
@@ -136,7 +136,15 @@ public class ParkingLot {
 		isOpen = open;
 	}
 
-	public Date getRecordDate() {
+    public int getViolations() {
+        return violations;
+    }
+
+    public void setViolations(int violations) {
+        this.violations = violations;
+    }
+
+    public Date getRecordDate() {
 		return recordDate;
 	}
 
