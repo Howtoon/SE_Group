@@ -85,7 +85,6 @@ public class GUIReport extends JPanel
                     {
                         controller.displayError("Report was successfully submitted");
                         viewStats();
-                        repaint();
                     }
                     if (lot == null)
                     {

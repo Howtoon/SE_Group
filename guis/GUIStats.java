@@ -2,6 +2,9 @@ package guis;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import application.*;
@@ -19,17 +22,19 @@ public class GUIStats extends JPanel
     private JFrame frame;
     private JPanel lotDisplayPanel;
     private JPanel changeBtnPanel;
-
+    private JLabel lotImage;
 
     public GUIStats(Controller controller, JFrame frame)
     {
         this.frame = frame;
         this.controller = controller;
+        this.lotImage = new JLabel("");
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.addFields();                                                 //add search field
         this.addButtons();                                                //add search and go-back buttons
         this.lotDisplayPanel = new JPanel();                              //create global var for panel to display lot info
         this.changeBtnPanel = new JPanel();                               //create global var for panel for toggle button
+        this.add(lotImage);
     }
 
     public void addButtons()
@@ -52,6 +57,7 @@ public class GUIStats extends JPanel
                     changeBtnPanel.removeAll();            //Remove all toggle buttons
                     frame.revalidate();                    //revalidate to ensure everything cleared
                     displayLot();                          //redisplay lot info after change has been made
+                    drawParkingLot(lot.getLotID().toLowerCase());
                     System.out.println("Display Parking Lot");
                 }
             }
@@ -99,10 +105,34 @@ public class GUIStats extends JPanel
         JLabel free = new JLabel(Integer.toString(lot.getTotal() - lot.getOccupied()));
         JLabel lotRestriction = new JLabel(restric);
         lotDisplayPanel.add(nameLabel);
+        lotDisplayPanel.add(total);
+        lotDisplayPanel.add(occupied);
+        lotDisplayPanel.add(free);
         lotDisplayPanel.add(lotRestriction);
 
         this.add(lotDisplayPanel);
         frame.revalidate();
+    }
+
+    private void drawParkingLot(String lotID)
+    {
+
+        BufferedImage bi = null;
+        try
+        {
+            bi = ImageIO.read(new File(String.format("resources/%s_lot.png", lotID.toLowerCase())));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        Image img = bi.getScaledInstance(this.getWidth()/2, this.getHeight()/2, Image.SCALE_FAST);
+        ImageIcon icon = new ImageIcon(img);
+        lotImage.setIcon(icon);
+        lotImage.setAlignmentX(this.CENTER_ALIGNMENT);
+        this.revalidate();
+
     }
 
 }
