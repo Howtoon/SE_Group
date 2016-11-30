@@ -12,7 +12,7 @@ import application.Controller;
 public class GUIMaps extends JPanel
 {
 
-	Controller controller;
+	private Controller controller;
 
 	public GUIMaps(Controller controller)
 	{

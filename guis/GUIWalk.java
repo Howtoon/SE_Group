@@ -16,7 +16,7 @@ import application.Controller;
 public class GUIWalk extends JPanel
 {
 
-	Controller controller;
+	private Controller controller;
 
 	public GUIWalk(Controller controller)
 	{
