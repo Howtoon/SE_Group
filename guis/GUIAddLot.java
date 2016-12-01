@@ -88,6 +88,7 @@ public class GUIAddLot extends JPanel
                             Integer.parseInt(commuterText.getText()), Integer.parseInt(residentText.getText()),
                             Integer.parseInt(staffText.getText()), Integer.parseInt(visitorText.getText()),
                             Integer.parseInt(motorcycleText.getText()), true);
+                            controller.displayError("The Parking Lot was Successfully Created");
                 }
                 catch (Exception e1)
                 {
