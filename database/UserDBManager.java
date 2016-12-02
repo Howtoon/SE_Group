@@ -12,43 +12,9 @@ import java.sql.Statement;
 import java.sql.SQLException;
 /**
  * Created by julienpugh on 11/14/16.
+ * Password encryption, among other things, will be implemented on the next iteration
  */
 public class UserDBManager {
-
-    /**
-     * The main method takes in two String arguments: the db properties and the contacts text file
-     * A mailing list is created and queried.
-     * (TEST METHOD ONLY, DELETE LATER)
-     */
-    /*public static void main (String[] args) throws Exception {
-        //if (args.length == 0)
-         //   System.out.println("Usage: java -classpath database/derby.jar:. database/DBManager");
-        UserDBManager dbm = new UserDBManager();
-        //dbm.validateUserInfo("supervisor", "12345");
-        //User bob = new User("bob", "54321");
-        //System.out.println("HEY!!!!" + bob.getPermit().getId());
-        //dbm.addUser(bob);
-        //dbm.validateUserInfo("bob", "5432");
-        //dbm.validateUserInfo("bob", "54321");
-        //dbm.updatePermissions("bob", 1);
-        //dbm.showUser("12345");
-        //dbm.showUser("54321");
-        //dbm.updatePermissions("bob", 0);
-        //dbm.showUser("54321");
-        //User bub = dbm.getUser("budfb");
-        //User bob2 = dbm.getUser("bob");
-       // dbm.validateUserInfo("spervisor", "1234");
-        //User s = dbm.getUser("supervisor");
-        //dbm.showUser("12345");
-        //System.out.println("Supervisor  " + s.getName() + s.getUserID() + s.getPermissions());
-
-        //System.out.println("Here are the values for returned Bub object: " + bub.getName() + " " +
-        //        bub.getUserID() + " " + bub.getPermit().getId() + " " + bub.getPermissions());
-       // System.out.println("Here are the values for returned Bob object: " + bob2.getName() + " " +
-         //       bob2.getUserID() + " " + bob2.getPermit().getId() + " " + bob2.getPermissions());
-        //dbm.dropTables();
-        //dbm.closeConnection();
-     }*/
 
     /** Used to access database */
     private Connection conn;
@@ -67,11 +33,10 @@ public class UserDBManager {
 
     /**
      * Default constructor that reads the properties file and initializes access to the database
-     * Also enables SQL statements to be issued.
+     * Creates the tables and supervisor, and adds the objects if they're not already there.
      */
-     
-     
-    public UserDBManager() {
+    public UserDBManager ()
+    {
         User s = new User("supervisor", "12345");
         s.setPermissions(UserPermissions.SUPERVISOR);
 
@@ -80,10 +45,12 @@ public class UserDBManager {
             this.openConnection();
             this.stat = this.conn.createStatement();
             this.createTables(0);
-            this.createTables(1);
+            //this.createTables(1);
             this.addUser(s);
+            //dropTables();
         } catch (Exception e) {
             System.out.println("exception in creating user db manager");
+            e.printStackTrace();
         }
 
     }
@@ -91,24 +58,30 @@ public class UserDBManager {
     /**
      * Method used show to open the connection
      */
-    public void openConnection () {
-
+    public void openConnection ()
+    {
         try
-        { conn = SimpleDataSource.getConnection(); }
+        {
+            conn = SimpleDataSource.getConnection();
+        }
         catch (Exception e)
-        { System.out.println ("connection already open"); }
+        {
+            System.out.println ("connection already open");
+        }
     }
 
     /**
      * Method used drop the tables.
      */
-    public void dropTables() {
+    public void dropTables () {
         try
         {
             result.close();
             stat.execute("DROP TABLE Users");
+            //stat.execute("DROP TABLE Permit");
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -117,35 +90,44 @@ public class UserDBManager {
      * 0 - User, other - Permit
      * Always checks to makes sure the tables do not
      * exist before creating them.
+     * @param tableToCreate the table specified for creation
      */
-    public void createTables(int tableToCreate) {
-        try {
+    public void createTables (int tableToCreate)
+    {
+        try
+        {
             this.conn.setAutoCommit(true);
             DatabaseMetaData s = this.conn.getMetaData();
             this.result = s.getTables(null, null, "%", null);
 
-            while(this.result.next()) {
-                switch(tableToCreate) {
+            while(this.result.next())
+            {
+                switch(tableToCreate)
+                {
                     case 0:
-                        //System.out.println("!");
                         if(this.result.getString("TABLE_NAME").equals("USERS"))
                             return;
                         break;
                     default:
-                        if(this.result.getString("TABLE_NAME").equals("PERMIT")) {
+                        if(this.result.getString("TABLE_NAME").equals("PERMIT"))
                             return;
-                        }
                 }
             }
-            switch(tableToCreate) {
+            switch(tableToCreate)
+            {
                 case 0:
-                    this.stat.execute("CREATE TABLE Users (User_Name VARCHAR(20), User_Pass VARCHAR(20), Permit_ID VARCHAR(10), Permissions VARCHAR(15))");
+                    this.stat.execute("CREATE TABLE Users (User_Name VARCHAR(20), " +
+                            "User_Pass VARCHAR(20), Permit_ID VARCHAR(10), Permissions VARCHAR(15))");
                     break;
                 default:
-                    this.stat.execute("CREATE TABLE Permit (Permit_ID VARCHAR(10), Permit_TYPE VARCHAR(20), Expiration DATE)");
+                    this.stat.execute("CREATE TABLE Permit (Permit_ID VARCHAR(10), " +
+                            "Permit_TYPE VARCHAR(20), Expiration DATE)");
             }
-        } catch (SQLException s) {
-            System.out.println("sql exception in creating users table");
+        }
+        catch (SQLException s)
+        {
+            //System.out.println("sql exception in creating users table");
+            s.printStackTrace();
         }
     }
 
@@ -156,20 +138,18 @@ public class UserDBManager {
      * @param u User to add
      * @return whether or not the user can create an account
      */
-    public boolean addUser (User u) {
-
+    public boolean addUser (User u)
+    {
         String query = "INSERT INTO Users VALUES (?, ?, ?, ?)";
         try
         {
-            //conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
-
+            //conn.setAutoCommit(false);
             //pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
             //pStat.setString(1, u.getName());
+            //boolean toAdd;
 
             String query2 = String.format("SELECT * FROM Users WHERE User_Name = '%s'", u.getName());
-            //boolean toAdd;
             result = stat.executeQuery(query2);
-            //conn.commit();
 
             if (result.next())
             {
@@ -185,18 +165,17 @@ public class UserDBManager {
                 pStat.setString(3, u.getPermit().getId());
                 pStat.setString(4, u.getPermissions().toString());
 
-                // add permit info to permit table and permit id to both user and permit tables
-
                 pStat.executeUpdate();                                                      // update the statement
                 conn.commit();                                                              // and send it to the table
 
-                conn.setAutoCommit(true);                                               // turn on automatic SQL statements
-                System.out.println("executed command");
+                conn.setAutoCommit(true);                                           // turn on automatic SQL statements
+                //System.out.println("executed command");
             }
         }
         catch (SQLException s)
         {
             System.out.println("sql exception in addUser");
+            s.printStackTrace();
         }
         return true;
     }
@@ -207,43 +186,31 @@ public class UserDBManager {
      * @param uName username
      * @return user
      */
-    public User getUser (String uName) {
-
+    public User getUser (String uName)
+    {
         User userToReturn = new User();
-        //String query = "SELECT * FROM Users WHERE User_Name = ?";
         try
         {
+            int cols;
+            String query = String.format("SELECT * FROM Users WHERE User_Name = '%s'", uName);
+
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
 
-
-            String query = String.format("SELECT * FROM Users WHERE User_Name = '%s'", uName);
-            //boolean toAdd;
             result = stat.executeQuery(query);
-            //conn.commit();
-
-           /* if (!result.next())
-            {
-                System.out.println("User does not exist");
-                return null;
-            }*/
-            //pStat = conn.prepareStatement(query);
-            //pStat.setString(1, uName);
-            //result = pStat.executeQuery();                  // result from selecting all where username = uName
             rsm = result.getMetaData();
-            int cols = rsm.getColumnCount();
-
+            cols = rsm.getColumnCount();
             if (!result.next())
             {
-                System.out.println("User does not exist");
+                //System.out.println("User does not exist");
                 return null;
             }
-
             result = stat.executeQuery(query);
             rsm = result.getMetaData();
             while (result.next())                          // should always be ONE User!
             {
                 for (int i = 1; i <= cols; i++)
-                    switch (i) {
+                    switch (i)
+                    {
                         case 1:
                             userToReturn.setName(result.getString(i));
                             break;
@@ -258,11 +225,11 @@ public class UserDBManager {
                             break;
                     }
             }
-            System.out.println("\ncompleted query\n");
+            //System.out.println("\ncompleted query\n");
         }
         catch (Exception e)
         {
-            System.out.println("User does not exist");
+            //System.out.println("User does not exist");
             return null;
         }
         return userToReturn;
@@ -270,53 +237,38 @@ public class UserDBManager {
 
     /**
      * Method used to check if the user exists.
+     * @param uName username
+     * @param uID user password
      * @return whether or not the user can view the app.
      */
-    public boolean validateUserInfo (String uName, String uID) {
-
+    public boolean validateUserInfo (String uName, String uID)
+    {
         try
         {
-            //conn.setAutoCommit(false);                                      // disable automatic SQL statements for now
-
             String query1 = String.format("SELECT 1 FROM Users WHERE User_Name = '%s'", uName);
             String query2 = String.format("SELECT 1 FROM Users WHERE User_Pass = '%s'", uID);
 
-            //Statement stat2 = conn.createStatement();
             result = stat.executeQuery(query1);
-            //ResultSet passCheck = stat2.executeQuery(query2);
-            //pStat = conn.prepareStatement("SELECT 1 FROM Users WHERE User_Name = ?");
-            //PreparedStatement passCheck =
-            //       conn.prepareStatement("SELECT 1 FROM Users WHERE User_Pass = ?");
-
-
-            // pStat.setString(1, uName);
-            //passCheck.setString(1, uID);
-
-            //boolean uNameExists = pStat.execute();
-            //boolean uIDExists = passCheck.execute();
-
-            //conn.commit();
             if (!result.next())
             {
-                System.out.println("User does not exist");
+                //System.out.println("User does not exist");
                 return false;
             }
             result = stat.executeQuery(query2);
-
             if (!result.next())
             {
-                System.out.println("Incorrect password");
+                //System.out.println("Incorrect password");
                 return false;
             }
             else
-                conn.setAutoCommit(true);// turn on automatic SQL statements
+                conn.setAutoCommit(true);                                           // turn on automatic SQL statements
         }
         catch (SQLException s)
         {
-            System.out.println("sql exception in validate user info");
+            //System.out.println("sql exception in validate user info");
             s.printStackTrace();
         }
-        System.out.println("Logged in!");
+        //System.out.println("Logged in!");
         return true;
     }
 
@@ -326,8 +278,8 @@ public class UserDBManager {
      * @param status whether or not to promote (1) or demote (0)
      * @return if successful or not
      */
-    public boolean updatePermissions (String uName, int status) {
-
+    public boolean updatePermissions (String uName, int status)
+    {
         String query = "UPDATE Users " +
                 "SET Permissions = ? " +
                 "WHERE User_Name = ?";
@@ -337,13 +289,13 @@ public class UserDBManager {
 
             if (status == 1)
             {
-                pStat = conn.prepareStatement(query);                                              // prepare the statement
+                pStat = conn.prepareStatement(query);                                          // prepare the statement
                 pStat.setString(1, "ADMIN");
                 pStat.setString(2, uName);
             }
             else
             {
-                pStat = conn.prepareStatement(query);                                              // prepare the statement
+                pStat = conn.prepareStatement(query);                                          // prepare the statement
                 pStat.setString(1, "USER");
                 pStat.setString(2, uName);
             }
@@ -352,73 +304,28 @@ public class UserDBManager {
             conn.commit();                                                              // and send it to the table
 
             conn.setAutoCommit(true);                                               // turn on automatic SQL statements
-            System.out.println("executed command");
+            //System.out.println("executed command");
         }
         catch (SQLException s)
         {
-            System.out.println("sql exception in updatePermissions");
+            //System.out.println("sql exception in updatePermissions");
             return false;
         }
-
         return true;
-    }
-
-    /**
-     * For now this method is mainly to test whether our user table is being updated.
-     * @param uID user pass to search for user with
-     * @return User object with information
-     */
-    public User showUser (String uID) {
-
-        User userToReturn = new User();
-        String query = "SELECT * FROM Users WHERE User_Pass = ?";
-        try
-        {
-            pStat = conn.prepareStatement(query);
-            pStat.setString(1, uID);
-            result = pStat.executeQuery();                  // result from selecting all where username = uName
-            rsm = result.getMetaData();
-            int cols = rsm.getColumnCount();
-
-            System.out.println("showing all info for user \n");
-            while (result.next())
-            {
-                for (int i = 1; i <= cols; i++)
-                {
-                    System.out.printf(" %10.15s ", result.getString(i));
-                    switch (i) {
-                        case 1:
-                            userToReturn.setName(result.getString(i));
-                            break;
-                        case 2:
-                            userToReturn.setUserID(result.getString(i));
-                            break;
-                        case 3:
-                            userToReturn.getPermit().setId(result.getString(i));
-                            break;
-                        case 4:
-                            userToReturn.setPermissions(UserPermissions.valueOf(result.getString(i)));
-                            break;
-                    }
-                }
-                System.out.print("\n");
-            }
-            System.out.println("\ncompleted query\n");
-        }
-        catch (Exception e)
-        {   System.out.println("exception in showUser"); }
-
-        return userToReturn;
     }
 
     /**
      * Method used show to close the connection
      */
-    public void closeConnection () {
-
+    public void closeConnection ()
+    {
         try
-        { conn.close(); }
+        {
+            conn.close();
+        }
         catch (Exception e)
-        { System.out.println ("no connection open"); }
+        {
+            System.out.println ("no connection open");
+        }
     }
 }
