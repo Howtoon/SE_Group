@@ -4,23 +4,42 @@ import java.awt.event.*;
 import javax.swing.*;
 import application.*;
 import objects.User;
-import objects.UserPermissions;
-import database.*;
-
+/**
+ * File Name: GUIManage.java
+ * UWF Parking App
+ *
+ * This class handles the gui for the User Permissions page.
+ *
+ * @author Nathan, Will
+ * @version 1.0
+ */
 public class GUIManage extends JPanel
 {
-
+   /** the text field to enter the username */
    private JTextField username;
+
+   /** the controller used to call this class */
    private Controller controller;
+
+   /** contains the permissions to change */
    private User user;
+
+   /** application frame */
    private JFrame frame;
+
+   /** contains the displayed user's permissions */
    private JPanel userDisplayPanel;
+
+   /** contains the button to toggle */
    private JPanel changeBtnPanel;
 
-
-   public GUIManage(Controller controller, JFrame frame)
+   /**
+    * Constructor that prepares the gui
+    * @param controller the program controller
+    * @param frame application frame
+    */
+   public GUIManage (Controller controller, JFrame frame)
    {
-   	
       this.frame = frame;
       this.controller = controller;
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -29,10 +48,10 @@ public class GUIManage extends JPanel
       this.userDisplayPanel = new JPanel();
       this.changeBtnPanel = new JPanel();
       this.setBorder(BorderFactory.createLineBorder(Color.black));
-   
    }
 
-   public void addButtons()
+   /** Adds the buttons */
+   public void addButtons ()
    {
       JPanel btnPanel = new JPanel();
       btnPanel.setLayout(new FlowLayout());
@@ -75,7 +94,8 @@ public class GUIManage extends JPanel
       this.add(btnPanel);
    }
 
-   public void addFields()
+   /** Adds the text fields */
+   public void addFields ()
    {
       JPanel userPanel = new JPanel();
       userPanel.setLayout(new FlowLayout());
@@ -86,10 +106,10 @@ public class GUIManage extends JPanel
       userPanel.setBackground(Color.CYAN);
       userPanel.setBorder(BorderFactory.createLineBorder(Color.black));
       this.add(userPanel);
-   
    }
 
-   public void displayUser()
+   /** Displays the user's permissions */
+   public void displayUser ()
    {
       JLabel userName = new JLabel(user.getName());
       JLabel userPermissions = new JLabel(user.getPermissions().getpString());
@@ -100,7 +120,8 @@ public class GUIManage extends JPanel
       frame.revalidate();
    }
 
-   public void displayModBtn()
+   /** Displays and implements the toggle button */
+   public void displayModBtn ()
    {  
       JButton changePermission = new JButton("Toggle User Permission");
       changePermission.addActionListener(

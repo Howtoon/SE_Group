@@ -3,19 +3,33 @@ package guis;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
 import application.*;
 import objects.User;
 import objects.UserPermissions;
-
+/**
+ * File Name: GUIMainMenu.java
+ * UWF Parking App
+ *
+ * This class handles the gui for the Main Menu page.
+ *
+ * @author Nathan, Will
+ * @version 1.0
+ */
 public class GUIMainMenu extends JPanel
 {
+    /** the controller to call this class */
     private Controller controller;
+
+    /** used to hold the permissions of the user */
     private User user;
 
-    public GUIMainMenu(Controller controller, User user)
+    /**
+     * Constructor that prepares the gui
+     * @param controller the program controller
+     * @param user the User logged in
+     */
+    public GUIMainMenu (Controller controller, User user)
     {
         this.controller = controller;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -25,7 +39,11 @@ public class GUIMainMenu extends JPanel
         this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
-    public void addButtons()
+    /**
+     * Adds the buttons
+     * Certain buttons display depending on the user's permissions
+     */
+    public void addButtons ()
     {
         JButton btnPortal = new JButton("Parking Transaction Portal");
         btnPortal.setAlignmentX(this.CENTER_ALIGNMENT);
@@ -114,11 +132,9 @@ public class GUIMainMenu extends JPanel
             });
             this.add(btnViolate);
          */
-        
         }
         if (user.getPermissions() == UserPermissions.SUPERVISOR)
         {
-
             JButton btnRestric = new JButton("Toggle Parking Lot Open/Closed");
             btnRestric.setAlignmentX(this.CENTER_ALIGNMENT);
             btnRestric.addActionListener(new ActionListener()
@@ -145,15 +161,12 @@ public class GUIMainMenu extends JPanel
             btnCreateLot.setAlignmentX(this.CENTER_ALIGNMENT);
             btnCreateLot.addActionListener(new ActionListener()
             {
-
                 public void actionPerformed(ActionEvent e)
                 {
                     controller.displayGUIAddLot();
                 }
-
             });
             this.add(btnCreateLot);
-
         }
 
         JButton btnLogOut = new JButton("Log Out");
@@ -167,6 +180,5 @@ public class GUIMainMenu extends JPanel
             }
         });
         this.add(btnLogOut);
-
     }
 }
