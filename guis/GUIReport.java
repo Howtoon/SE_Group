@@ -5,28 +5,50 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
+//import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import application.Controller;
 import objects.ParkingLot;
-
+/**
+ * File Name: GUIReport.java
+ * UWF Parking App
+ *
+ * This class handles the gui for the Create Parking Report page.
+ *
+ * @author Nathan, Will
+ * @version 1.0
+ */
 public class GUIReport extends JPanel
 {
-
+    /** the controller to call this class */
     private Controller controller;
+
+    /** temporary lot object to add to the database */
     private ParkingLot lot;
+
+    /** contains the lot's statistics */
     private JPanel stats;
+
+    /** the spaces available after entering in the number of cars */
     private JLabel spaceAvail;
+
+    /** the number of cars to input */
     private JLabel numCars;
+
+    /** the number of violations to input */
     private JLabel violations;
+
+    /** map of the lot specified */
     private JLabel lotImage;
 
-    public GUIReport(Controller controller)
+    /**
+     * Constructor that prepares the gui
+     * @param controller the program controller
+     */
+    public GUIReport (Controller controller)
     {
-
         this.controller = controller;
         this.lotImage = new JLabel("");
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -34,12 +56,11 @@ public class GUIReport extends JPanel
         this.addComponents();
         this.add(lotImage);
         this.setBorder(BorderFactory.createLineBorder(Color.black));
-
     }
 
-    private void initializeStats()
+    /** Keep the statistics blank until a lot is found */
+    private void initializeStats ()
     {
-
         stats = new JPanel();
         stats.setLayout(new BoxLayout(stats, BoxLayout.PAGE_AXIS));
         spaceAvail = new JLabel("Spaces Available: --");
@@ -50,28 +71,25 @@ public class GUIReport extends JPanel
         stats.add(violations);
         stats.setBorder(BorderFactory.createLineBorder(Color.black));
         this.add(stats);
-
     }
 
-    private void viewStats()
+    /** show the statistics of a valid lot */
+    private void viewStats ()
     {
-
         spaceAvail.setText("Spaces Available: " + lot.getAvailable());
         numCars.setText("Number of Cars: " + lot.getOccupied());
         violations.setText("Violations: " + lot.getViolations());
         this.revalidate();
         this.repaint();
-
     }
 
-    private void updateStats()
+    /** update the statistics of a valid lot */
+    private void updateStats ()
     {
-
         JPanel update = new JPanel();
         update.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel carLabel = new JLabel("Number of Cars: ");
         JTextField carField = new JTextField(20);
-
 
         JLabel violationLabel = new JLabel("Violations: ");
         JTextField violationField = new JTextField(20);
@@ -81,7 +99,6 @@ public class GUIReport extends JPanel
         {
             public void actionPerformed(ActionEvent e)
             {
-
                 try
                 {
                     int space = Integer.parseInt(carField.getText());
@@ -97,8 +114,6 @@ public class GUIReport extends JPanel
                     {
                         controller.displayError("An error occurred while updating the lot's information");
                     }
-
-
                 }
                 catch (Exception e1)
                 {
@@ -118,7 +133,6 @@ public class GUIReport extends JPanel
 
         this.revalidate();
         this.repaint();
-
     }
 
     /*private void addStatistics()
@@ -154,9 +168,9 @@ public class GUIReport extends JPanel
         this.revalidate();
     }*/
 
-    private void addComponents()
+    /** adds the gui elements */
+    private void addComponents ()
     {
-
         JPanel componentPanel = new JPanel();
 
         JLabel lotID = new JLabel("Lot ID:");
@@ -176,7 +190,6 @@ public class GUIReport extends JPanel
                 {
                     drawParkingLot(lot.getLotID().toLowerCase());
                     viewStats();
-
                 }
                 repaint();
             }
@@ -185,7 +198,6 @@ public class GUIReport extends JPanel
         componentPanel.add(lotID);
         componentPanel.add(lotField);
         componentPanel.add(btnViewLot);
-
 
         JButton btnGoBack = new JButton("Go Back");
         btnGoBack.addActionListener(new ActionListener()
@@ -199,12 +211,14 @@ public class GUIReport extends JPanel
         this.add(componentPanel);
         this.updateStats();
         this.add(btnGoBack);
-
     }
 
-    private void drawParkingLot(String lotID)
+    /**
+     * Pull up a map of the lot specified
+     * @param lotID name of the lot
+     */
+    private void drawParkingLot (String lotID)
     {
-
         BufferedImage bi = null;
         try
         {
@@ -220,7 +234,5 @@ public class GUIReport extends JPanel
         lotImage.setIcon(icon);
         lotImage.setAlignmentX(this.CENTER_ALIGNMENT);
         this.revalidate();
-
     }
-
 }
