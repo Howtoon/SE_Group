@@ -3,23 +3,41 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import application.*;
-
+/**
+ * File Name: GUILogin.java
+ * UWF Parking App
+ *
+ * This class handles the gui for the Log in page.
+ *
+ * @author Nathan, Will
+ * @version 1.0
+ */
 public class GUILogin extends JPanel
 {
+    /** the username to enter */
 	private JTextField username;
+
+    /** the password to enter */
 	private JPasswordField password;
+
+    /** the controller that calls this class */
 	private Controller controller;
 
-	public GUILogin(Controller controller)
+    /**
+     * Constructor that prepares the gui
+     * @param controller the program controller
+     */
+	public GUILogin (Controller controller)
 	{
 		this.controller = controller;
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.addFields();
 		this.addButtons();
-      this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
-	public void addButtons()
+	/** add the buttons */
+	public void addButtons ()
 	{
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new FlowLayout());
@@ -48,11 +66,12 @@ public class GUILogin extends JPanel
 			}
 		});
 		btnPanel.add(btnGoBack);
-      btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(btnPanel);
 	}
 
-	public void addFields()
+	/** add the text-fields */
+	public void addFields ()
 	{
 		JPanel userPanel = new JPanel();
 		userPanel.setLayout(new FlowLayout());
@@ -68,8 +87,8 @@ public class GUILogin extends JPanel
 		password.setEchoChar('#');
 		passPanel.add(pass);
 		passPanel.add(password);
-      userPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-      passPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		userPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		passPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(userPanel);
 		this.add(passPanel);
 	}
