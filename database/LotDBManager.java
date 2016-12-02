@@ -10,9 +10,17 @@ import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
-
 /**
- * Created by julienpugh on 11/14/16.
+ * File Name: LotDBManager.java
+ * UWF Parking App
+ *
+ * This class holds parking-related tables and SQL statements to add to them.
+ * For now, all Lot-related functionality is complete.
+ * Next iteration will see to violation-related features and map-locations.
+ * The option to save a report to a text file will also be considered.
+ *
+ * @author Julien
+ * @version 1.0
  */
 public class LotDBManager
 {
@@ -82,7 +90,7 @@ public class LotDBManager
 
     /**
      * Method used to create the Lot tables.
-     * 0 - Lots, 1 - Violations, 2 - Walking Times, other - Map
+     * 0 - Lots, 1 - Violations, other - Map
      * Always checks to makes sure the tables do not
      * exist before creating them.
      * @param tableToCreate determines what table to create
@@ -102,9 +110,6 @@ public class LotDBManager
                     case 1:
                         if (result.getString("TABLE_NAME").equals("VIOLATION"))
                             return;
-                    case 2:
-                        if (result.getString("TABLE_NAME").equals("WALK_TIME"))
-                            return;
                     default:
                         if (result.getString("TABLE_NAME").equals("MAP"))
                             return;
@@ -122,12 +127,6 @@ public class LotDBManager
                     stat.execute("CREATE TABLE Violation (Lot_ID VARCHAR2(3), Summary VARCHAR(100), " +
                             "Violation_ID VARCHAR(10), Time TIMESTAMP");
                     System.out.println("Violation table created");
-                    break;
-                case 2:
-                    stat.execute("CREATE TABLE Walk_Time (Lot_ID VARCHAR(3), Village_East INTEGER, CEPS INTEGER, " +
-                            "HLES INTEGER, Bldg_58 INTEGER, Martin INTEGER, CFPA INTEGER, COB INTEGER, " +
-                            "Bldg_10 INTEGER, Bldg_18 INTEGER, Library INTEGER, Commons INTEGER)");
-                    System.out.println("Walking Times table created");
                     break;
                 default:
                     stat.execute("CREATE TABLE Map (Lot_ID VARCHAR(3), Map_Location VARCHAR(50)");

@@ -11,11 +11,18 @@ import java.sql.DatabaseMetaData;
 import java.sql.Statement;
 import java.sql.SQLException;
 /**
- * Created by julienpugh on 11/14/16.
- * Password encryption, among other things, will be implemented on the next iteration
+ * File Name: UserDBManager.java
+ * UWF Parking App
+ *
+ * This class holds user-related tables and SQL statements to add to them.
+ * For now, all major User-related functionality is complete.
+ * Password encryption and Permit options will be implemented on the next iterations
+ *
+ * @author Julien
+ * @version 1.0
  */
-public class UserDBManager {
-
+public class UserDBManager
+{
     /** Used to access database */
     private Connection conn;
 

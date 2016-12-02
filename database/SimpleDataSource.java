@@ -7,8 +7,13 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
-   A simple data source for getting database connections. 
-*/
+ * File Name: SimpleDataSource.java
+ * UWF Parking App
+ *
+ * Simple class to connect to the database.
+ *
+ * @version 1.0
+ */
 public class SimpleDataSource
 {
    private static String url;
