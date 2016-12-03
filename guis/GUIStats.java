@@ -6,25 +6,46 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import application.*;
-import objects.User;
-import objects.UserPermissions;
 import objects.ParkingLot;
-import database.*;
-
+/**
+ * File Name: GUIStats.java
+ * UWF Parking App
+ *
+ * This class handles the gui for the View Parking Statistics page.
+ *
+ * @author Nathan, Will
+ * @version 1.0
+ */
 public class GUIStats extends JPanel
 {
-
+    /** the text field to enter the lot name */
     private JTextField lotName;
+
+    /** the controller to call this class */
     private Controller controller;
+
+    /** temporary Lot object to hold the information retrieved from the database */
     private ParkingLot lot;
+
+    /** application frame */
     private JFrame frame;
+
+    /** contains the lot statistics */
     private JPanel lotDisplayPanel;
+
+    /** contains the buttons needed to search and go back */
     private JPanel changeBtnPanel;
+
+    /** contains map */
     private JLabel lotImage;
 
-    public GUIStats(Controller controller, JFrame frame)
+    /**
+     * Constructor that prepares the gui
+     * @param controller the program controller
+     * @param frame application frame
+     */
+    public GUIStats (Controller controller, JFrame frame)
     {
         this.frame = frame;
         this.controller = controller;
@@ -41,7 +62,8 @@ public class GUIStats extends JPanel
         this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
-    public void addButtons()
+    /** Adds the buttons */
+    public void addButtons ()
     {
         JPanel btnPanel = new JPanel();
         btnPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -80,6 +102,7 @@ public class GUIStats extends JPanel
         this.add(btnPanel);
     }
 
+    /** Adds the text fields */
     public void addFields()
     {
         JPanel fieldPanel = new JPanel();                           //search field panel
@@ -91,12 +114,11 @@ public class GUIStats extends JPanel
         fieldPanel.setBackground(Color.CYAN);
         fieldPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         this.add(fieldPanel);
-
     }
 
-    public void displayLot()
+    /** Displays the lot's statistics */
+    public void displayLot ()
     {
-
         String restric;
         JLabel nameLabel = new JLabel("Lot ID: " + lotName.getText());
         if (lot.isOpen() == true)
@@ -118,12 +140,11 @@ public class GUIStats extends JPanel
         lotDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         //this.add(lotDisplayPanel);
         frame.revalidate();
-
     }
 
-    private void drawParkingLot(String lotID)
+    /** Displays the lot's map */
+    private void drawParkingLot (String lotID)
     {
-
         BufferedImage bi = null;
         try
         {
@@ -139,7 +160,5 @@ public class GUIStats extends JPanel
         lotImage.setIcon(icon);
         lotImage.setAlignmentX(this.CENTER_ALIGNMENT);
         this.revalidate();
-
     }
-
 }
